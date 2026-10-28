@@ -1,0 +1,4287 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "   This is how a line of the script reads." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "   Así se lee una línea del guion."
+          }
+        }
+      }
+    },
+    " (notice)" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " (aviso)"
+          }
+        }
+      }
+    },
+    "/away [reason]" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/away [motivo]"
+          }
+        }
+      }
+    },
+    "/back" : {
+
+    },
+    "/ban mask" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/ban máscara"
+          }
+        }
+      }
+    },
+    "/buddy add|del|list nick" : {
+
+    },
+    "/caps" : {
+
+    },
+    "/clear" : {
+
+    },
+    "/close" : {
+
+    },
+    "/ctcp nick VERSION|PING|TIME" : {
+
+    },
+    "/delete" : {
+
+    },
+    "/deop nick…" : {
+
+    },
+    "/devoice nick…" : {
+
+    },
+    "/dim [nick]" : {
+
+    },
+    "/help" : {
+
+    },
+    "/highlight add|del word…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/highlight add|del palabra…"
+          }
+        }
+      }
+    },
+    "/ignore [nick | mask | $a:account]" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/ignore [nick | máscara | $a:cuenta]"
+          }
+        }
+      }
+    },
+    "/invite nick [#channel]" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/invite nick [#canal]"
+          }
+        }
+      }
+    },
+    "/join #channel [key]" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/join #canal [clave]"
+          }
+        }
+      }
+    },
+    "/joins" : {
+
+    },
+    "/kick nick [reason]" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/kick nick [motivo]"
+          }
+        }
+      }
+    },
+    "/me action" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/me acción"
+          }
+        }
+      }
+    },
+    "/mode [target] modes" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/mode [destino] modos"
+          }
+        }
+      }
+    },
+    "/msg target text" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/msg destino texto"
+          }
+        }
+      }
+    },
+    "/mute [conversation]" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/mute [conversación]"
+          }
+        }
+      }
+    },
+    "/nick new" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/nick nuevo"
+          }
+        }
+      }
+    },
+    "/notice target text" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/notice destino texto"
+          }
+        }
+      }
+    },
+    "/op nick…" : {
+
+    },
+    "/part [#channel] [reason]" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/part [#canal] [motivo]"
+          }
+        }
+      }
+    },
+    "/pin [conversation]" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/pin [conversación]"
+          }
+        }
+      }
+    },
+    "/profile [set key value | clear key]" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/profile [set clave valor | clear clave]"
+          }
+        }
+      }
+    },
+    "/query nick [text]" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/query nick [texto]"
+          }
+        }
+      }
+    },
+    "/quit [reason]" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/quit [motivo]"
+          }
+        }
+      }
+    },
+    "/raw line" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/raw línea"
+          }
+        }
+      }
+    },
+    "/react emoji" : {
+
+    },
+    "/setname real name" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/setname nombre real"
+          }
+        }
+      }
+    },
+    "/topic [text]" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/topic [texto]"
+          }
+        }
+      }
+    },
+    "/unban mask" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/unban máscara"
+          }
+        }
+      }
+    },
+    "/undim nick" : {
+
+    },
+    "/unignore nick" : {
+
+    },
+    "/unmute [conversation]" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/unmute [conversación]"
+          }
+        }
+      }
+    },
+    "/unpin [conversation]" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/unpin [conversación]"
+          }
+        }
+      }
+    },
+    "/voice nick…" : {
+
+    },
+    "/whois nick" : {
+
+    },
+    "#rust #swift" : {
+      "comment" : "Prompt text for the channels field in the network editor.",
+      "isCommentAutoGenerated" : true
+    },
+    "%@ (%lld)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$lld)"
+          }
+        }
+      }
+    },
+    "%@ (online)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (conectado)"
+          }
+        }
+      }
+    },
+    "%@ appears normally again." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ vuelve a verse con normalidad."
+          }
+        }
+      }
+    },
+    "%@ doesn’t relay reactions between users (CLIENTTAGDENY): only you will see them." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ no reenvía reacciones entre usuarios (CLIENTTAGDENY): solo las verás tú."
+          }
+        }
+      }
+    },
+    "%@ in %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ en %2$@"
+          }
+        }
+      }
+    },
+    "%@ invites you to %@. Type /join to go in." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ te invita a %2$@. Escribe /join para entrar."
+          }
+        }
+      }
+    },
+    "%@ is away: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ está ausente: %2$@"
+          }
+        }
+      }
+    },
+    "%@ is online" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ se ha conectado"
+          }
+        }
+      }
+    },
+    "%@ is typing" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ escribe"
+          }
+        }
+      }
+    },
+    "%@ on %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ en %2$@"
+          }
+        }
+      }
+    },
+    "%@ will appear dimmed." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ aparecerá atenuado."
+          }
+        }
+      }
+    },
+    "%@ will notify you again." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ vuelve a notificarte."
+          }
+        }
+      }
+    },
+    "%@ won’t notify you." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ no te notificará."
+          }
+        }
+      }
+    },
+    "%@, %lld mention you" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$lld te mencionan"
+          }
+        }
+      }
+    },
+    "%@, 1 mentions you" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@, 1 te menciona"
+          }
+        }
+      }
+    },
+    "%lld" : {
+      "comment" : "A number in the margin of a line, showing the number of users who have reacted to it.",
+      "isCommentAutoGenerated" : true
+    },
+    "%lld networks on the bouncer" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld redes en el bouncer"
+          }
+        }
+      }
+    },
+    "%lld new messages" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld mensajes nuevos"
+          }
+        }
+      }
+    },
+    "%lld people" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld personas"
+          }
+        }
+      }
+    },
+    "%lld results" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld resultados"
+          }
+        }
+      }
+    },
+    "↳ in reply to an earlier message" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "↳ en respuesta a un mensaje anterior"
+          }
+        }
+      }
+    },
+    "↳ replying to " : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "↳ respondiendo a "
+          }
+        }
+      }
+    },
+    "↳ to " : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "↳ a "
+          }
+        }
+      }
+    },
+    "1 new message" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 mensaje nuevo"
+          }
+        }
+      }
+    },
+    "1 person" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 persona"
+          }
+        }
+      }
+    },
+    "A protocol line was too long and was discarded." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se ha descartado una línea del protocolo demasiado larga."
+          }
+        }
+      }
+    },
+    "A stage direction in the third person." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una acotación en tercera persona."
+          }
+        }
+      }
+    },
+    "Accept unverified certificates" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceptar certificados no verificados"
+          }
+        }
+      }
+    },
+    "Account" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuenta"
+          }
+        }
+      }
+    },
+    "Account: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuenta: %@"
+          }
+        }
+      }
+    },
+    "Active capabilities: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capacidades activas: %@"
+          }
+        }
+      }
+    },
+    "Active IRCv3 capabilities." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capacidades IRCv3 activas."
+          }
+        }
+      }
+    },
+    "Add a network" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir una red"
+          }
+        }
+      }
+    },
+    "Add network" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir red"
+          }
+        }
+      }
+    },
+    "Add to contacts" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir a contactos"
+          }
+        }
+      }
+    },
+    "Address" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dirección"
+          }
+        }
+      }
+    },
+    "Also" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Además"
+          }
+        }
+      }
+    },
+    "Attach a file" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adjuntar un fichero"
+          }
+        }
+      }
+    },
+    "Attach a file: no upload destination. This network offers no file server; set one up in Settings → Files." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adjuntar un fichero: no hay destino. Esta red no ofrece servidor de ficheros; configura uno en Ajustes → Ficheros."
+          }
+        }
+      }
+    },
+    "Attach a file: uploads to %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adjuntar un fichero: se sube a %@"
+          }
+        }
+      }
+    },
+    "Attach a file: uploads to this network’s file server (%@)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adjuntar un fichero: se sube al servidor de ficheros de esta red (%@)"
+          }
+        }
+      }
+    },
+    "Authenticated with SASL %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autenticado con SASL %@."
+          }
+        }
+      }
+    },
+    "Authentication" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autenticación"
+          }
+        }
+      }
+    },
+    "Avatar" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avatar"
+          }
+        }
+      }
+    },
+    "away" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ausente"
+          }
+        }
+      }
+    },
+    "Away" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausente"
+          }
+        }
+      }
+    },
+    "Bans a mask from the channel." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veta una máscara en el canal."
+          }
+        }
+      }
+    },
+    "Beginning of the conversation" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Principio de la conversación"
+          }
+        }
+      }
+    },
+    "Bigger Text" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aumentar texto"
+          }
+        }
+      }
+    },
+    "Body text" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuerpo del texto"
+          }
+        }
+      }
+    },
+    "bot" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "bot"
+          }
+        }
+      }
+    },
+    "Bouncer" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bouncer"
+          }
+        }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        }
+      }
+    },
+    "Cancel reply (Esc)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar respuesta (Esc)"
+          }
+        }
+      }
+    },
+    "Certificate" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Certificado"
+          }
+        }
+      }
+    },
+    "Certificate (CertFP)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Certificado (CertFP)"
+          }
+        }
+      }
+    },
+    "Certificate passphrase" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frase de paso del certificado"
+          }
+        }
+      }
+    },
+    "Change certificate…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambiar certificado…"
+          }
+        }
+      }
+    },
+    "Changes modes." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambia modos."
+          }
+        }
+      }
+    },
+    "Changes your nick." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambia tu nick."
+          }
+        }
+      }
+    },
+    "Changes your real name (setname)." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambia tu nombre real (setname)."
+          }
+        }
+      }
+    },
+    "Channels" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Canales"
+          }
+        }
+      }
+    },
+    "Clears this conversation’s view." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpia la vista de esta conversación."
+          }
+        }
+      }
+    },
+    "Close" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrar"
+          }
+        }
+      }
+    },
+    "Close conversation" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrar conversación"
+          }
+        }
+      }
+    },
+    "Close Conversation" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrar conversación"
+          }
+        }
+      }
+    },
+    "Closes this conversation (and leaves it if it’s a channel)." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cierra esta conversación (y sale si es un canal)."
+          }
+        }
+      }
+    },
+    "Commands for %@… (/join #channel)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comandos para %@… (/join #canal)"
+          }
+        }
+      }
+    },
+    "Connect" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectar"
+          }
+        }
+      }
+    },
+    "Connect when Keryx opens" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectar al abrir Keryx"
+          }
+        }
+      }
+    },
+    "Connected as %@, %lld IRCv3 capabilities" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectado como %1$@, %2$lld capacidades IRCv3"
+          }
+        }
+      }
+    },
+    "Connected." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectado."
+          }
+        }
+      }
+    },
+    "Connecting to %@:%lld (TLS)…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectando con %1$@:%2$lld (TLS)…"
+          }
+        }
+      }
+    },
+    "Connecting to %@:%lld…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectando con %1$@:%2$lld…"
+          }
+        }
+      }
+    },
+    "connecting…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "conectando…"
+          }
+        }
+      }
+    },
+    "Connecting…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectando…"
+          }
+        }
+      }
+    },
+    "Connection lost. Retrying in %lld s." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conexión perdida. Reintento en %lld s."
+          }
+        }
+      }
+    },
+    "Contacts: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contactos: %@"
+          }
+        }
+      }
+    },
+    "Contacts: tells you when they come online (MONITOR)." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contactos: avisa cuando se conectan (MONITOR)."
+          }
+        }
+      }
+    },
+    "Conversation" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conversación"
+          }
+        }
+      }
+    },
+    "Copy" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar"
+          }
+        }
+      }
+    },
+    "Copy msgid" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar msgid"
+          }
+        }
+      }
+    },
+    "Copy text" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar texto"
+          }
+        }
+      }
+    },
+    "Couldn’t import the certificate (status %lld). Check the passphrase." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo importar el certificado (estado %lld). Revisa la frase de paso."
+          }
+        }
+      }
+    },
+    "Couldn’t load the image." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo cargar la imagen."
+          }
+        }
+      }
+    },
+    "Custom uploader" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Servidor propio"
+          }
+        }
+      }
+    },
+    "Delete network" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar red"
+          }
+        }
+      }
+    },
+    "Deletes your latest message (draft/message-redaction)." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Borra tu último mensaje (draft/message-redaction)."
+          }
+        }
+      }
+    },
+    "Dim" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atenuar"
+          }
+        }
+      }
+    },
+    "Dim %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atenuar a %@"
+          }
+        }
+      }
+    },
+    "Dimmed: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atenuados: %@"
+          }
+        }
+      }
+    },
+    "Dims someone without hiding them." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atenúa a alguien sin ocultarlo."
+          }
+        }
+      }
+    },
+    "Disconnect" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desconectar"
+          }
+        }
+      }
+    },
+    "Disconnected." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desconectado."
+          }
+        }
+      }
+    },
+    "Disconnects from this network." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desconecta de esta red."
+          }
+        }
+      }
+    },
+    "Display name" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre visible"
+          }
+        }
+      }
+    },
+    "Edit network…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar red…"
+          }
+        }
+      }
+    },
+    "Emoji & Symbols" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Emoji y símbolos"
+          }
+        }
+      }
+    },
+    "Empty sends the file as is." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vacío envía el fichero tal cual."
+          }
+        }
+      }
+    },
+    "encrypted connection" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "conexión cifrada"
+          }
+        }
+      }
+    },
+    "Encrypted connection (TLS)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conexión cifrada (TLS)"
+          }
+        }
+      }
+    },
+    "error" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "error"
+          }
+        }
+      }
+    },
+    "event.chghost" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ changes address to %2$@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ cambia de dirección: %2$@."
+          }
+        }
+      }
+    },
+    "event.invite" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ invites %2$@ to %3$@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ invita a %2$@ a %3$@."
+          }
+        }
+      }
+    },
+    "event.kick" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ kicks %2$@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ expulsa a %2$@."
+          }
+        }
+      }
+    },
+    "event.kick.reason" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ kicks %2$@ (“%3$@”)."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ expulsa a %2$@ («%3$@»)."
+          }
+        }
+      }
+    },
+    "event.login" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ logs in as %2$@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ se identifica como %2$@."
+          }
+        }
+      }
+    },
+    "event.logout" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ logs out."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ cierra su sesión."
+          }
+        }
+      }
+    },
+    "event.setname" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ now goes by “%2$@”."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ se presenta como «%2$@»."
+          }
+        }
+      }
+    },
+    "event.topic" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ changes the topic."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ cambia el titular."
+          }
+        }
+      }
+    },
+    "event.topic.clear" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ clears the topic."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ retira el titular."
+          }
+        }
+      }
+    },
+    "Everyone else" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Público"
+          }
+        }
+      }
+    },
+    "FILEHOST (soju and others), with your SASL credentials." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "FILEHOST (soju y otros), con tus credenciales SASL."
+          }
+        }
+      }
+    },
+    "Files" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ficheros"
+          }
+        }
+      }
+    },
+    "Filter" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtrar"
+          }
+        }
+      }
+    },
+    "Find in Conversation" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar en la conversación"
+          }
+        }
+      }
+    },
+    "Form field" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Campo del formulario"
+          }
+        }
+      }
+    },
+    "Give operator" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dar operador"
+          }
+        }
+      }
+    },
+    "Give voice" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dar voz"
+          }
+        }
+      }
+    },
+    "Gives operator." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Da operador."
+          }
+        }
+      }
+    },
+    "Gives voice." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Da voz."
+          }
+        }
+      }
+    },
+    "Go to a conversation, or / for a command" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ir a una conversación, o / para un comando"
+          }
+        }
+      }
+    },
+    "Go to the original message" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ir al mensaje original"
+          }
+        }
+      }
+    },
+    "Go To…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ir a…"
+          }
+        }
+      }
+    },
+    "Hide Cast" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocultar reparto"
+          }
+        }
+      }
+    },
+    "Hide joins and parts" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocultar entradas y salidas"
+          }
+        }
+      }
+    },
+    "Hide joins and parts in this channel" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocultar entradas y salidas en este canal"
+          }
+        }
+      }
+    },
+    "Hides someone (on soju, also blocks them)." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oculta a alguien (en soju, también lo bloquea)."
+          }
+        }
+      }
+    },
+    "Highlight words: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Palabras destacadas: %@"
+          }
+        }
+      }
+    },
+    "Homepage" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Web"
+          }
+        }
+      }
+    },
+    "https://" : {
+      "comment" : "Prompt for the homepage URL field in the profile sheet.",
+      "isCommentAutoGenerated" : true
+    },
+    "https://…/avatar.png" : {
+      "comment" : "Prompt for the avatar URL field in the profile sheet.",
+      "isCommentAutoGenerated" : true
+    },
+    "https://0x0.st" : {
+      "comment" : "URL of a custom file uploader.",
+      "isCommentAutoGenerated" : true
+    },
+    "Identity" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identidad"
+          }
+        }
+      }
+    },
+    "Idle" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inactivo"
+          }
+        }
+      }
+    },
+    "If the server offers SCRAM-SHA-256 it’s used instead: the password never travels." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si el servidor ofrece SCRAM-SHA-256 se usa en su lugar: la contraseña no viaja."
+          }
+        }
+      }
+    },
+    "Ignore" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ignorar"
+          }
+        }
+      }
+    },
+    "Ignore %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ignorar a %@"
+          }
+        }
+      }
+    },
+    "Ignored: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ignorados: %@"
+          }
+        }
+      }
+    },
+    "Ignoring %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ignoras a %@."
+          }
+        }
+      }
+    },
+    "Image size" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tamaño de las imágenes"
+          }
+        }
+      }
+    },
+    "Images in the conversation" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imágenes en la conversación"
+          }
+        }
+      }
+    },
+    "Import .p12 certificate…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importar certificado .p12…"
+          }
+        }
+      }
+    },
+    "Invitation to %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invitación a %@"
+          }
+        }
+      }
+    },
+    "Invited %@ to %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Has invitado a %1$@ a %2$@."
+          }
+        }
+      }
+    },
+    "Invites someone to the channel." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invita a alguien al canal."
+          }
+        }
+      }
+    },
+    "IRC conversations set as a script: who speaks, what they say, and in italics, what happens around them." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las conversaciones de IRC, compuestas como un guion: quién habla, qué dice y, en cursiva, lo que pasa alrededor."
+          }
+        }
+      }
+    },
+    "irc.example.org" : {
+      "comment" : "Label for the IRC server address field.",
+      "isCommentAutoGenerated" : true
+    },
+    "It’s a soju bouncer" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es un bouncer soju"
+          }
+        }
+      }
+    },
+    "Joins a channel; with no arguments, accepts the latest invitation." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entra en un canal; sin argumentos acepta la última invitación."
+          }
+        }
+      }
+    },
+    "Joins and parts are now hidden here." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las entradas y salidas quedan ocultas aquí."
+          }
+        }
+      }
+    },
+    "Joins and parts are shown here again." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vuelves a ver entradas y salidas aquí."
+          }
+        }
+      }
+    },
+    "Keep history on this Mac" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardar el historial en este Mac"
+          }
+        }
+      }
+    },
+    "Keryx" : {
+      "comment" : "The name of the app.",
+      "isCommentAutoGenerated" : true
+    },
+    "Keryx fetches links to find out what they are; turn this off if you’d rather it didn’t." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keryx descarga los enlaces para saber qué son; desactívalo si prefieres que no."
+          }
+        }
+      }
+    },
+    "keryx project" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "keryx proyecto"
+          }
+        }
+      }
+    },
+    "Kick" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expulsar"
+          }
+        }
+      }
+    },
+    "Kicks someone from the channel." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expulsa a alguien del canal."
+          }
+        }
+      }
+    },
+    "Large" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grande"
+          }
+        }
+      }
+    },
+    "Leave channel" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salir del canal"
+          }
+        }
+      }
+    },
+    "Leaves a channel." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sale de un canal."
+          }
+        }
+      }
+    },
+    "Let others know while you type" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avisar a los demás mientras escribes"
+          }
+        }
+      }
+    },
+    "Libera" : {
+      "comment" : "The default name for a new network.",
+      "isCommentAutoGenerated" : true
+    },
+    "Lifts a ban." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Levanta un veto."
+          }
+        }
+      }
+    },
+    "Line withdrawn by %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Línea retirada por %@."
+          }
+        }
+      }
+    },
+    "Line withdrawn." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Línea retirada."
+          }
+        }
+      }
+    },
+    "Link titles as footnotes" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Títulos de enlaces como notas al pie"
+          }
+        }
+      }
+    },
+    "Lists the commands." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lista los comandos."
+          }
+        }
+      }
+    },
+    "Logged in." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sesión iniciada."
+          }
+        }
+      }
+    },
+    "Logged out." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sesión cerrada."
+          }
+        }
+      }
+    },
+    "Mark All as Read" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Marcar todo como leído"
+          }
+        }
+      }
+    },
+    "Mark as read" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Marcar como leído"
+          }
+        }
+      }
+    },
+    "Marks you as away." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Te marca como ausente."
+          }
+        }
+      }
+    },
+    "Marks you as back." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vuelves de la ausencia."
+          }
+        }
+      }
+    },
+    "Masks every nick with a stable pseudonym, for screenshots. ⌘⇧P" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enmascara todos los nicks con un seudónimo estable, para capturas de pantalla. ⌘⇧P"
+          }
+        }
+      }
+    },
+    "Medium" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mediano"
+          }
+        }
+      }
+    },
+    "mode.ban" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ bans %2$@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ veta a %2$@."
+          }
+        }
+      }
+    },
+    "mode.dehalfop" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ takes half-operator from %2$@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ retira el semioperador a %2$@."
+          }
+        }
+      }
+    },
+    "mode.deop" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ takes operator from %2$@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ retira el operador a %2$@."
+          }
+        }
+      }
+    },
+    "mode.devoice" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ takes the voice from %2$@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ retira la palabra a %2$@."
+          }
+        }
+      }
+    },
+    "mode.generic" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ changes the modes."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ cambia los modos."
+          }
+        }
+      }
+    },
+    "mode.halfop" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ makes %2$@ half-operator."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ nombra semioperador a %2$@."
+          }
+        }
+      }
+    },
+    "mode.op" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ makes %2$@ operator."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ nombra operador a %2$@."
+          }
+        }
+      }
+    },
+    "mode.set" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ sets modes %2$@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ fija los modos %2$@."
+          }
+        }
+      }
+    },
+    "mode.unban" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ lifts the ban on %2$@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ levanta el veto a %2$@."
+          }
+        }
+      }
+    },
+    "mode.voice" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ gives %2$@ a voice."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ da la palabra a %2$@."
+          }
+        }
+      }
+    },
+    "Mute notifications" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Silenciar notificaciones"
+          }
+        }
+      }
+    },
+    "Name" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre"
+          }
+        }
+      }
+    },
+    "network operator" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "operador de red"
+          }
+        }
+      }
+    },
+    "Network Protocol" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protocolo de la red"
+          }
+        }
+      }
+    },
+    "New messages: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mensajes nuevos: %@"
+          }
+        }
+      }
+    },
+    "New network" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nueva red"
+          }
+        }
+      }
+    },
+    "New Network…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nueva red…"
+          }
+        }
+      }
+    },
+    "Next" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siguiente"
+          }
+        }
+      }
+    },
+    "Next Unread" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siguiente sin leer"
+          }
+        }
+      }
+    },
+    "Nick" : {
+      "comment" : "Label for the IRC nickname field.",
+      "isCommentAutoGenerated" : true
+    },
+    "Nick changes only for people who spoke" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambios de nick solo de quien ha hablado"
+          }
+        }
+      }
+    },
+    "Nicks are shown masked (⌘⇧P)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los nicks se muestran enmascarados (⌘⇧P)"
+          }
+        }
+      }
+    },
+    "No highlight words." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay palabras destacadas."
+          }
+        }
+      }
+    },
+    "No longer ignoring %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ya no ignoras a %@."
+          }
+        }
+      }
+    },
+    "None" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ninguno"
+          }
+        }
+      }
+    },
+    "not in the channel" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "fuera del canal"
+          }
+        }
+      }
+    },
+    "Nothing matches “%@”." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nada coincide con «%@»."
+          }
+        }
+      }
+    },
+    "Notifications" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avisos"
+          }
+        }
+      }
+    },
+    "Notifies again." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vuelve a notificar."
+          }
+        }
+      }
+    },
+    "Notify again" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volver a notificar"
+          }
+        }
+      }
+    },
+    "Nowhere to upload to: this network offers no FILEHOST and no custom uploader is set in Settings." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay dónde subirlo: esta red no ofrece FILEHOST y no has configurado un servidor propio en Ajustes."
+          }
+        }
+      }
+    },
+    "offline" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "sin conexión"
+          }
+        }
+      }
+    },
+    "Offline" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin conexión"
+          }
+        }
+      }
+    },
+    "On %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En %@."
+          }
+        }
+      }
+    },
+    "On connect" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Al conectar"
+          }
+        }
+      }
+    },
+    "online" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "conectado"
+          }
+        }
+      }
+    },
+    "Online" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectado"
+          }
+        }
+      }
+    },
+    "Online since" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectado desde"
+          }
+        }
+      }
+    },
+    "Only for your own servers with a self-signed certificate." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solo para servidores propios con certificado autofirmado."
+          }
+        }
+      }
+    },
+    "Only your nick highlights you. Add words with /highlight add word." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solo te destaca tu nick. Añade más con /highlight add palabra."
+          }
+        }
+      }
+    },
+    "Opens a private conversation." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre una conversación privada."
+          }
+        }
+      }
+    },
+    "Operators" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Operadores"
+          }
+        }
+      }
+    },
+    "Original message" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mensaje original"
+          }
+        }
+      }
+    },
+    "Other…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otro…"
+          }
+        }
+      }
+    },
+    "Page titles under links" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Título de la página bajo los enlaces"
+          }
+        }
+      }
+    },
+    "Password" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contraseña"
+          }
+        }
+      }
+    },
+    "Pin to top" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fijar arriba"
+          }
+        }
+      }
+    },
+    "Pins it to the top of the sidebar." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La fija arriba en la barra lateral."
+          }
+        }
+      }
+    },
+    "Port" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puerto"
+          }
+        }
+      }
+    },
+    "presence.join.many" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter %@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entran %@."
+          }
+        }
+      }
+    },
+    "presence.join.one" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter %@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entra %@."
+          }
+        }
+      }
+    },
+    "presence.more" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld more"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld más"
+          }
+        }
+      }
+    },
+    "presence.netjoin.many" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld people return after a netsplit (%2$@)."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vuelven %1$lld personas tras un corte entre servidores (%2$@)."
+          }
+        }
+      }
+    },
+    "presence.netjoin.one" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One person returns after a netsplit (%@)."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vuelve una persona tras un corte entre servidores (%@)."
+          }
+        }
+      }
+    },
+    "presence.netsplit.many" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld people are lost in a netsplit (%2$@)."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se pierden %1$lld personas en un corte entre servidores (%2$@)."
+          }
+        }
+      }
+    },
+    "presence.netsplit.one" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One person is lost in a netsplit (%@)."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se pierde una persona en un corte entre servidores (%@)."
+          }
+        }
+      }
+    },
+    "presence.nick" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, henceforth %2$@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, en adelante %2$@."
+          }
+        }
+      }
+    },
+    "presence.part.many" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exeunt %@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salen %@."
+          }
+        }
+      }
+    },
+    "presence.part.one" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exit %@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sale %@."
+          }
+        }
+      }
+    },
+    "presence.part.reason" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exit %1$@ (“%2$@”)."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sale %1$@ («%2$@»)."
+          }
+        }
+      }
+    },
+    "presence.quit.many" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ leave the stage."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se marchan %@."
+          }
+        }
+      }
+    },
+    "presence.quit.one" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ leaves the stage."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se marcha %@."
+          }
+        }
+      }
+    },
+    "presence.quit.reason" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ leaves the stage (“%2$@”)."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ se marcha («%2$@»)."
+          }
+        }
+      }
+    },
+    "Previous" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anterior"
+          }
+        }
+      }
+    },
+    "Privacy" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacidad"
+          }
+        }
+      }
+    },
+    "Privacy mode" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modo privado"
+          }
+        }
+      }
+    },
+    "Privacy Mode" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modo privado"
+          }
+        }
+      }
+    },
+    "Private conversation" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conversación privada"
+          }
+        }
+      }
+    },
+    "Private conversation on %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conversación privada en %@"
+          }
+        }
+      }
+    },
+    "Private conversation with %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conversación privada con %@"
+          }
+        }
+      }
+    },
+    "Private messages" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mensajes privados"
+          }
+        }
+      }
+    },
+    "Profile" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ficha"
+          }
+        }
+      }
+    },
+    "Profile keys: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Claves del perfil: %@"
+          }
+        }
+      }
+    },
+    "Profile of %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ficha de %@"
+          }
+        }
+      }
+    },
+    "Profile saved; this server doesn’t share profiles." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Perfil guardado; este servidor no comparte perfiles."
+          }
+        }
+      }
+    },
+    "Profile updated." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Perfil actualizado."
+          }
+        }
+      }
+    },
+    "Pronouns" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pronombres"
+          }
+        }
+      }
+    },
+    "Protocol of %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protocolo de %@"
+          }
+        }
+      }
+    },
+    "Quick reaction" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reacción rápida"
+          }
+        }
+      }
+    },
+    "quote.inline %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ":  “%@”"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ":  «%@»"
+          }
+        }
+      }
+    },
+    "Rarely needed. Stored in the keychain." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Casi nunca hace falta. Se guarda en el llavero."
+          }
+        }
+      }
+    },
+    "React" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reaccionar"
+          }
+        }
+      }
+    },
+    "React…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reaccionar…"
+          }
+        }
+      }
+    },
+    "Reacts to the latest message." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reacciona al último mensaje."
+          }
+        }
+      }
+    },
+    "Reading" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lectura"
+          }
+        }
+      }
+    },
+    "Real name" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre real"
+          }
+        }
+      }
+    },
+    "reconnecting…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "reconectando…"
+          }
+        }
+      }
+    },
+    "Register it on the network: /msg NickServ CERT ADD %@…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regístrala en la red: /msg NickServ CERT ADD %@…"
+          }
+        }
+      }
+    },
+    "Remove" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quitar"
+          }
+        }
+      }
+    },
+    "Remove from contacts" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quitar de contactos"
+          }
+        }
+      }
+    },
+    "Reply" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Responder"
+          }
+        }
+      }
+    },
+    "Response" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Respuesta"
+          }
+        }
+      }
+    },
+    "Retrying %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reintento %@"
+          }
+        }
+      }
+    },
+    "same as nick" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "como el nick"
+          }
+        }
+      }
+    },
+    "SASL authentication failed: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La autenticación SASL ha fallado: %@"
+          }
+        }
+      }
+    },
+    "SASL method" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Método SASL"
+          }
+        }
+      }
+    },
+    "Save" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardar"
+          }
+        }
+      }
+    },
+    "Search all history" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar en todo el historial"
+          }
+        }
+      }
+    },
+    "Search All History" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar en todo el historial"
+          }
+        }
+      }
+    },
+    "Search all history (⌘⇧F)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar en todo el historial (⌘⇧F)"
+          }
+        }
+      }
+    },
+    "Search by words; accents and case don’t matter." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Busca por palabras; no distingue tildes ni mayúsculas."
+          }
+        }
+      }
+    },
+    "Search this conversation" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar en esta conversación"
+          }
+        }
+      }
+    },
+    "Sends +typing; others see your name as the script’s next cue." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envía +typing; los demás verán tu nombre como la siguiente entrada del guion."
+          }
+        }
+      }
+    },
+    "Sends a CTCP query." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consulta CTCP."
+          }
+        }
+      }
+    },
+    "Sends a line as is." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envía una línea tal cual."
+          }
+        }
+      }
+    },
+    "Sends a message without opening the conversation." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envía un mensaje sin abrir la conversación."
+          }
+        }
+      }
+    },
+    "Sends a notice (NOTICE)." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envía un aviso (NOTICE)."
+          }
+        }
+      }
+    },
+    "Sent as Bearer." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se envía como Bearer."
+          }
+        }
+      }
+    },
+    "Separated by spaces. Whole words, ignoring case." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Separadas por espacios. Sin distinguir mayúsculas, palabras completas."
+          }
+        }
+      }
+    },
+    "Serif (New York)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Con serifa (New York)"
+          }
+        }
+      }
+    },
+    "server" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "servidor"
+          }
+        }
+      }
+    },
+    "Server" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Servidor"
+          }
+        }
+      }
+    },
+    "Server password" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contraseña del servidor"
+          }
+        }
+      }
+    },
+    "SHA-256 fingerprint" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Huella SHA-256"
+          }
+        }
+      }
+    },
+    "she/her, they/them…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ella, elle, él…"
+          }
+        }
+      }
+    },
+    "Show Cast" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar reparto"
+          }
+        }
+      }
+    },
+    "Show joins and parts" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar entradas y salidas"
+          }
+        }
+      }
+    },
+    "Show joins and parts in this channel" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar entradas y salidas en este canal"
+          }
+        }
+      }
+    },
+    "Show or hide the cast" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar u ocultar el reparto"
+          }
+        }
+      }
+    },
+    "Show protocol" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver protocolo"
+          }
+        }
+      }
+    },
+    "Shown next to your nick to people whose client reads profiles (draft/metadata-2)." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se muestra junto a tu nick a quien use un cliente que lea perfiles (draft/metadata-2)."
+          }
+        }
+      }
+    },
+    "Shows each of the bouncer’s networks on its own." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muestra cada red del bouncer por separado."
+          }
+        }
+      }
+    },
+    "Shows or changes the channel’s topic." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muestra o cambia el titular del canal."
+          }
+        }
+      }
+    },
+    "Shows or hides joins and parts here." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muestra u oculta entradas y salidas aquí."
+          }
+        }
+      }
+    },
+    "Silences its notifications." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Silencia sus notificaciones."
+          }
+        }
+      }
+    },
+    "Small" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pequeño"
+          }
+        }
+      }
+    },
+    "Smaller Text" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reducir texto"
+          }
+        }
+      }
+    },
+    "So conversations open instantly; the server stays the source." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para abrir las conversaciones al instante; el servidor sigue siendo la fuente."
+          }
+        }
+      }
+    },
+    "Someone’s profile." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ficha de alguien."
+          }
+        }
+      }
+    },
+    "Start with" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empieza por"
+          }
+        }
+      }
+    },
+    "Status" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estado"
+          }
+        }
+      }
+    },
+    "Status unknown" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estado desconocido"
+          }
+        }
+      }
+    },
+    "Stop dimming" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dejar de atenuar"
+          }
+        }
+      }
+    },
+    "Stop ignoring" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dejar de ignorar"
+          }
+        }
+      }
+    },
+    "Stop ignoring %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dejar de ignorar a %@"
+          }
+        }
+      }
+    },
+    "Stops dimming." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deja de atenuar."
+          }
+        }
+      }
+    },
+    "Stops ignoring." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deja de ignorar."
+          }
+        }
+      }
+    },
+    "System (SF)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sistema (SF)"
+          }
+        }
+      }
+    },
+    "Take operator" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quitar operador"
+          }
+        }
+      }
+    },
+    "Take voice" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quitar voz"
+          }
+        }
+      }
+    },
+    "Takes operator away." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quita operador."
+          }
+        }
+      }
+    },
+    "Takes voice away." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quita voz."
+          }
+        }
+      }
+    },
+    "text, location or json:key.path" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "text, location o json:clave.ruta"
+          }
+        }
+      }
+    },
+    "The address of an image. Others see it next to your nick in the member list." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La dirección de una imagen. Los demás la verán junto a tu nick en el reparto."
+          }
+        }
+      }
+    },
+    "The file doesn’t contain an identity (private key and certificate)." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El fichero no contiene una identidad (clave privada y certificado)."
+          }
+        }
+      }
+    },
+    "The file is empty." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El fichero está vacío."
+          }
+        }
+      }
+    },
+    "The file server rejected your credentials (HTTP 401)." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El servidor de ficheros ha rechazado tus credenciales (HTTP 401)."
+          }
+        }
+      }
+    },
+    "The identity has no certificate." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La identidad no tiene certificado."
+          }
+        }
+      }
+    },
+    "The server couldn’t return it: it’s too old, it was deleted, or this network keeps no history." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El servidor no ha podido devolverlo: es demasiado antiguo, se borró o esta red no guarda historial."
+          }
+        }
+      }
+    },
+    "The server isn’t answering; reconnecting." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El servidor no responde; reconectando."
+          }
+        }
+      }
+    },
+    "The server requires TLS (STS); reconnecting securely…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El servidor exige TLS (STS); reconectando de forma segura…"
+          }
+        }
+      }
+    },
+    "The server’s contact list is full." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La lista de contactos del servidor está llena."
+          }
+        }
+      }
+    },
+    "The server’s response had no URL in it." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La respuesta del servidor no traía ninguna URL."
+          }
+        }
+      }
+    },
+    "The status window isn’t a conversation. Try /join #channel." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La ventana de estado no es una conversación. Prueba /join #canal."
+          }
+        }
+      }
+    },
+    "The upload failed (HTTP %lld)." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La subida ha fallado (HTTP %lld)."
+          }
+        }
+      }
+    },
+    "There’s no message of yours to delete." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay ningún mensaje tuyo que borrar."
+          }
+        }
+      }
+    },
+    "They’re folded into a single stage direction. Hide them per channel with /joins." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se agrupan en una sola acotación. Puedes ocultarlas por canal con /joins."
+          }
+        }
+      }
+    },
+    "This channel has no topic." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este canal no tiene titular."
+          }
+        }
+      }
+    },
+    "This is how a line of the script reads." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Así se lee una línea del guion."
+          }
+        }
+      }
+    },
+    "This network" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta red"
+          }
+        }
+      }
+    },
+    "This server doesn’t allow changing your real name while connected." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este servidor no permite cambiar el nombre real en marcha."
+          }
+        }
+      }
+    },
+    "This server doesn’t allow deleting messages." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este servidor no permite borrar mensajes."
+          }
+        }
+      }
+    },
+    "This server doesn’t share profiles (draft/metadata-2). soju doesn’t relay them; Ergo does. Keryx keeps what you write here and publishes it wherever it can." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este servidor no comparte perfiles (draft/metadata-2). soju no los reenvía; Ergo sí. Keryx guarda lo que escribas aquí y lo publica donde pueda."
+          }
+        }
+      }
+    },
+    "This server doesn’t support MONITOR." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este servidor no admite MONITOR."
+          }
+        }
+      }
+    },
+    "Today" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoy"
+          }
+        }
+      }
+    },
+    "Token" : {
+      "comment" : "Label for a field containing a token used for uploading files.",
+      "isCommentAutoGenerated" : true
+    },
+    "Topic by %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Titular de %@"
+          }
+        }
+      }
+    },
+    "Topic: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Titular: %@"
+          }
+        }
+      }
+    },
+    "Turn Off Privacy Mode" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desactivar modo privado"
+          }
+        }
+      }
+    },
+    "Typeface" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tipo de letra"
+          }
+        }
+      }
+    },
+    "Unpin" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desfijar"
+          }
+        }
+      }
+    },
+    "Unpins it." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La desfija."
+          }
+        }
+      }
+    },
+    "Uploading %@…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subiendo %@…"
+          }
+        }
+      }
+    },
+    "Usage: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uso: %@"
+          }
+        }
+      }
+    },
+    "Use the network’s file server when it has one" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usar el servidor de ficheros de la red cuando lo ofrezca"
+          }
+        }
+      }
+    },
+    "Used when the network has no file server, or always if the option above is off. Leave empty to use only the network’s." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se usa cuando la red no tiene servidor de ficheros, o siempre si desactivas la opción de arriba. Déjalo vacío para usar solo el de la red."
+          }
+        }
+      }
+    },
+    "Username" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usuario"
+          }
+        }
+      }
+    },
+    "Voiced" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Con voz"
+          }
+        }
+      }
+    },
+    "Waiting for the network: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esperando a la red: %@"
+          }
+        }
+      }
+    },
+    "When you’re mentioned" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuando te mencionan"
+          }
+        }
+      }
+    },
+    "With a bouncer this is rarely needed: it remembers your channels." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Con un bouncer suele sobrar: él recuerda tus canales."
+          }
+        }
+      }
+    },
+    "Withdraw this line" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retirar esta línea"
+          }
+        }
+      }
+    },
+    "Words that mention you besides your nick" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Palabras que te mencionan además de tu nick"
+          }
+        }
+      }
+    },
+    "Words that mention you besides your nick." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Palabras que te mencionan además de tu nick."
+          }
+        }
+      }
+    },
+    "Working on Keryx" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trabajando en Keryx"
+          }
+        }
+      }
+    },
+    "Write in %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escribe en %@"
+          }
+        }
+      }
+    },
+    "Write to %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escribe a %@"
+          }
+        }
+      }
+    },
+    "Writing" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escritura"
+          }
+        }
+      }
+    },
+    "Yesterday" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ayer"
+          }
+        }
+      }
+    },
+    "You have no contacts on this network." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No tienes contactos en esta red."
+          }
+        }
+      }
+    },
+    "You were already ignoring %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ya ignorabas a %@."
+          }
+        }
+      }
+    },
+    "You weren’t ignoring %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No ignorabas a %@."
+          }
+        }
+      }
+    },
+    "You’re no longer marked as away." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ya no figuras como ausente."
+          }
+        }
+      }
+    },
+    "You’re not dimming anyone." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No atenúas a nadie."
+          }
+        }
+      }
+    },
+    "You’re not ignoring anyone on this network." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No ignoras a nadie en esta red."
+          }
+        }
+      }
+    },
+    "You’re now marked as away." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ahora figuras como ausente."
+          }
+        }
+      }
+    },
+    "Your nick highlights you, and so do: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Te destacan tu nick y: %@"
+          }
+        }
+      }
+    },
+    "Your profile on %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu perfil en %@"
+          }
+        }
+      }
+    },
+    "Your profile: display name, pronouns, status… (draft/metadata-2)." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu perfil: nombre visible, pronombres, estado… (draft/metadata-2)."
+          }
+        }
+      }
+    },
+    "Your profile…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu perfil…"
+          }
+        }
+      }
+    },
+    "Your real name is now “%@”." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu nombre real es ahora «%@»."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.1"
+}

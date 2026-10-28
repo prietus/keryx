@@ -1,0 +1,82 @@
+name: Keryx
+options:
+  bundleIdPrefix: im.keryx
+  developmentLanguage: en
+  deploymentTarget:
+    macOS: "15.0"
+  createIntermediateGroups: true
+
+packages:
+  KeryxProtocol:
+    path: KeryxProtocol
+
+targets:
+  Keryx:
+    type: application
+    platform: macOS
+    sources:
+      - path: Keryx
+    dependencies:
+      - package: KeryxProtocol
+      - sdk: libsqlite3.tbd
+    scheme:
+      testTargets:
+        - KeryxTests
+      # Tests check English phrasing; pin the language so they don't follow the Mac's.
+      commandLineArguments:
+        "-AppleLanguages (en)": true
+        "-AppleLocale en_US": true
+    info:
+      path: Keryx/Resources/Info.plist
+      properties:
+        CFBundleDisplayName: Keryx
+        CFBundleDevelopmentRegion: en
+        CFBundleLocalizations: [en, es]
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSApplicationCategoryType: public.app-category.social-networking
+        NSHumanReadableCopyright: "© 2026 Carlos Prieto"
+    entitlements:
+      path: Config/Keryx.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.network.client: true
+        com.apple.security.files.user-selected.read-only: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: im.keryx.mac
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        SWIFT_VERSION: "6.0"
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: LFTD9T269J
+        ENABLE_HARDENED_RUNTIME: "YES"
+        ENABLE_PREVIEWS: "YES"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        SWIFT_EMIT_LOC_STRINGS: "YES"
+        LOCALIZATION_PREFERS_STRING_CATALOGS: "YES"
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+      configs:
+        # Distributed outside the App Store: Developer ID + hardened runtime,
+        # ready for notarization.
+        Release:
+          CODE_SIGN_STYLE: Manual
+          CODE_SIGN_IDENTITY: "Developer ID Application: carlos prieto ortiz (LFTD9T269J)"
+          OTHER_CODE_SIGN_FLAGS: "--timestamp"
+
+  KeryxTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: KeryxTests
+    dependencies:
+      - target: Keryx
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: im.keryx.mac.tests
+        GENERATE_INFOPLIST_FILE: "YES"
+        SWIFT_VERSION: "6.0"
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: LFTD9T269J
+        BUNDLE_LOADER: $(TEST_HOST)
+        TEST_HOST: $(BUILT_PRODUCTS_DIR)/Keryx.app/Contents/MacOS/Keryx
