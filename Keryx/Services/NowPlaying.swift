@@ -83,14 +83,31 @@ final class NowPlaying {
         announced[player] = .some(track)
     }
 
+    /// What `/np` found.
+    enum Outcome: Equatable {
+        case playing(Track)
+        case nothing
+        /// Nothing found, and these open players refused to answer because
+        /// Keryx lacks the Automation permission for them.
+        case notPermitted([String])
+    }
+
     /// Asks every source, preferring something that's actually playing.
-    func current() async -> Track? {
+    func current() async -> Outcome {
         DistributedNotificationCenter.default().postNotificationName(Self.request, object: nil,
                                                                      deliverImmediately: true)
         try? await Task.sleep(for: .milliseconds(400))
         var candidates = announced.values.compactMap { $0 }
-        candidates += [Self.ask(.music), Self.ask(.spotify)].compactMap { $0 }
-        return candidates.first(where: \.isPlaying) ?? candidates.first
+        var refused: [String] = []
+        for player in [ScriptablePlayer.music, .spotify] {
+            switch Self.ask(player) {
+            case let .track(track): candidates.append(track)
+            case let .notPermitted(name): refused.append(name)
+            case .none: break
+            }
+        }
+        if let track = candidates.first(where: \.isPlaying) ?? candidates.first { return .playing(track) }
+        return refused.isEmpty ? .nothing : .notPermitted(refused)
     }
 
     // MARK: - AppleScript (Music, Spotify)
@@ -102,10 +119,21 @@ final class NowPlaying {
         var name: String { self == .music ? "Music" : "Spotify" }
     }
 
+    private enum Answer {
+        case track(Track)
+        case notPermitted(String)
+    }
+
+    /// `errAEEventNotPermitted`: the user hasn't allowed Keryx to automate it.
+    private static let notPermittedCode = -1743
+
     /// Reads the current track if the player is open and playing. Never
-    /// launches it: Keryx checks it's running before asking.
-    private static func ask(_ player: ScriptablePlayer) -> Track? {
-        guard !NSRunningApplication.runningApplications(withBundleIdentifier: player.rawValue).isEmpty else { return nil }
+    /// launches it: Keryx checks it's running before asking. The player is
+    /// named as macOS shows it in your language ("Música", "Music").
+    private static func ask(_ player: ScriptablePlayer) -> Answer? {
+        guard let app = NSRunningApplication.runningApplications(withBundleIdentifier: player.rawValue).first
+        else { return nil }
+        let name = app.localizedName ?? player.name
         let source = """
         tell application id "\(player.rawValue)"
             if player state is playing then
@@ -115,11 +143,12 @@ final class NowPlaying {
         return {}
         """
         var error: NSDictionary?
-        guard let result = NSAppleScript(source: source)?.executeAndReturnError(&error),
-              result.numberOfItems >= 1,
+        let result = NSAppleScript(source: source)?.executeAndReturnError(&error)
+        if (error?[NSAppleScript.errorNumber] as? Int) == notPermittedCode { return .notPermitted(name) }
+        guard let result, result.numberOfItems >= 1,
               let title = result.atIndex(1)?.stringValue?.nilIfBlank else { return nil }
-        return Track(title: title, artist: result.atIndex(2)?.stringValue, album: result.atIndex(3)?.stringValue,
-                     player: player.name)
+        return .track(Track(title: title, artist: result.atIndex(2)?.stringValue,
+                            album: result.atIndex(3)?.stringValue, player: name))
     }
 
     // MARK: - Phrasing

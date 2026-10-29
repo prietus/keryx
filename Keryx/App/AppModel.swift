@@ -37,8 +37,8 @@ final class AppModel {
         #if DEBUG
         if CommandLine.arguments.contains("-KeryxNowPlayingProbe") {
             Task {
-                let track = await NowPlaying.shared.current()
-                FileHandle.standardError.write(Data("now playing: \(track.map { "\($0)" } ?? "nil")\n".utf8))
+                let outcome = await NowPlaying.shared.current()
+                FileHandle.standardError.write(Data("now playing: \(outcome)\n".utf8))
                 exit(0)
             }
         }
@@ -232,10 +232,15 @@ final class AppModel {
             editingProfile = session
         case let .nowPlaying(target):
             Task {
-                if let track = await NowPlaying.shared.current() {
+                switch await NowPlaying.shared.current() {
+                case let .playing(track):
                     session.sendMessage(NowPlaying.action(for: track), to: target, action: true)
-                } else {
+                case .nothing:
                     session.note(String(localized: "Nothing is playing right now."), in: target)
+                case let .notPermitted(players):
+                    let names = players.formatted(.list(type: .and))
+                    session.note(String(localized: "Keryx isn’t allowed to ask \(names) what’s playing. Allow it in System Settings → Privacy & Security → Automation → Keryx."),
+                                 in: target, kind: .error)
                 }
             }
         case .listHighlights:
