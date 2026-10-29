@@ -25,6 +25,8 @@ struct SettingsView: View {
                     Statement(text: "Show joins and parts", isOn: $prefs.showPresence,
                               note: "They’re folded into a single stage direction. Hide them per channel with /joins.")
                     Statement(text: "Nick changes only for people who spoke", isOn: $prefs.presenceOnlyForSpeakers)
+                    Statement(text: "Nicks in colour", isOn: $prefs.colorNicks,
+                              note: "Each person keeps the same colour. Mentions of you stay in blue.")
                     Statement(text: "Page titles under links", isOn: $prefs.linkFootnotes)
                     Statement(text: "Images in the conversation", isOn: $prefs.inlineImages,
                               note: "Keryx fetches links to find out what they are; turn this off if you’d rather it didn’t.")

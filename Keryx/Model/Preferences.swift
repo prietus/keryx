@@ -21,6 +21,8 @@ final class Preferences {
     /// Show a nick change only for people who spoke recently, not silent lurkers.
     var presenceOnlyForSpeakers: Bool { didSet { defaults.set(presenceOnlyForSpeakers, forKey: "presenceOnlyForSpeakers") } }
     var inlineImages: Bool { didSet { defaults.set(inlineImages, forKey: "inlineImages") } }
+    /// Each nick in its own colour (otherwise all in ink).
+    var colorNicks: Bool { didSet { defaults.set(colorNicks, forKey: "colorNicks") } }
     /// Thumbnail height in points: 96, 160 or 280.
     var imageSize: Int { didSet { defaults.set(imageSize, forKey: "imageSize") } }
     /// Link titles as footnotes under the line.
@@ -46,7 +48,7 @@ final class Preferences {
     init() {
         defaults.register(defaults: [
             "bodySize": 13.0, "showPresence": true, "presenceOnlyForSpeakers": true,
-            "inlineImages": true, "imageSize": 160, "linkFootnotes": true, "notifyMentions": true,
+            "inlineImages": true, "imageSize": 160, "colorNicks": true, "linkFootnotes": true, "notifyMentions": true,
             "notifyDirect": true, "sendTyping": true, "keepHistory": true,
             "uploaderField": "file", "uploaderResponse": "text", "preferServerFileHost": true,
         ])
@@ -59,6 +61,7 @@ final class Preferences {
         presenceOnlyForSpeakers = defaults.bool(forKey: "presenceOnlyForSpeakers")
         inlineImages = defaults.bool(forKey: "inlineImages")
         imageSize = defaults.integer(forKey: "imageSize")
+        colorNicks = defaults.bool(forKey: "colorNicks")
         linkFootnotes = defaults.bool(forKey: "linkFootnotes")
         notifyMentions = defaults.bool(forKey: "notifyMentions")
         notifyDirect = defaults.bool(forKey: "notifyDirect")

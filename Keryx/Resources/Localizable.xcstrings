@@ -4281,6 +4281,26 @@
           }
         }
       }
+    },
+    "Nicks in colour" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicks de colores"
+          }
+        }
+      }
+    },
+    "Each person keeps the same colour. Mentions of you stay in blue." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cada persona conserva siempre su color. Las menciones a ti siguen en azul."
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

@@ -21,7 +21,7 @@ struct SpeechRow: View {
 
     private var speakerColor: Color {
         if line.mentionsMe { return Palette.bluePencil }
-        return line.isSelf ? Palette.graphite : Palette.ink
+        return model.color(for: line.sender ?? "", isSelf: line.isSelf)
     }
 
     /// "↳ nick: " in front of a nested answer.
@@ -95,7 +95,7 @@ struct ActionRow: View {
     var body: some View {
         let size = model.preferences.bodySize
         MarginRow(time: line.timestamp, speaker: line.sender.map(model.shown),
-                  speakerColor: line.isSelf ? Palette.graphite : Palette.ink, speakerItalic: true) {
+                  speakerColor: model.color(for: line.sender ?? "", isSelf: line.isSelf), speakerItalic: true) {
             VStack(alignment: .leading, spacing: 1) {
                 Text(MessageFormatter.format(line.text, size: size).text)
                     .font(Typeset.direction(size))
@@ -126,6 +126,7 @@ private struct ReplyQuote: View {
             Group {
                 if let parent = buffer.line(withMsgID: msgid) {
                     Text("↳ to ") + Text(verbatim: model.shown(parent.sender ?? "")).font(Typeset.noteStrong(model.preferences.bodySize))
+                        .foregroundStyle(model.color(for: parent.sender ?? "", isSelf: parent.isSelf))
                         + Text("quote.inline \(String(MessageFormatter.plain(parent.text).prefix(90)) + (parent.text.count > 90 ? "…" : ""))")
                 } else {
                     Text("↳ in reply to an earlier message")

@@ -1,6 +1,7 @@
 import Foundation
 import Observation
 import AppKit
+import SwiftUI
 import KeryxProtocol
 
 /// App-wide state: saved networks, live sessions (including the per-network
@@ -79,6 +80,13 @@ final class AppModel {
         var hosts = Set(sessions.values.compactMap { $0.fileHost?.url.host() })
         if let custom = URL(string: preferences.uploaderURL)?.host() { hosts.insert(custom) }
         return hosts
+    }
+
+    /// The colour a nick is set in: its own hue, or ink when colours are off.
+    /// Your own nick stays in graphite either way.
+    func color(for nick: String, isSelf: Bool = false) -> Color {
+        if isSelf { return Palette.graphite }
+        return preferences.colorNicks ? Palette.nick(nick) : Palette.ink
     }
 
     // MARK: - Sessions

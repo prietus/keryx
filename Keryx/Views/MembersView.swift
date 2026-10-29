@@ -67,7 +67,8 @@ private struct MemberRow: View {
                     Text(model.shown(member.nick))
                         .font(Chrome.row)
                         .italic(member.isAway)
-                        .foregroundStyle(member.isAway ? .secondary : .primary)
+                        .foregroundStyle(model.color(for: member.nick, isSelf: session.equal(member.nick, session.currentNick)))
+                        .opacity(member.isAway ? 0.55 : 1)
                     if member.isBot {
                         Text("bot").font(Chrome.small).foregroundStyle(.secondary)
                             .padding(.horizontal, 3)

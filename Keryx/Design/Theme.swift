@@ -23,6 +23,29 @@ enum Palette {
     /// The faint wash behind a line that mentions you.
     static let highlightWash = dynamic(light: 0x2B50C8, dark: 0x7D9BFF, alpha: 0.07)
 
+    /// Twelve muted hues for nicks, spread around the wheel but skipping the
+    /// blue band the blue pencil (mentions, links) owns. Neighbouring hues
+    /// alternate between a soft and a deeper tone so they don't blur together.
+    /// Each has a darker variant on paper and a lighter one at night.
+    static let nickHues: [Color] = [350, 15, 38, 58, 85, 115, 148, 178, 270, 290, 310, 330]
+        .enumerated().map { index, degrees in
+            let deep = index % 2 == 1
+            return Color(nsColor: NSColor(name: nil) { appearance in
+                let dark = appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+                return NSColor(hue: CGFloat(degrees) / 360,
+                               saturation: dark ? (deep ? 0.55 : 0.36) : (deep ? 0.8 : 0.6),
+                               brightness: dark ? (deep ? 0.8 : 0.93) : (deep ? 0.45 : 0.58),
+                               alpha: 1)
+            })
+        }
+
+    /// A nick's colour: the same every time, whatever the case.
+    static func nick(_ nick: String) -> Color {
+        var hash: UInt32 = 2166136261
+        for byte in nick.lowercased().utf8 { hash = (hash ^ UInt32(byte)) &* 16777619 }
+        return nickHues[Int(hash % UInt32(nickHues.count))]
+    }
+
     private static func dynamic(light: UInt32, dark: UInt32, alpha: CGFloat = 1) -> Color {
         Color(nsColor: NSColor(name: nil) { appearance in
             let hex = appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua ? dark : light
