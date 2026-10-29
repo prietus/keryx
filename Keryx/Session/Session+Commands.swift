@@ -11,6 +11,8 @@ enum CommandOutcome {
     case removeHighlight([String])
     case listHighlights
     case editProfile
+    /// Ask the system what's playing and send it as an action here.
+    case nowPlaying(Buffer)
 }
 
 /// A slash command, for completion and the palette.
@@ -55,6 +57,7 @@ struct SlashCommand: Identifiable, Sendable {
         .init(name: "buddy", usage: String(localized: "/buddy add|del|list nick"), summary: String(localized: "Contacts: tells you when they come online (MONITOR).")),
         .init(name: "highlight", usage: String(localized: "/highlight add|del word…"), summary: String(localized: "Words that mention you besides your nick.")),
         .init(name: "profile", usage: String(localized: "/profile [set key value | clear key]"), summary: String(localized: "Your profile: display name, pronouns, status… (draft/metadata-2).")),
+        .init(name: "np", usage: String(localized: "/np"), summary: String(localized: "Shares what you’re listening to or watching (from the menu bar’s Now Playing).")),
         .init(name: "react", usage: String(localized: "/react emoji"), summary: String(localized: "Reacts to the latest message.")),
         .init(name: "delete", usage: String(localized: "/delete"), summary: String(localized: "Deletes your latest message (draft/message-redaction).")),
         .init(name: "ctcp", usage: String(localized: "/ctcp nick VERSION|PING|TIME"), summary: String(localized: "Sends a CTCP query.")),
@@ -291,6 +294,10 @@ extension Session {
             setProfile(profile)
             note(supportsProfile ? String(localized: "Profile updated.")
                  : String(localized: "Profile saved; this server doesn’t share profiles."), in: buffer)
+
+        case "np", "nowplaying":
+            guard buffer.kind != .status else { usage("np", in: buffer); return .none }
+            return .nowPlaying(buffer)
 
         case "react":
             guard !rest.isEmpty,

@@ -32,6 +32,7 @@ targets:
         CFBundleDisplayName: Keryx
         CFBundleDevelopmentRegion: en
         CFBundleLocalizations: [en, es]
+        NSAppleEventsUsageDescription: "Keryx asks Music or Spotify which song is playing when you type /np. It never controls them."
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         LSApplicationCategoryType: public.app-category.social-networking
@@ -42,6 +43,11 @@ targets:
         com.apple.security.app-sandbox: true
         com.apple.security.network.client: true
         com.apple.security.files.user-selected.read-only: true
+        # /np asks Music and Spotify what's playing (only if they're open).
+        com.apple.security.automation.apple-events: true
+        com.apple.security.temporary-exception.apple-events:
+          - com.apple.Music
+          - com.spotify.client
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: im.keryx.mac

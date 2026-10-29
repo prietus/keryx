@@ -4301,6 +4301,87 @@
           }
         }
       }
+    },
+    "/np" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/np"
+          }
+        }
+      }
+    },
+    "Shares what you’re listening to or watching (from the menu bar’s Now Playing)." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comparte lo que estás escuchando o viendo (lo del control «Ahora suena» de la barra de menús)."
+          }
+        }
+      }
+    },
+    "Nothing is playing right now." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ahora mismo no suena nada."
+          }
+        }
+      }
+    },
+    "np.watching" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "is watching “%1$@”%2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "está viendo «%1$@»%2$@"
+          }
+        }
+      }
+    },
+    "np.listening.artist" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "is listening to “%1$@” by %2$@%3$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "escucha «%1$@» de %2$@%3$@"
+          }
+        }
+      }
+    },
+    "np.listening" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "is listening to “%1$@”%2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "escucha «%1$@»%2$@"
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

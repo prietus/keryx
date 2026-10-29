@@ -1,0 +1,17 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "NSAppleEventsUsageDescription" : {
+      "comment" : "Shown when Keryx first asks Music or Spotify what's playing (/np).",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keryx pregunta a Música o a Spotify qué canción suena cuando escribes /np. Nunca los controla."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

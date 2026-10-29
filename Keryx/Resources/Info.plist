@@ -27,6 +27,8 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.social-networking</string>
+	<key>NSAppleEventsUsageDescription</key>
+	<string>Keryx asks Music or Spotify which song is playing when you type /np. It never controls them.</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>© 2026 Carlos Prieto</string>
 </dict>

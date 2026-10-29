@@ -48,6 +48,25 @@ xcodebuild -project Keryx.xcodeproj -scheme Keryx test
 En Debug, `-KeryxDemo` abre una escena de ejemplo sin conectar ni guardar nada.
 Release se firma con Developer ID (hardened runtime), lista para notarizar.
 
+## /np (lo que suena)
+
+macOS no deja a apps de terceros leer el «Ahora suena» de la barra de menús
+desde la versión 15.4, así que `/np` pregunta a los reproductores por vías
+públicas: Música y Spotify por AppleScript (solo si ya están abiertos) y
+cualquier reproductor que hable este protocolo, como Zplayer.
+
+**Protocolo.** El reproductor publica la notificación distribuida
+`im.keryx.NowPlaying` cuando cambia la pista o el estado, y también cada vez
+que recibe `im.keryx.NowPlaying.request`. El contenido va como cadena JSON en
+el `object` de la notificación (las apps con sandbox no pueden enviar
+`userInfo`):
+
+```json
+{"player": "Zplayer", "title": "…", "artist": "…", "album": "…", "playing": true, "video": false}
+```
+
+Sin `title` significa que no suena nada en ese reproductor.
+
 ## Atajos
 
 ⌘K ir a / comando · ⌘F buscar aquí · ⌘⇧F buscar en todo · ⌘⌥↑↓ conversación

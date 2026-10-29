@@ -35,6 +35,13 @@ final class AppModel {
 
     init() {
         #if DEBUG
+        if CommandLine.arguments.contains("-KeryxNowPlayingProbe") {
+            Task {
+                let track = await NowPlaying.shared.current()
+                FileHandle.standardError.write(Data("now playing: \(track.map { "\($0)" } ?? "nil")\n".utf8))
+                exit(0)
+            }
+        }
         if Self.isDemo {
             let demo = makeDemoSession()
             networks = [NetworkConfig(id: demo.id, name: "Libera", host: "irc.libera.chat", nickname: "carlos")]
@@ -46,6 +53,7 @@ final class AppModel {
             return
         }
         #endif
+        _ = NowPlaying.shared  // start hearing players' announcements for /np
         networks = NetworkStore.load()
         notifier.onOpen = { [weak self] session, buffer in
             guard let self, let s = self.sessions[session], let b = s.buffers.first(where: { $0.id == buffer }) else { return }
@@ -222,6 +230,14 @@ final class AppModel {
                          : String(localized: "Highlight words: \(preferences.highlightWords.formatted(.list(type: .and)))"), in: buffer)
         case .editProfile:
             editingProfile = session
+        case let .nowPlaying(target):
+            Task {
+                if let track = await NowPlaying.shared.current() {
+                    session.sendMessage(NowPlaying.action(for: track), to: target, action: true)
+                } else {
+                    session.note(String(localized: "Nothing is playing right now."), in: target)
+                }
+            }
         case .listHighlights:
             session.note(preferences.highlightWords.isEmpty
                          ? String(localized: "Only your nick highlights you. Add words with /highlight add word.")
