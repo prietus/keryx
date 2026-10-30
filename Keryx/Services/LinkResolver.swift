@@ -127,24 +127,40 @@ actor LinkResolver {
             || Self.meta("twitter:card", in: html)?.lowercased() == "player"
         let duration = (Self.meta("og:video:duration", in: html) ?? Self.meta("video:duration", in: html))
             .flatMap(TimeInterval.init)
+            ?? Self.firstCapture(#"itemprop\s*=\s*["']duration["'][^>]*content\s*=\s*["']([^"']+)["']"#, in: html)
+                .flatMap(Self.isoDuration)
         return LinkInfo(url: url, kind: .page, title: title.map(Self.decodeEntities), site: site,
                         summary: summary, thumbnail: ogImage, isVideoPage: isVideoPage, duration: duration)
     }
 
-    /// GETs the first `limit` bytes of `url`.
+    /// Reads the start of `url` as a stream and stops early: after `limit`
+    /// bytes, or, for HTML, once `</head>` has gone by — some pages (YouTube)
+    /// put their metadata hundreds of kilobytes in — but never past 1.5 MB.
     private func head(_ url: URL, limit: Int) async -> (Data, HTTPURLResponse)? {
-        var request = URLRequest(url: url)
-        request.setValue("bytes=0-\(limit - 1)", forHTTPHeaderField: "Range")
-        guard let (bytes, response) = try? await session.bytes(for: request),
+        guard let (bytes, response) = try? await session.bytes(from: url),
               let http = response as? HTTPURLResponse, (200..<400).contains(http.statusCode) else { return nil }
+        let isHTML = (http.value(forHTTPHeaderField: "Content-Type") ?? "").lowercased().contains("html")
+        let cap = isHTML ? 1_536 * 1024 : limit
+        let headEnd = Data("</head>".utf8)
         var data = Data()
+        data.reserveCapacity(min(cap, 256 * 1024))
+        var checkedUpTo = 0
         do {
             for try await byte in bytes {
                 data.append(byte)
-                if data.count >= limit { break }
+                if data.count >= cap { break }
+                if isHTML, data.count - checkedUpTo >= 16 * 1024 {
+                    let from = max(0, checkedUpTo - headEnd.count)
+                    if Self.lowercasedASCII(data[from...]).range(of: headEnd) != nil { break }
+                    checkedUpTo = data.count
+                }
             }
         } catch {}
         return (data, http)
+    }
+
+    private static func lowercasedASCII(_ data: Data) -> Data {
+        Data(data.map { (65...90).contains($0) ? $0 + 32 : $0 })
     }
 
     /// Whether `url` really serves an image (by type, or by its first bytes).
@@ -158,6 +174,17 @@ actor LinkResolver {
     private static func isUntyped(_ type: String) -> Bool {
         type.isEmpty || type.hasPrefix("application/octet-stream") || type.hasPrefix("text/plain")
             || type.hasPrefix("binary/")
+    }
+
+    /// ISO 8601 durations as pages declare them: "PT8M50S", "PT1H2M", "P0DT0H3M1S".
+    static func isoDuration(_ text: String) -> TimeInterval? {
+        guard let regex = try? NSRegularExpression(pattern: #"^P(?:(\d+)D)?T?(?:(\d+)H)?(?:(\d+)M)?(?:(\d+(?:\.\d+)?)S)?$"#),
+              let match = regex.firstMatch(in: text, range: NSRange(text.startIndex..., in: text)) else { return nil }
+        func part(_ i: Int) -> Double {
+            Range(match.range(at: i), in: text).flatMap { Double(text[$0]) } ?? 0
+        }
+        let total = part(1) * 86_400 + part(2) * 3600 + part(3) * 60 + part(4)
+        return total > 0 ? total : nil
     }
 
     /// PNG, JPEG, GIF, WebP, HEIC/AVIF, BMP, TIFF by their magic numbers.

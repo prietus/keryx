@@ -221,3 +221,15 @@ struct VideoTests {
         #expect(!MessageLinks.videoExtensions.contains("webm"))
     }
 }
+
+@Suite("Durations")
+struct ISODurationTests {
+    @Test("ISO 8601 durations, as YouTube declares them")
+    func iso() {
+        #expect(LinkResolver.isoDuration("PT8M50S") == 530)
+        #expect(LinkResolver.isoDuration("PT1H2M") == 3720)
+        #expect(LinkResolver.isoDuration("P0DT0H3M1S") == 181)
+        #expect(LinkResolver.isoDuration("PT0S") == nil)
+        #expect(LinkResolver.isoDuration("8:50") == nil)
+    }
+}
