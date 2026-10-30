@@ -3,7 +3,7 @@ import Foundation
 /// What a URL in a message turned out to be: an image to show as a
 /// thumbnail, or a page to preview as a card.
 struct LinkInfo: Sendable, Equatable {
-    enum Kind: Sendable, Equatable { case image, page, other }
+    enum Kind: Sendable, Equatable { case image, video, page, other }
     var url: URL
     var kind: Kind
     var title: String?
@@ -14,11 +14,17 @@ struct LinkInfo: Sendable, Equatable {
     var summary: String?
     /// The page's own picture (`og:image`), shown small in its card.
     var thumbnail: URL?
+    /// A page that is a video (YouTube, Vimeo…): its card gets a ▶.
+    var isVideoPage = false
+    /// Running time in seconds, when the page or file says.
+    var duration: TimeInterval?
 }
 
 enum MessageLinks {
     private static let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue)
     static let imageExtensions: Set<String> = ["jpg", "jpeg", "png", "gif", "webp", "heic", "avif", "bmp", "tiff"]
+    /// What macOS can play itself (no WebM).
+    static let videoExtensions: Set<String> = ["mp4", "mov", "m4v"]
 
     /// http(s) URLs in `text`, with their ranges.
     static func detect(in text: String) -> [(url: URL, range: Range<String.Index>)] {
@@ -72,6 +78,9 @@ actor LinkResolver {
         if MessageLinks.imageExtensions.contains(url.pathExtension.lowercased()) {
             return LinkInfo(url: url, kind: .image)
         }
+        if MessageLinks.videoExtensions.contains(url.pathExtension.lowercased()) {
+            return LinkInfo(url: url, kind: .video)
+        }
         guard let (data, http) = await head(url, limit: 65_536) else {
             return LinkInfo(url: url, kind: .other, site: url.host())
         }
@@ -79,6 +88,9 @@ actor LinkResolver {
         let final = http.url ?? url
         if type.hasPrefix("image/") || (Self.isUntyped(type) && Self.looksLikeImage(data)) {
             return LinkInfo(url: final, kind: .image)
+        }
+        if ["video/mp4", "video/quicktime", "video/x-m4v"].contains(where: type.hasPrefix) {
+            return LinkInfo(url: final, kind: .video)
         }
         guard type.contains("html") else { return LinkInfo(url: url, kind: .other, site: url.host()) }
 
@@ -110,8 +122,13 @@ actor LinkResolver {
             ?? Self.meta("description", in: html))
             .map { Self.decodeEntities($0).replacingOccurrences(of: #"\s+"#, with: " ", options: .regularExpression) }
             .map { $0.count > 220 ? String($0.prefix(217)) + "…" : $0 }
+        let isVideoPage = Self.meta("og:video", in: html) != nil || Self.meta("og:video:url", in: html) != nil
+            || Self.meta("og:type", in: html)?.lowercased().hasPrefix("video") == true
+            || Self.meta("twitter:card", in: html)?.lowercased() == "player"
+        let duration = (Self.meta("og:video:duration", in: html) ?? Self.meta("video:duration", in: html))
+            .flatMap(TimeInterval.init)
         return LinkInfo(url: url, kind: .page, title: title.map(Self.decodeEntities), site: site,
-                        summary: summary, thumbnail: ogImage)
+                        summary: summary, thumbnail: ogImage, isVideoPage: isVideoPage, duration: duration)
     }
 
     /// GETs the first `limit` bytes of `url`.

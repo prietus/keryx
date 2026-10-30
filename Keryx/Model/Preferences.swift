@@ -21,6 +21,8 @@ final class Preferences {
     /// Show a nick change only for people who spoke recently, not silent lurkers.
     var presenceOnlyForSpeakers: Bool { didSet { defaults.set(presenceOnlyForSpeakers, forKey: "presenceOnlyForSpeakers") } }
     var inlineImages: Bool { didSet { defaults.set(inlineImages, forKey: "inlineImages") } }
+    /// Animated GIFs play (still, and on hover, with Reduce Motion).
+    var animateGIFs: Bool { didSet { defaults.set(animateGIFs, forKey: "animateGIFs") } }
     /// Each nick in its own colour (otherwise all in ink).
     var colorNicks: Bool { didSet { defaults.set(colorNicks, forKey: "colorNicks") } }
     /// Thumbnail height in points: 96, 160 or 280.
@@ -50,7 +52,7 @@ final class Preferences {
     init() {
         defaults.register(defaults: [
             "bodySize": 13.0, "showPresence": true, "presenceOnlyForSpeakers": true,
-            "inlineImages": true, "imageSize": 160, "colorNicks": true, "linkFootnotes": true, "notifyMentions": true,
+            "inlineImages": true, "imageSize": 160, "colorNicks": true, "animateGIFs": true, "linkFootnotes": true, "notifyMentions": true,
             "notifyDirect": true, "sendTyping": true, "keepHistory": true,
             "uploaderField": "file", "uploaderResponse": "text", "preferServerFileHost": true,
         ])
@@ -64,6 +66,7 @@ final class Preferences {
         inlineImages = defaults.bool(forKey: "inlineImages")
         imageSize = defaults.integer(forKey: "imageSize")
         colorNicks = defaults.bool(forKey: "colorNicks")
+        animateGIFs = defaults.bool(forKey: "animateGIFs")
         linkFootnotes = defaults.bool(forKey: "linkFootnotes")
         compactPreviews = defaults.bool(forKey: "compactPreviews")
         notifyMentions = defaults.bool(forKey: "notifyMentions")

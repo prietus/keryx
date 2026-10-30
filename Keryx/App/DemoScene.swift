@@ -39,6 +39,13 @@ extension AppModel {
         lines.append(mention)
         lines.append(ChatLine(timestamp: at(7), sender: "carlos", text: "sí, y draft/read-marker, chathistory y reacciones", kind: .message, isSelf: true, msgid: "d8", replyTo: "d7", reactions: ["🎉": ["teraflops", "carlos"]]))
         lines.append(ChatLine(timestamp: at(7.3), sender: "carlos", text: "las líneas salen a lápiz y pasan a tinta cuando el servidor las confirma", kind: .message, isSelf: true, isPending: true))
+        let media = ProcessInfo.processInfo.environment["KERYX_DEMO_MEDIA"] ?? ""
+        if media == "1" || media == "gif" {
+            lines.append(ChatLine(timestamp: at(7.5), sender: "bob", text: "un gif: https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif", kind: .message, msgid: "m1"))
+        }
+        if media == "1" || media == "video" {
+            lines.append(ChatLine(timestamp: at(7.6), sender: "ana", text: "y un vídeo https://download.samplelib.com/mp4/sample-5s.mp4", kind: .message, msgid: "m2"))
+        }
         channel.lines = lines
         channel.readMarker = at(5.5)
         channel.recomputeUnread()

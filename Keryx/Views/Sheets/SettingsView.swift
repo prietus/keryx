@@ -33,8 +33,10 @@ struct SettingsView: View {
                         Statement(text: "Without the summary", isOn: $prefs.compactPreviews)
                     }
                     Statement(text: "Images in the conversation", isOn: $prefs.inlineImages,
-                              note: "Keryx fetches links to find out what they are; turn this off if you’d rather it didn’t.")
+                              note: "Images and videos. Keryx fetches links to find out what they are; videos never play by themselves.")
                     if prefs.inlineImages {
+                        Statement(text: "Play animated GIFs", isOn: $prefs.animateGIFs,
+                                  note: "With Reduce Motion on in macOS, they stay still and play on hover.")
                         WordChoice(label: "Image size", selection: $prefs.imageSize, options: [
                             (96, "Small"), (160, "Medium"), (280, "Large"),
                         ])

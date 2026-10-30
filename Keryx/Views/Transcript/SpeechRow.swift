@@ -153,12 +153,14 @@ private struct LinkPreviews: View {
             guard let info = infos[url] else { return nil }
             return info.kind == .image ? info.url : info.imageURL
         }
+        let videos = links.compactMap { infos[$0]?.kind == .video ? infos[$0]?.url : nil }
         let page = links.lazy.compactMap { infos[$0] }.first {
             $0.kind == .page && $0.imageURL == nil && !($0.title ?? "").isEmpty
         }
         VStack(alignment: .leading, spacing: 2) {
             if model.preferences.inlineImages {
                 ForEach(images.prefix(3), id: \.self) { Plate(url: $0) }
+                ForEach(videos.prefix(2), id: \.self) { VideoPlate(url: $0) }
             }
             if model.preferences.linkFootnotes, let page, page.title != nil {
                 LinkCard(info: page)
@@ -208,8 +210,9 @@ private struct LinkCard: View {
                     .resizable()
                     .interpolation(.high)
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 72, height: 72)
+                    .frame(width: info.isVideoPage ? 128 : 72, height: 72)
                     .clipShape(RoundedRectangle(cornerRadius: 4))
+                    .overlay { if info.isVideoPage { PlayBadge(duration: info.duration).scaleEffect(0.8) } }
             }
         }
         .fixedSize(horizontal: false, vertical: true)
@@ -233,25 +236,39 @@ private struct Plate: View {
     @State private var image: NSImage?
     @State private var failed = false
     @State private var enlarged = false
+    @State private var hovering = false
+
+    /// GIFs play unless you've asked for less motion; then on hover.
+    private var animates: Bool {
+        (model.preferences.animateGIFs && !Motion.reduced) || hovering
+    }
 
     var body: some View {
         let maxHeight = CGFloat(model.preferences.imageSize)
         Group {
             if let image {
                 let size = Self.fit(image.size, maxWidth: maxHeight * 1.8, maxHeight: maxHeight)
-                Image(nsImage: image)
-                    .resizable()
-                    .interpolation(.high)
+                Group {
+                    if image.isAnimated {
+                        AnimatedImage(image: image, animates: animates)
+                    } else {
+                        Image(nsImage: image).resizable().interpolation(.high)
+                    }
+                }
                     .frame(width: size.width, height: size.height)
                     .clipShape(RoundedRectangle(cornerRadius: 3))
                     .contentShape(Rectangle())
+                    .onHover { hovering = $0 }
                     .onTapGesture {
                         if NSEvent.modifierFlags.contains(.command) { openURL(url) } else { enlarged = true }
                     }
                     .help(url.absoluteString)
                     .popover(isPresented: $enlarged, arrowEdge: .trailing) {
                         let big = Self.fit(image.size, maxWidth: 900, maxHeight: 700)
-                        Image(nsImage: image).resizable().interpolation(.high)
+                        Group {
+                            if image.isAnimated { AnimatedImage(image: image, animates: true) }
+                            else { Image(nsImage: image).resizable().interpolation(.high) }
+                        }
                             .frame(width: big.width, height: big.height)
                             .padding(6)
                     }

@@ -202,3 +202,22 @@ struct LinkCardTests {
         #expect(LinkResolver.meta("og:image", in: html) == "/card.png")
     }
 }
+
+@Suite("Video")
+struct VideoTests {
+    @Test("Durations read like a player's")
+    func durations() {
+        #expect(formattedDuration(42) == "0:42")
+        #expect(formattedDuration(725) == "12:05")
+        #expect(formattedDuration(3730) == "1:02:10")
+    }
+
+    @Test("Video pages are told apart by their metadata")
+    func videoPages() {
+        let html = #"<meta property="og:type" content="video.other"><meta property="og:video:duration" content="212">"#
+        #expect(LinkResolver.meta("og:type", in: html) == "video.other")
+        #expect(LinkResolver.meta("og:video:duration", in: html).flatMap(TimeInterval.init) == 212)
+        #expect(MessageLinks.videoExtensions.contains("mp4"))
+        #expect(!MessageLinks.videoExtensions.contains("webm"))
+    }
+}

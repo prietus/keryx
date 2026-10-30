@@ -131,6 +131,16 @@
         }
       }
     },
+    "/lang [code | auto | off]" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/lang [código | auto | off]"
+          }
+        }
+      }
+    },
     "/me action" : {
       "localizations" : {
         "es" : {
@@ -187,6 +197,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "/notice destino texto"
+          }
+        }
+      }
+    },
+    "/np" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/np"
           }
         }
       }
@@ -564,6 +584,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "1 persona"
+          }
+        }
+      }
+    },
+    "A card under the line with the page’s title, summary and picture." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una tarjeta bajo la línea con el título, el resumen y la imagen de la página."
           }
         }
       }
@@ -1200,6 +1230,16 @@
         }
       }
     },
+    "detected automatically" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "detectado automáticamente"
+          }
+        }
+      }
+    },
     "Dim" : {
       "localizations" : {
         "es" : {
@@ -1276,6 +1316,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nombre visible"
+          }
+        }
+      }
+    },
+    "Each person keeps the same colour. Mentions of you stay in blue." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cada persona conserva siempre su color. Las menciones a ti siguen en azul."
           }
         }
       }
@@ -1903,6 +1953,16 @@
         }
       }
     },
+    "Keryx isn’t allowed to ask %@ what’s playing. Allow it in System Settings → Privacy & Security → Automation → Keryx." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keryx no tiene permiso para preguntar a %@ qué suena. Actívalo en Ajustes del Sistema → Privacidad y seguridad → Automatización → Keryx."
+          }
+        }
+      }
+    },
     "keryx project" : {
       "localizations" : {
         "es" : {
@@ -2003,6 +2063,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Línea retirada."
+          }
+        }
+      }
+    },
+    "Link previews" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vista previa de enlaces"
           }
         }
       }
@@ -2392,6 +2462,26 @@
         }
       }
     },
+    "Nicks in colour" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicks de colores"
+          }
+        }
+      }
+    },
+    "No dictionary for “%@”. Available: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay diccionario para «%1$@». Disponibles: %2$@"
+          }
+        }
+      }
+    },
     "No highlight words." : {
       "localizations" : {
         "es" : {
@@ -2412,6 +2502,16 @@
         }
       }
     },
+    "No spelling or word suggestions here." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin corrector ni sugerencias de palabras aquí."
+          }
+        }
+      }
+    },
     "None" : {
       "localizations" : {
         "es" : {
@@ -2428,6 +2528,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "fuera del canal"
+          }
+        }
+      }
+    },
+    "Nothing is playing right now." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ahora mismo no suena nada."
           }
         }
       }
@@ -2478,6 +2588,67 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No hay dónde subirlo: esta red no ofrece FILEHOST y no has configurado un servidor propio en Ajustes."
+          }
+        }
+      }
+    },
+    "np.listening" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "is listening to “%1$@”%2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "escucha «%1$@»%2$@"
+          }
+        }
+      }
+    },
+    "np.listening.artist" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "is listening to “%1$@” by %2$@%3$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "escucha «%1$@» de %2$@%3$@"
+          }
+        }
+      }
+    },
+    "np.watching" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "is watching “%1$@”%2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "está viendo «%1$@»%2$@"
+          }
+        }
+      }
+    },
+    "off" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "desactivado"
           }
         }
       }
@@ -2613,6 +2784,7 @@
       }
     },
     "Page titles under links" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -3417,6 +3589,16 @@
         }
       }
     },
+    "Shares what you’re listening to or watching (from the menu bar’s Now Playing)." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comparte lo que estás escuchando o viendo (lo del control «Ahora suena» de la barra de menús)."
+          }
+        }
+      }
+    },
     "she/her, they/them…" : {
       "localizations" : {
         "es" : {
@@ -3563,6 +3745,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ficha de alguien."
+          }
+        }
+      }
+    },
+    "Spelling and word suggestions for this conversation, in a language or detected." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corrector y sugerencias de palabras en esta conversación, en un idioma o detectado."
+          }
+        }
+      }
+    },
+    "Spelling here follows the language macOS detects." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El corrector aquí sigue el idioma que detecta macOS."
+          }
+        }
+      }
+    },
+    "Spelling here: %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corrector aquí: %@."
+          }
+        }
+      }
+    },
+    "Spelling here: %@. Available: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corrector aquí: %1$@. Disponibles: %2$@"
           }
         }
       }
@@ -4092,6 +4314,16 @@
         }
       }
     },
+    "Without the summary" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin el resumen"
+          }
+        }
+      }
+    },
     "Words that mention you besides your nick" : {
       "localizations" : {
         "es" : {
@@ -4282,233 +4514,32 @@
         }
       }
     },
-    "Nicks in colour" : {
+    "Play animated GIFs" : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nicks de colores"
+            "value" : "Animar los GIF"
           }
         }
       }
     },
-    "Each person keeps the same colour. Mentions of you stay in blue." : {
+    "With Reduce Motion on in macOS, they stay still and play on hover." : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cada persona conserva siempre su color. Las menciones a ti siguen en azul."
+            "value" : "Con «Reducir movimiento» activado en macOS se quedan quietos y se animan al pasar el ratón."
           }
         }
       }
     },
-    "/np" : {
+    "Images and videos. Keryx fetches links to find out what they are; videos never play by themselves." : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "/np"
-          }
-        }
-      }
-    },
-    "Shares what you’re listening to or watching (from the menu bar’s Now Playing)." : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Comparte lo que estás escuchando o viendo (lo del control «Ahora suena» de la barra de menús)."
-          }
-        }
-      }
-    },
-    "Nothing is playing right now." : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ahora mismo no suena nada."
-          }
-        }
-      }
-    },
-    "np.watching" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "is watching “%1$@”%2$@"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "está viendo «%1$@»%2$@"
-          }
-        }
-      }
-    },
-    "np.listening.artist" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "is listening to “%1$@” by %2$@%3$@"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "escucha «%1$@» de %2$@%3$@"
-          }
-        }
-      }
-    },
-    "np.listening" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "is listening to “%1$@”%2$@"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "escucha «%1$@»%2$@"
-          }
-        }
-      }
-    },
-    "Keryx isn’t allowed to ask %@ what’s playing. Allow it in System Settings → Privacy & Security → Automation → Keryx." : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Keryx no tiene permiso para preguntar a %@ qué suena. Actívalo en Ajustes del Sistema → Privacidad y seguridad → Automatización → Keryx."
-          }
-        }
-      }
-    },
-    "Link previews" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vista previa de enlaces"
-          }
-        }
-      }
-    },
-    "A card under the line with the page’s title, summary and picture." : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Una tarjeta bajo la línea con el título, el resumen y la imagen de la página."
-          }
-        }
-      }
-    },
-    "Without the summary" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sin el resumen"
-          }
-        }
-      }
-    },
-    "/lang [code | auto | off]" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "/lang [código | auto | off]"
-          }
-        }
-      }
-    },
-    "Spelling and word suggestions for this conversation, in a language or detected." : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Corrector y sugerencias de palabras en esta conversación, en un idioma o detectado."
-          }
-        }
-      }
-    },
-    "off" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "desactivado"
-          }
-        }
-      }
-    },
-    "detected automatically" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "detectado automáticamente"
-          }
-        }
-      }
-    },
-    "Spelling here: %@. Available: %@" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Corrector aquí: %1$@. Disponibles: %2$@"
-          }
-        }
-      }
-    },
-    "No spelling or word suggestions here." : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sin corrector ni sugerencias de palabras aquí."
-          }
-        }
-      }
-    },
-    "Spelling here follows the language macOS detects." : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "El corrector aquí sigue el idioma que detecta macOS."
-          }
-        }
-      }
-    },
-    "No dictionary for “%@”. Available: %@" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No hay diccionario para «%1$@». Disponibles: %2$@"
-          }
-        }
-      }
-    },
-    "Spelling here: %@." : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Corrector aquí: %@."
+            "value" : "Imágenes y vídeos. Keryx consulta los enlaces para saber qué son; los vídeos nunca se reproducen solos."
           }
         }
       }
