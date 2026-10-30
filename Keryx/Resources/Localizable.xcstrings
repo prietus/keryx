@@ -4574,6 +4574,156 @@
           }
         }
       }
+    },
+    "/exec [-o] script [args] | -kill" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/exec [-o] script [args] | -kill"
+          }
+        }
+      }
+    },
+    "Runs one of your scripts and shows its output; -o sends it here." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ejecuta uno de tus scripts y muestra su salida; -o la envía aquí."
+          }
+        }
+      }
+    },
+    "No script is running." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay ningún script en marcha."
+          }
+        }
+      }
+    },
+    "Stopped waiting. The script may still be running in the background." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "He dejado de esperar. Puede que el script siga en marcha en segundo plano."
+          }
+        }
+      }
+    },
+    "Usage: /exec [-o] script [args] | -kill" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uso: /exec [-o] script [args] | -kill"
+          }
+        }
+      }
+    },
+    "Stopped waiting after 30 seconds. The script may still be running." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "He dejado de esperar tras 30 segundos. Puede que el script siga en marcha."
+          }
+        }
+      }
+    },
+    "(no output)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(sin salida)"
+          }
+        }
+      }
+    },
+    "Keryx runs the scripts you put in %@. There are none yet." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keryx ejecuta los scripts que pongas en %@. Todavía no hay ninguno."
+          }
+        }
+      }
+    },
+    "Your scripts: %@. Folder: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tus scripts: %1$@. Carpeta: %2$@"
+          }
+        }
+      }
+    },
+    "To run any command, like WeeChat’s /exec, create a script called sh in Terminal:" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para ejecutar cualquier comando, como el /exec de WeeChat, crea un script llamado sh en Terminal:"
+          }
+        }
+      }
+    },
+    "Then: /exec sh uptime   or   /exec -o sh uname -a" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Después: /exec sh uptime   o   /exec -o sh uname -a"
+          }
+        }
+      }
+    },
+    "There’s no script “%@” in the scripts folder." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay ningún script «%@» en la carpeta de scripts."
+          }
+        }
+      }
+    },
+    "Send %lld lines to %@?" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Enviar %1$lld líneas a %2$@?"
+          }
+        }
+      }
+    },
+    "Everyone in the conversation will see the command’s output." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos en la conversación verán la salida del comando."
+          }
+        }
+      }
+    },
+    "Send" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar"
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

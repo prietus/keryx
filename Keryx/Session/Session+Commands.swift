@@ -14,6 +14,8 @@ enum CommandOutcome {
     case editProfile
     /// Ask the system what's playing and send it as an action here.
     case nowPlaying(Buffer)
+    /// Run one of the user's scripts; the raw arguments after /exec.
+    case exec(Buffer, String)
 }
 
 /// A slash command, for completion and the palette.
@@ -58,6 +60,7 @@ struct SlashCommand: Identifiable, Sendable {
         .init(name: "buddy", usage: String(localized: "/buddy add|del|list nick"), summary: String(localized: "Contacts: tells you when they come online (MONITOR).")),
         .init(name: "highlight", usage: String(localized: "/highlight add|del word…"), summary: String(localized: "Words that mention you besides your nick.")),
         .init(name: "profile", usage: String(localized: "/profile [set key value | clear key]"), summary: String(localized: "Your profile: display name, pronouns, status… (draft/metadata-2).")),
+        .init(name: "exec", usage: String(localized: "/exec [-o] script [args] | -kill"), summary: String(localized: "Runs one of your scripts and shows its output; -o sends it here.")),
         .init(name: "lang", usage: String(localized: "/lang [code | auto | off]"), summary: String(localized: "Spelling and word suggestions for this conversation, in a language or detected.")),
         .init(name: "np", usage: String(localized: "/np"), summary: String(localized: "Shares what you’re listening to or watching (from the menu bar’s Now Playing).")),
         .init(name: "react", usage: String(localized: "/react emoji"), summary: String(localized: "Reacts to the latest message.")),
@@ -296,6 +299,9 @@ extension Session {
             setProfile(profile)
             note(supportsProfile ? String(localized: "Profile updated.")
                  : String(localized: "Profile saved; this server doesn’t share profiles."), in: buffer)
+
+        case "exec":
+            return .exec(buffer, rest)
 
         case "lang":
             let available = NSSpellChecker.shared.availableLanguages

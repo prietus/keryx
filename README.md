@@ -67,6 +67,27 @@ el `object` de la notificación (las apps con sandbox no pueden enviar
 
 Sin `title` significa que no suena nada en ese reproductor.
 
+## /exec (tus scripts)
+
+Keryx va con sandbox, así que `/exec` solo ejecuta los scripts que tú pongas en
+`~/Library/Application Scripts/im.keryx.mac/` (la vía que macOS da a las apps
+con sandbox; Keryx no puede escribir ahí). Se ejecutan fuera del sandbox, con
+tus permisos.
+
+- `/exec` lista tus scripts y explica cómo empezar.
+- `/exec nombre args…` muestra la salida solo a ti.
+- `/exec -o nombre args…` la envía a la conversación (confirma si son más de 5 líneas).
+- `/exec -kill` deja de esperar (macOS no deja a Keryx matar el proceso).
+
+Para tener el `/exec` de WeeChat con cualquier comando, crea un script `sh`:
+
+```sh
+D=~/Library/Application\ Scripts/im.keryx.mac
+printf '#!/bin/sh\nexec /bin/sh -c "$*"\n' > "$D/sh" && chmod +x "$D/sh"
+```
+
+Y luego `/exec sh uptime` o `/exec -o sh uname -a`.
+
 ## Atajos
 
 ⌘K ir a / comando · ⌘F buscar aquí · ⌘⇧F buscar en todo · ⌘⌥↑↓ conversación

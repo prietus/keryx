@@ -250,6 +250,8 @@ final class AppModel {
                          : String(localized: "Highlight words: \(preferences.highlightWords.formatted(.list(type: .and)))"), in: buffer)
         case .editProfile:
             editingProfile = session
+        case let .exec(target, arguments):
+            runScript(arguments, in: target, of: session)
         case let .nowPlaying(target):
             Task {
                 switch await NowPlaying.shared.current() {
@@ -268,6 +270,74 @@ final class AppModel {
                          ? String(localized: "Only your nick highlights you. Add words with /highlight add word.")
                          : String(localized: "Your nick highlights you, and so do: \(preferences.highlightWords.formatted(.list(type: .and)))"), in: buffer)
         }
+    }
+
+    // MARK: - /exec
+
+    private func runScript(_ arguments: String, in buffer: Buffer, of session: Session) {
+        let trimmed = arguments.trimmingCharacters(in: .whitespaces)
+        if trimmed.isEmpty {
+            explainScripts(in: buffer, of: session)
+            return
+        }
+        if trimmed == "-kill" {
+            let stopped = ScriptRunner.shared.stopWaiting()
+            session.note(stopped == 0 ? String(localized: "No script is running.")
+                         : String(localized: "Stopped waiting. The script may still be running in the background."), in: buffer)
+            return
+        }
+        guard let request = ScriptRunner.parse(trimmed) else {
+            session.note(String(localized: "Usage: /exec [-o] script [args] | -kill"), in: buffer, kind: .error)
+            return
+        }
+        let shown = ([request.script] + request.arguments).joined(separator: " ")
+        session.note("$ " + shown, in: buffer, kind: .motd)
+        Task {
+            switch await ScriptRunner.shared.run(request) {
+            case let .finished(output, status):
+                deliver(output, of: request, to: buffer, in: session)
+                if let status { session.note(status, in: buffer, kind: .error) }
+            case let .timedOut(output):
+                deliver(output, of: request, to: buffer, in: session)
+                session.note(String(localized: "Stopped waiting after 30 seconds. The script may still be running."),
+                             in: buffer, kind: .error)
+            case let .failed(message):
+                session.note(message, in: buffer, kind: .error)
+                if ScriptRunner.available().isEmpty { explainScripts(in: buffer, of: session) }
+            }
+        }
+    }
+
+    /// Shows the output to you, or with -o sends it (asking first if long).
+    private func deliver(_ output: [String], of request: ScriptRunner.Request, to buffer: Buffer, in session: Session) {
+        guard !output.isEmpty else {
+            session.note(String(localized: "(no output)"), in: buffer)
+            return
+        }
+        if request.send, buffer.kind != .status {
+            guard ScriptRunner.confirmSending(output.count, to: buffer.name) else { return }
+            session.sendMessage(output.joined(separator: "\n"), to: buffer)
+        } else {
+            for line in output { session.note(line.isEmpty ? " " : line, in: buffer, kind: .motd) }
+        }
+    }
+
+    /// Where scripts go, what's there, and how to get WeeChat's /exec.
+    private func explainScripts(in buffer: Buffer, of session: Session) {
+        let folder = ScriptRunner.folder?.path ?? "~/Library/Application Scripts/im.keryx.mac"
+        let quoted = folder.replacingOccurrences(of: " ", with: "\\ ")
+        let scripts = ScriptRunner.available()
+        session.note(scripts.isEmpty
+                     ? String(localized: "Keryx runs the scripts you put in \(folder). There are none yet.")
+                     : String(localized: "Your scripts: \(scripts.joined(separator: ", ")). Folder: \(folder)"), in: buffer)
+        guard !scripts.contains("sh") else { return }
+        session.note(String(localized: "To run any command, like WeeChat’s /exec, create a script called sh in Terminal:"), in: buffer)
+        for line in ["mkdir -p \(quoted)",
+                     "printf '#!/bin/sh\\nexec /bin/sh -c \"$*\"\\n' > \(quoted)/sh",
+                     "chmod +x \(quoted)/sh"] {
+            session.note(line, in: buffer, kind: .motd)
+        }
+        session.note(String(localized: "Then: /exec sh uptime   or   /exec -o sh uname -a"), in: buffer)
     }
 
     // MARK: - Networks
