@@ -35,7 +35,8 @@ extension Session {
             body = String(text.dropFirst(8).dropLast())
             kind = .action
         } else if text.hasPrefix("\u{01}") {
-            if !isNotice, info?.isHistory != true { answerCTCP(text, from: message.source) }
+            guard info?.isHistory != true else { return }
+            if isNotice { showCTCPReply(text, from: message.source) } else { answerCTCP(text, from: message.source) }
             return
         }
         deliver(body, kind: kind, to: target, source: message.source, tags: message.tags,
@@ -106,6 +107,28 @@ extension Session {
         default: reply = nil
         }
         if let reply { send(.notice(nick, "\u{01}\(reply)\u{01}")) }
+        // Like WeeChat: a quiet note that someone asked.
+        let what = parts.first?.uppercased() ?? "?"
+        addStatus(String(localized: "\(nick) sent you a CTCP \(what)."))
+    }
+
+    /// A CTCP reply (a NOTICE wrapped in \u{01}), shown where you asked:
+    /// "VERSION from ana: irssi 1.4.5", "PING from ana: 84 ms".
+    private func showCTCPReply(_ text: String, from source: IRCSource?) {
+        guard let nick = source?.nick else { return }
+        let inner = text.trimmingCharacters(in: CharacterSet(charactersIn: "\u{01}"))
+        let parts = inner.split(separator: " ", maxSplits: 1).map(String.init)
+        let command = parts.first?.uppercased() ?? "?"
+        var answer = parts.count > 1 ? parts[1] : ""
+        if command == "PING", let sent = Double(answer) {
+            let ms = Int((Date().timeIntervalSince1970 - sent) * 1000)
+            answer = String(localized: "\(ms) ms")
+        }
+        let place = ctcpPending.removeValue(forKey: fold(nick))
+            .flatMap { name in buffers.first { equal($0.name, name) } }
+            ?? buffer(named: nick, kind: .query, createIfMissing: false)
+            ?? statusBuffer
+        note(String(localized: "\(command) from \(nick): \(answer)"), in: place)
     }
 
     // MARK: - Presence

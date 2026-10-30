@@ -353,8 +353,15 @@ extension Session {
 
         case "ctcp":
             guard args.count >= 2 else { usage("ctcp", in: buffer); return .none }
-            let request = args.dropFirst().joined(separator: " ").uppercased()
+            // Only the command is upper-case; PING carries the time to measure the round trip.
+            let command = args[1].uppercased()
+            var request = ([command] + args.dropFirst(2)).joined(separator: " ")
+            if command == "PING", args.count == 2 {
+                request += " " + String(format: "%.3f", Date().timeIntervalSince1970)
+            }
+            ctcpPending[fold(args[0])] = buffer.name
             send(.privmsg(args[0], "\u{01}\(request)\u{01}"))
+            note(String(localized: "CTCP \(command) sent to \(args[0])."), in: buffer)
 
         case "clear":
             return .clear(buffer)

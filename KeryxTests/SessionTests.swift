@@ -316,3 +316,38 @@ struct ViewingTests {
         #expect(buffer.sceneBreakID == buffer.lines[1].id)
     }
 }
+
+@MainActor
+@Suite("CTCP", .serialized)
+struct CTCPTests {
+    @Test("Replies show where you asked; PING reads as a round trip")
+    func replies() async throws {
+        let transport = FakeTransport()
+        let session = Session(config: SessionConfig(host: "irc.test", nickname: "me"), transport: transport)
+        session.connect()
+        let opened = ContinuousClock.now + .seconds(2)
+        while ContinuousClock.now < opened, await !transport.sent.contains("CAP LS 302") {
+            try? await Task.sleep(for: .milliseconds(5))
+        }
+        await transport.receive(":srv CAP * LS :batch", ":srv CAP * ACK :batch", ":srv 001 me :Welcome", ":me!u@h JOIN #c")
+        let ready = ContinuousClock.now + .seconds(2)
+        while ContinuousClock.now < ready, !session.buffers.contains(where: { $0.name == "#c" }) {
+            try? await Task.sleep(for: .milliseconds(5))
+        }
+        let channel = try #require(session.buffers.first { $0.name == "#c" })
+        _ = session.runInput("/ctcp ana version", in: channel, replyTo: nil)
+        let sent = ContinuousClock.now + .seconds(2)
+        let query = { (line: String) in line.hasPrefix("PRIVMSG ana ") && line.hasSuffix("\u{01}VERSION\u{01}") }
+        while ContinuousClock.now < sent, await !transport.sent.contains(where: query) {
+            try? await Task.sleep(for: .milliseconds(5))
+        }
+        #expect(await transport.sent.contains(where: query))
+        await transport.receive(":ana!a@h NOTICE me :\u{01}VERSION irssi 1.4.5\u{01}")
+        let shown = ContinuousClock.now + .seconds(2)
+        while ContinuousClock.now < shown, !channel.lines.contains(where: { $0.text.contains("irssi 1.4.5") }) {
+            try? await Task.sleep(for: .milliseconds(5))
+        }
+        #expect(channel.lines.contains { $0.text.contains("VERSION") && $0.text.contains("irssi 1.4.5") })
+        #expect(!session.buffers.contains { $0.name == "ana" })
+    }
+}

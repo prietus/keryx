@@ -107,6 +107,8 @@ final class Session: Identifiable {
     var stsUpgradePort: UInt16?
     /// The latest channel we were invited to; a bare `/join` accepts it.
     var lastInvite: String?
+    /// CTCP queries we sent, by folded nick: where to show the reply.
+    var ctcpPending: [String: String] = [:]
 
     struct BatchInfo {
         var type: String

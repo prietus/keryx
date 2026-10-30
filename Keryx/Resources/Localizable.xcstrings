@@ -25,6 +25,16 @@
         }
       }
     },
+    "(no output)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(sin salida)"
+          }
+        }
+      }
+    },
     "/away [reason]" : {
       "localizations" : {
         "es" : {
@@ -74,6 +84,16 @@
     },
     "/dim [nick]" : {
 
+    },
+    "/exec [-o] script [args] | -kill" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/exec [-o] script [args] | -kill"
+          }
+        }
+      }
     },
     "/help" : {
 
@@ -1230,6 +1250,16 @@
         }
       }
     },
+    "Detect automatically" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detectar automáticamente"
+          }
+        }
+      }
+    },
     "detected automatically" : {
       "localizations" : {
         "es" : {
@@ -1549,6 +1579,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Público"
+          }
+        }
+      }
+    },
+    "Everyone in the conversation will see the command’s output." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos en la conversación verán la salida del comando."
           }
         }
       }
@@ -1980,6 +2020,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "keryx proyecto"
+          }
+        }
+      }
+    },
+    "Keryx runs the scripts you put in %@. There are none yet." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keryx ejecuta los scripts que pongas en %@. Todavía no hay ninguno."
           }
         }
       }
@@ -2513,6 +2563,16 @@
         }
       }
     },
+    "No script is running." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay ningún script en marcha."
+          }
+        }
+      }
+    },
     "No spelling or word suggestions here." : {
       "localizations" : {
         "es" : {
@@ -2660,6 +2720,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "desactivado"
+          }
+        }
+      }
+    },
+    "Off" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desactivado"
           }
         }
       }
@@ -3400,6 +3470,16 @@
         }
       }
     },
+    "Runs one of your scripts and shows its output; -o sends it here." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ejecuta uno de tus scripts y muestra su salida; -o la envía aquí."
+          }
+        }
+      }
+    },
     "same as nick" : {
       "localizations" : {
         "es" : {
@@ -3486,6 +3566,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Buscar en esta conversación"
+          }
+        }
+      }
+    },
+    "Send" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar"
+          }
+        }
+      }
+    },
+    "Send %lld lines to %@?" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Enviar %1$lld líneas a %2$@?"
           }
         }
       }
@@ -3870,6 +3970,26 @@
         }
       }
     },
+    "Stopped waiting after 30 seconds. The script may still be running." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "He dejado de esperar tras 30 segundos. Puede que el script siga en marcha."
+          }
+        }
+      }
+    },
+    "Stopped waiting. The script may still be running in the background." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "He dejado de esperar. Puede que el script siga en marcha en segundo plano."
+          }
+        }
+      }
+    },
     "Stops dimming." : {
       "localizations" : {
         "es" : {
@@ -4070,12 +4190,43 @@
         }
       }
     },
+    "Then any command: /exec uptime   or   /exec -o ls -latr" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Después, cualquier comando: /exec uptime   o   /exec -o ls -latr"
+          }
+        }
+      }
+    },
+    "Then: /exec sh uptime   or   /exec -o sh uname -a" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Después: /exec sh uptime   o   /exec -o sh uname -a"
+          }
+        }
+      }
+    },
     "There’s no message of yours to delete." : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "No hay ningún mensaje tuyo que borrar."
+          }
+        }
+      }
+    },
+    "There’s no script “%@” in the scripts folder." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay ningún script «%@» en la carpeta de scripts."
           }
         }
       }
@@ -4161,6 +4312,16 @@
         }
       }
     },
+    "To run any command, like WeeChat’s /exec, create a script called sh in Terminal:" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para ejecutar cualquier comando, como el /exec de WeeChat, crea un script llamado sh en Terminal:"
+          }
+        }
+      }
+    },
     "Today" : {
       "localizations" : {
         "es" : {
@@ -4241,6 +4402,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Subiendo %@…"
+          }
+        }
+      }
+    },
+    "Usage: /exec [-o] script [args] | -kill" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uso: /exec [-o] script [args] | -kill"
           }
         }
       }
@@ -4415,6 +4586,16 @@
         }
       }
     },
+    "Writing language" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idioma de escritura"
+          }
+        }
+      }
+    },
     "Yesterday" : {
       "localizations" : {
         "es" : {
@@ -4545,116 +4726,6 @@
         }
       }
     },
-    "Writing language" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Idioma de escritura"
-          }
-        }
-      }
-    },
-    "Detect automatically" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Detectar automáticamente"
-          }
-        }
-      }
-    },
-    "Off" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Desactivado"
-          }
-        }
-      }
-    },
-    "/exec [-o] script [args] | -kill" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "/exec [-o] script [args] | -kill"
-          }
-        }
-      }
-    },
-    "Runs one of your scripts and shows its output; -o sends it here." : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ejecuta uno de tus scripts y muestra su salida; -o la envía aquí."
-          }
-        }
-      }
-    },
-    "No script is running." : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No hay ningún script en marcha."
-          }
-        }
-      }
-    },
-    "Stopped waiting. The script may still be running in the background." : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "He dejado de esperar. Puede que el script siga en marcha en segundo plano."
-          }
-        }
-      }
-    },
-    "Usage: /exec [-o] script [args] | -kill" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Uso: /exec [-o] script [args] | -kill"
-          }
-        }
-      }
-    },
-    "Stopped waiting after 30 seconds. The script may still be running." : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "He dejado de esperar tras 30 segundos. Puede que el script siga en marcha."
-          }
-        }
-      }
-    },
-    "(no output)" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(sin salida)"
-          }
-        }
-      }
-    },
-    "Keryx runs the scripts you put in %@. There are none yet." : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Keryx ejecuta los scripts que pongas en %@. Todavía no hay ninguno."
-          }
-        }
-      }
-    },
     "Your scripts: %@. Folder: %@" : {
       "localizations" : {
         "es" : {
@@ -4665,72 +4736,42 @@
         }
       }
     },
-    "To run any command, like WeeChat’s /exec, create a script called sh in Terminal:" : {
+    "%@ sent you a CTCP %@." : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Para ejecutar cualquier comando, como el /exec de WeeChat, crea un script llamado sh en Terminal:"
+            "value" : "%1$@ te ha enviado un CTCP %2$@."
           }
         }
       }
     },
-    "Then: /exec sh uptime   or   /exec -o sh uname -a" : {
+    "%lld ms" : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Después: /exec sh uptime   o   /exec -o sh uname -a"
+            "value" : "%lld ms"
           }
         }
       }
     },
-    "There’s no script “%@” in the scripts folder." : {
+    "%@ from %@: %@" : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No hay ningún script «%@» en la carpeta de scripts."
+            "value" : "%1$@ de %2$@: %3$@"
           }
         }
       }
     },
-    "Send %lld lines to %@?" : {
+    "CTCP %@ sent to %@." : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "¿Enviar %1$lld líneas a %2$@?"
-          }
-        }
-      }
-    },
-    "Everyone in the conversation will see the command’s output." : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Todos en la conversación verán la salida del comando."
-          }
-        }
-      }
-    },
-    "Send" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enviar"
-          }
-        }
-      }
-    },
-    "Then any command: /exec uptime   or   /exec -o ls -latr" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Después, cualquier comando: /exec uptime   o   /exec -o ls -latr"
+            "value" : "CTCP %1$@ enviado a %2$@."
           }
         }
       }
