@@ -1,0 +1,141 @@
+name: release
+
+# On a version tag (v0.2.0…): tests, then builds Keryx.app signed with
+# Developer ID, notarizes and staples it, and attaches the zip to the GitHub
+# release for that tag.
+#
+# Required repo secrets (set with `gh secret set -R prietus/keryx`):
+#   Signing (the identity name is read from the cert, so no secret for it):
+#     MACOS_CERT_P12          base64 of your "Developer ID Application" .p12
+#     MACOS_CERT_PASSWORD     password you set when exporting that .p12
+#     MACOS_KEYCHAIN_PASSWORD any password (for the temporary CI keychain)
+#   Notarization (Apple ID method):
+#     AC_APPLE_ID             your Apple ID email
+#     AC_PASSWORD             an app-specific password (appleid.apple.com)
+#     AC_TEAM_ID              your 10-char Team ID
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing tag to build and attach the app to"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: macos-26
+    env:
+      TAG: ${{ github.event.inputs.tag || github.ref_name }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
+
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Generate the Xcode project
+        run: |
+          brew install xcodegen
+          xcodegen generate
+
+      - name: Test the protocol package
+        run: swift test --package-path KeryxProtocol
+
+      - name: Test the app (ad-hoc signed; no Apple account on the runner)
+        run: |
+          set -euo pipefail
+          xcodebuild test -project Keryx.xcodeproj -scheme Keryx -destination 'platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/test" \
+            CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY=- DEVELOPMENT_TEAM=
+
+      - name: Import Developer ID certificate
+        env:
+          MACOS_CERT_P12: ${{ secrets.MACOS_CERT_P12 }}
+          MACOS_CERT_PASSWORD: ${{ secrets.MACOS_CERT_PASSWORD }}
+          MACOS_KEYCHAIN_PASSWORD: ${{ secrets.MACOS_KEYCHAIN_PASSWORD }}
+        run: |
+          set -euo pipefail
+          CERT_PATH="$RUNNER_TEMP/cert.p12"
+          KEYCHAIN_PATH="$RUNNER_TEMP/build.keychain-db"
+          echo -n "$MACOS_CERT_P12" | base64 --decode -o "$CERT_PATH"
+
+          # A short-lived keychain of our own, never the runner's defaults.
+          security create-keychain -p "$MACOS_KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$MACOS_KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          # The whole identity (certificate and private key); -A lets codesign
+          # use the key without a prompt.
+          security import "$CERT_PATH" -P "$MACOS_CERT_PASSWORD" -A -f pkcs12 -k "$KEYCHAIN_PATH"
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s \
+            -k "$MACOS_KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security list-keychain -d user -s "$KEYCHAIN_PATH" login.keychain
+          rm -f "$CERT_PATH"
+
+          IDENTITY=$(security find-identity -v -p codesigning "$KEYCHAIN_PATH" \
+            | awk -F\" '/Developer ID Application/ {print $2; exit}')
+          if [ -z "$IDENTITY" ]; then
+            echo "No Developer ID Application identity in the keychain." >&2
+            echo "Is MACOS_CERT_P12 a Developer ID Application cert exported WITH its private key?" >&2
+            exit 1
+          fi
+          echo "Signing with: $IDENTITY"
+          echo "KEYCHAIN_PATH=$KEYCHAIN_PATH" >> "$GITHUB_ENV"
+          echo "IDENTITY=$IDENTITY" >> "$GITHUB_ENV"
+
+      - name: Archive (Release, Developer ID, hardened runtime)
+        run: |
+          set -euo pipefail
+          VERSION="${TAG#v}"
+          xcodebuild archive -project Keryx.xcodeproj -scheme Keryx -configuration Release \
+            -destination 'generic/platform=macOS' -archivePath "$RUNNER_TEMP/Keryx.xcarchive" \
+            MARKETING_VERSION="$VERSION" CURRENT_PROJECT_VERSION="${{ github.run_number }}" \
+            CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY="$IDENTITY" \
+            OTHER_CODE_SIGN_FLAGS="--timestamp --keychain $KEYCHAIN_PATH"
+          APP="$RUNNER_TEMP/Keryx.app"
+          ditto "$RUNNER_TEMP/Keryx.xcarchive/Products/Applications/Keryx.app" "$APP"
+          codesign --verify --deep --strict --verbose=2 "$APP"
+          echo "APP=$APP" >> "$GITHUB_ENV"
+
+      - name: Notarize and staple
+        env:
+          AC_APPLE_ID: ${{ secrets.AC_APPLE_ID }}
+          AC_PASSWORD: ${{ secrets.AC_PASSWORD }}
+          AC_TEAM_ID: ${{ secrets.AC_TEAM_ID }}
+        run: |
+          set -euo pipefail
+          SUBMISSION="$RUNNER_TEMP/Keryx-notarize.zip"
+          ditto -c -k --keepParent "$APP" "$SUBMISSION"
+          xcrun notarytool submit "$SUBMISSION" \
+            --apple-id "$AC_APPLE_ID" --password "$AC_PASSWORD" --team-id "$AC_TEAM_ID" \
+            --wait
+          # An app (unlike a bare binary) can carry its ticket, so Gatekeeper
+          # accepts it offline too.
+          xcrun stapler staple "$APP"
+          xcrun stapler validate "$APP"
+          spctl --assess --type execute --verbose=2 "$APP"
+          ASSET="Keryx-${TAG}-macOS.zip"
+          ditto -c -k --keepParent "$APP" "$ASSET"
+          echo "ASSET=$ASSET" >> "$GITHUB_ENV"
+
+      - name: Attach to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release create "$TAG" --title "Keryx $TAG" --generate-notes \
+            || echo "release $TAG already exists"
+          gh release upload "$TAG" "$ASSET" --clobber
+
+      - name: Clean up keychain
+        if: always()
+        run: |
+          if [ -n "${KEYCHAIN_PATH:-}" ] && [ -f "$KEYCHAIN_PATH" ]; then
+            security delete-keychain "$KEYCHAIN_PATH" || true
+          fi
