@@ -52,7 +52,7 @@ extension Session {
             if reachedStart { buffer.historyExhausted = true }
             advanceOriginalSeek(in: buffer)
         }
-        buffer.recomputeUnread()
+        if isViewing(buffer) { markRead(buffer) } else { buffer.recomputeUnread() }
     }
 
     private func continueCatchUp(_ buffer: Buffer, fullPage: Bool) {
@@ -189,6 +189,18 @@ extension Session {
     }
 
     // MARK: - Read markers (draft/read-marker)
+
+    /// Marks read a conversation you're reading, a moment after the last line
+    /// lands, so a busy channel sends one MARKREAD, not one per message.
+    func markReadSoon(_ buffer: Buffer) {
+        readSoon[buffer.id]?.cancel()
+        readSoon[buffer.id] = Task { [weak self, weak buffer] in
+            try? await Task.sleep(for: .seconds(2))
+            guard !Task.isCancelled, let self, let buffer, self.isViewing(buffer) else { return }
+            self.markRead(buffer)
+            self.readSoon[buffer.id] = nil
+        }
+    }
 
     func markRead(_ buffer: Buffer) {
         guard buffer.kind != .status else { return }

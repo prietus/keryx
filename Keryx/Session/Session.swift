@@ -61,6 +61,11 @@ final class Session: Identifiable {
     var onIndexLine: ((ChatLine, Buffer, Session) -> Void)?
     var onBouncerNetworksChanged: (() -> Void)?
     var highlightWords: () -> [String] = { [] }
+    /// Whether the user is looking at this conversation right now (selected,
+    /// with Keryx in front). What arrives there isn't unread.
+    var isViewing: (Buffer) -> Bool = { _ in false }
+    /// Pending debounced MARKREADs, by buffer.
+    var readSoon: [UUID: Task<Void, Never>] = [:]
 
     struct JumpRequest: Equatable {
         var bufferID: UUID

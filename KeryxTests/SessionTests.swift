@@ -274,3 +274,45 @@ struct FileHostTests {
         #expect(session.fileHost?.basicPassword == "pw")
     }
 }
+
+@MainActor
+@Suite("Unread while viewing", .serialized)
+struct ViewingTests {
+    @Test("Lines in the conversation you're viewing aren't unread; elsewhere they are")
+    func viewing() async throws {
+        let transport = FakeTransport()
+        let session = Session(config: SessionConfig(host: "irc.test", nickname: "me"), transport: transport)
+        session.connect()
+        let opened = ContinuousClock.now + .seconds(2)
+        while ContinuousClock.now < opened, await !transport.sent.contains("CAP LS 302") {
+            try? await Task.sleep(for: .milliseconds(5))
+        }
+        await transport.receive(":srv CAP * LS :batch", ":srv CAP * ACK :batch", ":srv 001 me :Welcome",
+                                ":me!u@h JOIN #seen", ":me!u@h JOIN #other")
+        let deadline = ContinuousClock.now + .seconds(2)
+        while ContinuousClock.now < deadline, session.buffers.count < 3 { try? await Task.sleep(for: .milliseconds(5)) }
+        let seen = try #require(session.buffers.first { $0.name == "#seen" })
+        let other = try #require(session.buffers.first { $0.name == "#other" })
+        session.isViewing = { $0.id == seen.id }
+        await transport.receive(":ana!a@h PRIVMSG #seen :hola me", ":ana!a@h PRIVMSG #other :hola me")
+        let until = ContinuousClock.now + .seconds(2)
+        while ContinuousClock.now < until, other.unreadCount == 0 { try? await Task.sleep(for: .milliseconds(5)) }
+        #expect(other.unreadCount == 1)
+        #expect(other.hasMention)
+        #expect(seen.unreadCount == 0)
+        #expect(!seen.hasMention)
+    }
+
+    @Test("The scene break stays where you entered, as the live marker moves on")
+    func sceneBreakStays() {
+        let buffer = Buffer(name: "#c", kind: .channel)
+        let t0 = Date(timeIntervalSince1970: 1_800_000_000)
+        buffer.lines = [ChatLine(timestamp: t0, sender: "ana", text: "old", kind: .message),
+                        ChatLine(timestamp: t0.addingTimeInterval(10), sender: "ana", text: "new", kind: .message)]
+        buffer.readMarker = t0
+        buffer.entryMarker = buffer.readMarker
+        buffer.readMarker = t0.addingTimeInterval(10)   // marked read on entry
+        #expect(buffer.firstUnreadID == nil)
+        #expect(buffer.sceneBreakID == buffer.lines[1].id)
+    }
+}

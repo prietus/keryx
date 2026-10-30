@@ -286,8 +286,18 @@ final class Buffer: Identifiable {
         if count == 0 { hasMention = false }
     }
 
-    var firstUnreadID: UUID? {
-        guard let marker = readMarker else { return nil }
+    /// The read marker as it was when you opened this conversation: the ⁂
+    /// stays where you left off for the whole visit, even as the live marker
+    /// moves on with what you're reading now. `nil` when not being viewed.
+    var entryMarker: Date?
+
+    var firstUnreadID: UUID? { firstUnread(after: readMarker) }
+
+    /// Where the ⁂ goes while you're in this conversation.
+    var sceneBreakID: UUID? { firstUnread(after: entryMarker ?? readMarker) }
+
+    func firstUnread(after marker: Date?) -> UUID? {
+        guard let marker else { return nil }
         return lines.first {
             !$0.isSelf && $0.kind.countsAsUnread && $0.timestamp > marker && !isHidden($0)
         }?.id

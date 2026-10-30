@@ -20,7 +20,7 @@ struct TranscriptView: View {
         options.showPresence = model.preferences.showPresence && !session.isPresenceQuiet(buffer.name)
         options.presenceOnlyForSpeakers = model.preferences.presenceOnlyForSpeakers
         options.isHidden = { [session] in session.isIgnored($0) }
-        options.firstUnreadID = buffer.firstUnreadID
+        options.firstUnreadID = buffer.sceneBreakID
         var rows = TranscriptLayout.rows(for: buffer.lines, options: options)
         if let find, !find.isEmpty {
             rows = rows.filter { row in

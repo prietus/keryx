@@ -69,12 +69,13 @@ extension Session {
             return
         }
         let before = buffer.lines.count
-        buffer.append(line, markUnread: !isSelf && !ignored)
+        let viewing = isViewing(buffer)
+        buffer.append(line, markUnread: !isSelf && !ignored && !viewing)
         guard buffer.lines.count > before else { return }
         onIndexLine?(line, buffer, self)
         if historical { return }
         buffer.typing[sender] = nil
-        if mentions { buffer.hasMention = true }
+        if viewing { markReadSoon(buffer) } else if mentions { buffer.hasMention = true }
         if !isSelf, !ignored, kind != .notice {
             if buffer.kind == .query {
                 emitNotification(.directMessage, buffer: buffer, sender: sender, text: body)

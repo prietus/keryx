@@ -67,6 +67,18 @@ final class AppModel {
             select(first.statusBuffer, in: first)
         }
         notifier.requestAuthorization()
+        // Coming back to Keryx: what arrived meanwhile in the open conversation
+        // is now read, and the ⁂ shows where you left off.
+        NotificationCenter.default.addObserver(forName: NSApplication.didBecomeActiveNotification,
+                                               object: nil, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated {
+                guard let self, let session = self.selectedSession, let buffer = self.selectedBuffer else { return }
+                if buffer.unreadCount > 0 { buffer.entryMarker = buffer.readMarker }
+                session.markRead(buffer)
+                self.notifier.clear(buffer: buffer.id)
+                self.updateBadge()
+            }
+        }
         NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.didWakeNotification,
                                                           object: nil, queue: .main) { [weak self] _ in
             MainActor.assumeIsolated { self?.reconnectDropped() }
@@ -131,6 +143,9 @@ final class AppModel {
             session.restoreHistory(snapshot)
         }
         session.highlightWords = { [weak self] in self?.preferences.highlightWords ?? [] }
+        session.isViewing = { [weak self] buffer in
+            NSApp.isActive && self?.selectedBufferID == buffer.id
+        }
         session.onNotifiableEvent = { [weak self] event in self?.deliver(event) }
         session.onIndexLine = { [weak self] line, buffer, session in self?.index(line, in: buffer, of: session) }
         session.onBouncerNetworksChanged = { [weak self, weak session] in
@@ -169,6 +184,11 @@ final class AppModel {
     func select(_ buffer: Buffer, in session: Session) {
         if let previous = selectedBuffer, let previousSession = selectedSession, previous.id != buffer.id {
             previousSession.markRead(previous)
+            previous.entryMarker = nil
+        }
+        if buffer.id != selectedBufferID {
+            // Remember where you'd read up to, for the ⁂, before marking it read.
+            buffer.entryMarker = buffer.readMarker
         }
         selectedSessionID = session.id
         selectedBufferID = buffer.id
