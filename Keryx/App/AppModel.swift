@@ -286,11 +286,12 @@ final class AppModel {
                          : String(localized: "Stopped waiting. The script may still be running in the background."), in: buffer)
             return
         }
-        guard let request = ScriptRunner.parse(trimmed) else {
+        guard let request = ScriptRunner.request(for: trimmed) else {
             session.note(String(localized: "Usage: /exec [-o] script [args] | -kill"), in: buffer, kind: .error)
             return
         }
-        let shown = ([request.script] + request.arguments).joined(separator: " ")
+        let shown = request.script == "sh" && request.arguments.count == 1
+            ? request.arguments[0] : ([request.script] + request.arguments).joined(separator: " ")
         session.note("$ " + shown, in: buffer, kind: .motd)
         Task {
             switch await ScriptRunner.shared.run(request) {
@@ -333,11 +334,11 @@ final class AppModel {
         guard !scripts.contains("sh") else { return }
         session.note(String(localized: "To run any command, like WeeChat’s /exec, create a script called sh in Terminal:"), in: buffer)
         for line in ["mkdir -p \(quoted)",
-                     "printf '#!/bin/sh\\nexec /bin/sh -c \"$*\"\\n' > \(quoted)/sh",
+                     "printf '#!/bin/sh\\ncd \"$HOME\" || exit 1\\nexec /bin/sh -c \"$*\"\\n' > \(quoted)/sh",
                      "chmod +x \(quoted)/sh"] {
             session.note(line, in: buffer, kind: .motd)
         }
-        session.note(String(localized: "Then: /exec sh uptime   or   /exec -o sh uname -a"), in: buffer)
+        session.note(String(localized: "Then any command: /exec uptime   or   /exec -o ls -latr"), in: buffer)
     }
 
     // MARK: - Networks

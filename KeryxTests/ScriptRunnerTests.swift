@@ -34,3 +34,19 @@ struct ScriptRunnerTests {
         #expect(output == ["args: a b|c", "home is readable: yes"])
     }
 }
+
+@MainActor
+@Suite("/exec through sh")
+struct ScriptRunnerShellTests {
+    /// Runs only when an `sh` script is installed.
+    @Test("A command that isn't a script goes to sh as typed, in the home folder",
+          .enabled(if: ScriptRunner.resolve("sh") != nil))
+    func shell() async {
+        let request = ScriptRunner.request(for: "-o echo \"a  b\" && pwd")
+        #expect(request == .init(script: "sh", arguments: ["echo \"a  b\" && pwd"], send: true))
+        guard let request else { return }
+        let outcome = await ScriptRunner.shared.run(request)
+        guard case let .finished(output, _) = outcome else { Issue.record("unexpected \(outcome)"); return }
+        #expect(output == ["a  b", NSHomeDirectory().replacingOccurrences(of: "/Library/Containers/im.keryx.mac/Data", with: "")])
+    }
+}

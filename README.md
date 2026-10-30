@@ -83,10 +83,11 @@ Para tener el `/exec` de WeeChat con cualquier comando, crea un script `sh`:
 
 ```sh
 D=~/Library/Application\ Scripts/im.keryx.mac
-printf '#!/bin/sh\nexec /bin/sh -c "$*"\n' > "$D/sh" && chmod +x "$D/sh"
+printf '#!/bin/sh\ncd "$HOME" || exit 1\nexec /bin/sh -c "$*"\n' > "$D/sh" && chmod +x "$D/sh"
 ```
 
-Y luego `/exec sh uptime` o `/exec -o sh uname -a`.
+Con `sh` instalado, cualquier cosa que no sea el nombre de un script se le pasa
+tal cual, en tu carpeta de inicio: `/exec uptime`, `/exec -o ls -latr`.
 
 ## Atajos
 

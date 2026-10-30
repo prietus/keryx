@@ -55,6 +55,18 @@ final class ScriptRunner {
         return folder.appending(path: match)
     }
 
+    /// `/exec [-o] …`: one of your scripts by name or, when no script has
+    /// that name and you have an `sh` script, the whole command for `sh` to
+    /// run — so `/exec -o ls -latr` works like WeeChat's. The command goes
+    /// to `sh` as typed, quotes and all.
+    nonisolated static func request(for text: String) -> Request? {
+        guard let parsed = parse(text) else { return nil }
+        guard resolve(parsed.script) == nil, resolve("sh") != nil else { return parsed }
+        var command = text.trimmingCharacters(in: .whitespaces)
+        if parsed.send { command = String(command.dropFirst(2)).trimmingCharacters(in: .whitespaces) }
+        return Request(script: "sh", arguments: [command], send: parsed.send)
+    }
+
     /// `/exec [-o] script args…`, split on spaces with "quoted strings" kept whole.
     nonisolated static func parse(_ text: String) -> Request? {
         var words: [String] = []
