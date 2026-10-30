@@ -33,7 +33,16 @@ final class AppModel {
 
     private var saveTask: Task<Void, Never>?
 
+    /// The app is hosting the unit tests: it must not touch your networks.
+    static var isRunningTests: Bool {
+        ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+            || NSClassFromString("XCTestCase") != nil
+    }
+
     init() {
+        // Under the tests, never load saved networks or connect to them:
+        // the test host is the real app, with your real settings.
+        if Self.isRunningTests { return }
         #if DEBUG
         if CommandLine.arguments.contains("-KeryxNowPlayingProbe") {
             Task {
@@ -93,6 +102,39 @@ final class AppModel {
         var hash: UInt32 = 2166136261
         for byte in nick.lowercased().utf8 { hash = (hash ^ UInt32(byte)) &* 16777619 }
         return "u·" + String(hash % 0xFFF, radix: 16)
+    }
+
+    /// The nicks a conversation knows (members, recent speakers, you, the
+    /// query's peer), cached by the conversation's size, for masking.
+    private var knownNicksCache: [UUID: (key: Int, nicks: Set<String>)] = [:]
+
+    private func knownNicks(in buffer: Buffer, of session: Session) -> Set<String> {
+        let key = buffer.lines.count &* 31 &+ buffer.members.count
+        if let cached = knownNicksCache[buffer.id], cached.key == key { return cached.nicks }
+        var nicks = Set(buffer.members.map { $0.nick.lowercased() })
+        for line in buffer.lines.suffix(500) { if let sender = line.sender { nicks.insert(sender.lowercased()) } }
+        nicks.insert(session.currentNick.lowercased())
+        if buffer.kind == .query { nicks.insert(buffer.name.lowercased()) }
+        knownNicksCache[buffer.id] = (key, nicks)
+        return nicks
+    }
+
+    /// In privacy mode, nicks named inside a message ("ana: look") are masked
+    /// too, except inside links, which would break.
+    func masked(_ text: String, in buffer: Buffer, of session: Session) -> String {
+        guard preferences.privacyMode, !text.isEmpty else { return text }
+        let known = knownNicks(in: buffer, of: session)
+        let links = MessageLinks.detect(in: text).map(\.range)
+        guard let regex = try? NSRegularExpression(pattern: #"[A-Za-z_\[\]\\`^{|}][A-Za-z0-9_\[\]\\`^{|}-]*"#) else { return text }
+        var result = text
+        let matches = regex.matches(in: text, range: NSRange(text.startIndex..., in: text))
+        for match in matches.reversed() {
+            guard let range = Range(match.range, in: text), known.contains(text[range].lowercased()),
+                  !links.contains(where: { $0.overlaps(range) }),
+                  let target = Range(match.range, in: result) else { continue }
+            result.replaceSubrange(target, with: shown(String(text[range])))
+        }
+        return result
     }
 
     /// Hosts whose pages wrap a single image: your uploader and the networks' file hosts.

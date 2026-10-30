@@ -17,7 +17,8 @@ struct RootView: View {
                         MembersView(session: session, buffer: buffer)
                             .inspectorColumnWidth(min: 170, ideal: 210, max: 300)
                     }
-                    .navigationTitle(buffer.kind == .status ? session.displayName : model.shown(buffer.name))
+                    .navigationTitle(buffer.kind == .status ? session.displayName
+                                     : buffer.kind == .query ? model.shown(buffer.name) : buffer.name)
                     .navigationSubtitle(buffer.kind == .status ? "" : session.displayName)
             } else {
                 Welcome()

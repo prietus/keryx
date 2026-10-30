@@ -351,3 +351,31 @@ struct CTCPTests {
         #expect(!session.buffers.contains { $0.name == "ana" })
     }
 }
+
+@MainActor
+@Suite("Privacy mode")
+struct PrivacyTests {
+    @Test("Nicks named in a message are masked; links and other words aren't")
+    func bodies() {
+        let model = AppModel()
+        model.preferences.privacyMode = true
+        defer { model.preferences.privacyMode = false }
+        let session = Session(config: SessionConfig(host: "irc.test", nickname: "me"))
+        let buffer = Buffer(name: "#c", kind: .channel)
+        buffer.members = [Member(nick: "sk1d"), Member(nick: "Ana")]
+        let text = model.masked("ana: sk1d says hi, see https://x.y/ana", in: buffer, of: session)
+        #expect(text == "\(model.shown("ana")): \(model.shown("sk1d")) says hi, see https://x.y/ana")
+    }
+}
+
+@MainActor
+@Suite("Test host")
+struct TestHostTests {
+    @Test("Under the tests the app loads no networks, so it never connects to yours")
+    func noNetworks() {
+        #expect(AppModel.isRunningTests)
+        let model = AppModel()
+        #expect(model.networks.isEmpty)
+        #expect(model.sessions.isEmpty)
+    }
+}

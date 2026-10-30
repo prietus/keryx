@@ -33,7 +33,7 @@ struct SpeechRow: View {
     }
 
     var body: some View {
-        let formatted = MessageFormatter.format(line.text, size: size, highlight: find)
+        let formatted = MessageFormatter.format(model.masked(line.text, in: buffer, of: session), size: size, highlight: find)
         MarginRow(time: line.timestamp,
                   speaker: continued || nested ? nil : line.sender.map(model.shown),
                   speakerColor: speakerColor, speakerItalic: line.kind == .notice) {
@@ -97,7 +97,7 @@ struct ActionRow: View {
         MarginRow(time: line.timestamp, speaker: line.sender.map(model.shown),
                   speakerColor: model.color(for: line.sender ?? "", isSelf: line.isSelf), speakerItalic: true) {
             VStack(alignment: .leading, spacing: 1) {
-                Text(MessageFormatter.format(line.text, size: size).text)
+                Text(MessageFormatter.format(model.masked(line.text, in: buffer, of: session), size: size).text)
                     .font(Typeset.direction(size))
                     .foregroundStyle(line.isPending ? Palette.graphite : Palette.ink)
                     .animation(.easeOut(duration: 0.7), value: line.isPending)
@@ -127,7 +127,7 @@ private struct ReplyQuote: View {
                 if let parent = buffer.line(withMsgID: msgid) {
                     Text("↳ to ") + Text(verbatim: model.shown(parent.sender ?? "")).font(Typeset.noteStrong(model.preferences.bodySize))
                         .foregroundStyle(model.color(for: parent.sender ?? "", isSelf: parent.isSelf))
-                        + Text("quote.inline \(String(MessageFormatter.plain(parent.text).prefix(90)) + (parent.text.count > 90 ? "…" : ""))")
+                        + Text("quote.inline \(String(MessageFormatter.plain(model.masked(parent.text, in: buffer, of: session)).prefix(90)) + (parent.text.count > 90 ? "…" : ""))")
                 } else {
                     Text("↳ in reply to an earlier message")
                 }
