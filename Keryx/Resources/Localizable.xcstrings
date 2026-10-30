@@ -4392,6 +4392,36 @@
           }
         }
       }
+    },
+    "Link previews" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vista previa de enlaces"
+          }
+        }
+      }
+    },
+    "A card under the line with the page’s title, summary and picture." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una tarjeta bajo la línea con el título, el resumen y la imagen de la página."
+          }
+        }
+      }
+    },
+    "Without the summary" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin el resumen"
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

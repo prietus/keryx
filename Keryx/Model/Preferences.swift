@@ -27,6 +27,8 @@ final class Preferences {
     var imageSize: Int { didSet { defaults.set(imageSize, forKey: "imageSize") } }
     /// Link titles as footnotes under the line.
     var linkFootnotes: Bool { didSet { defaults.set(linkFootnotes, forKey: "linkFootnotes") } }
+    /// Link cards without the summary line.
+    var compactPreviews: Bool { didSet { defaults.set(compactPreviews, forKey: "compactPreviews") } }
     var notifyMentions: Bool { didSet { defaults.set(notifyMentions, forKey: "notifyMentions") } }
     var notifyDirect: Bool { didSet { defaults.set(notifyDirect, forKey: "notifyDirect") } }
     var sendTyping: Bool { didSet { defaults.set(sendTyping, forKey: "sendTyping") } }
@@ -63,6 +65,7 @@ final class Preferences {
         imageSize = defaults.integer(forKey: "imageSize")
         colorNicks = defaults.bool(forKey: "colorNicks")
         linkFootnotes = defaults.bool(forKey: "linkFootnotes")
+        compactPreviews = defaults.bool(forKey: "compactPreviews")
         notifyMentions = defaults.bool(forKey: "notifyMentions")
         notifyDirect = defaults.bool(forKey: "notifyDirect")
         sendTyping = defaults.bool(forKey: "sendTyping")

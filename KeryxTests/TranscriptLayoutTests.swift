@@ -183,3 +183,22 @@ struct WrapperTests {
                 == "https://paste.priet.us/i/abc.png")
     }
 }
+
+@Suite("Link cards")
+struct LinkCardTests {
+    @Test("Page metadata: OpenGraph first, then twitter:, then plain description")
+    func metadata() {
+        let html = """
+        <html><head><title>Fallback</title>
+        <meta property="og:title" content="Keryx &amp; friends">
+        <meta name="description" content="Plain description">
+        <meta property="og:image" content="/card.png">
+        </head></html>
+        """
+        #expect(LinkResolver.meta("og:title", in: html) == "Keryx &amp; friends")
+        #expect(LinkResolver.decodeEntities(LinkResolver.meta("og:title", in: html)!) == "Keryx & friends")
+        #expect(LinkResolver.meta("og:description", in: html) == nil)
+        #expect(LinkResolver.meta("description", in: html) == "Plain description")
+        #expect(LinkResolver.meta("og:image", in: html) == "/card.png")
+    }
+}

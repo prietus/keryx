@@ -160,14 +160,8 @@ private struct LinkPreviews: View {
             if model.preferences.inlineImages {
                 ForEach(images.prefix(3), id: \.self) { Plate(url: $0) }
             }
-            if model.preferences.linkFootnotes, let page, let title = page.title {
-                Link(destination: page.url) {
-                    (Text(verbatim: title).foregroundStyle(Palette.ink.opacity(0.8))
-                        + Text(verbatim: "  \(page.site ?? page.url.host() ?? "")").foregroundStyle(Palette.graphite))
-                        .font(Typeset.note(model.preferences.bodySize))
-                        .lineLimit(1)
-                }
-                .buttonStyle(.plain)
+            if model.preferences.linkFootnotes, let page, page.title != nil {
+                LinkCard(info: page)
             }
         }
         .task(id: links) {
@@ -175,6 +169,56 @@ private struct LinkPreviews: View {
             for url in links.prefix(4) where infos[url] == nil {
                 infos[url] = await LinkResolver.shared.resolve(url)
             }
+        }
+    }
+}
+
+/// A page's preview, like irkt's: title, a two-line summary and the site,
+/// with the page's own picture small beside it. Set off by a hairline on the
+/// left rather than boxed, so it reads as an aside to the line above.
+private struct LinkCard: View {
+    @Environment(AppModel.self) private var model
+    @Environment(\.openURL) private var openURL
+    let info: LinkInfo
+    @State private var thumbnail: NSImage?
+
+    var body: some View {
+        let size = model.preferences.bodySize
+        HStack(alignment: .top, spacing: 10) {
+            Rectangle().fill(Palette.rule).frame(width: 2)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(verbatim: info.site ?? info.url.host() ?? "")
+                    .font(Typeset.note(size))
+                    .foregroundStyle(Palette.graphite)
+                    .lineLimit(1)
+                Text(verbatim: info.title ?? "")
+                    .font(Typeset.speaker(size))
+                    .foregroundStyle(Palette.ink)
+                    .lineLimit(2)
+                if let summary = info.summary, !model.preferences.compactPreviews {
+                    Text(verbatim: summary)
+                        .font(Typeset.note(size))
+                        .foregroundStyle(Palette.graphite)
+                        .lineLimit(2)
+                }
+            }
+            .frame(maxWidth: 420, alignment: .leading)
+            if let thumbnail, model.preferences.inlineImages {
+                Image(nsImage: thumbnail)
+                    .resizable()
+                    .interpolation(.high)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 72, height: 72)
+                    .clipShape(RoundedRectangle(cornerRadius: 4))
+            }
+        }
+        .fixedSize(horizontal: false, vertical: true)
+        .padding(.vertical, 3)
+        .contentShape(Rectangle())
+        .onTapGesture { openURL(info.url) }
+        .help(info.url.absoluteString)
+        .task(id: info.thumbnail) {
+            if let url = info.thumbnail { thumbnail = await ImageCache.shared.image(for: url) }
         }
     }
 }

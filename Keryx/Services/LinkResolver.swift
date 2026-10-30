@@ -1,7 +1,7 @@
 import Foundation
 
-/// What a URL in a message turned out to be: an image to print as a plate,
-/// or a page whose title becomes a footnote.
+/// What a URL in a message turned out to be: an image to show as a
+/// thumbnail, or a page to preview as a card.
 struct LinkInfo: Sendable, Equatable {
     enum Kind: Sendable, Equatable { case image, page, other }
     var url: URL
@@ -10,6 +10,10 @@ struct LinkInfo: Sendable, Equatable {
     var site: String?
     /// For a page that is just a wrapper around an image (paste sites).
     var imageURL: URL?
+    /// The page's summary (`og:description`, `twitter:description`, `description`).
+    var summary: String?
+    /// The page's own picture (`og:image`), shown small in its card.
+    var thumbnail: URL?
 }
 
 enum MessageLinks {
@@ -102,7 +106,12 @@ actor LinkResolver {
                 }
             }
         }
-        return LinkInfo(url: url, kind: .page, title: title.map(Self.decodeEntities), site: site)
+        let summary = (Self.meta("og:description", in: html) ?? Self.meta("twitter:description", in: html)
+            ?? Self.meta("description", in: html))
+            .map { Self.decodeEntities($0).replacingOccurrences(of: #"\s+"#, with: " ", options: .regularExpression) }
+            .map { $0.count > 220 ? String($0.prefix(217)) + "…" : $0 }
+        return LinkInfo(url: url, kind: .page, title: title.map(Self.decodeEntities), site: site,
+                        summary: summary, thumbnail: ogImage)
     }
 
     /// GETs the first `limit` bytes of `url`.
