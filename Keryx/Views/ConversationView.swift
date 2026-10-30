@@ -10,7 +10,7 @@ struct ConversationView: View {
     @State private var draft = ""
     @State private var drafts: [UUID: String] = [:]
     @State private var findText = ""
-    @FocusState private var composerFocused: Bool
+    @State private var composerFocus = 0
     @FocusState private var findFocused: Bool
 
     /// The speaker column fits the longest nick that has spoken recently.
@@ -28,24 +28,31 @@ struct ConversationView: View {
                 FindBar(text: $findText, focused: $findFocused) {
                     model.showFind = false
                     findText = ""
-                    composerFocused = true
+                    composerFocus += 1
                 }
             }
             TranscriptView(session: session, buffer: buffer, find: model.showFind ? findText : nil,
                            replyTo: $replyTo, onReact: { reacting = $0 })
                 .id(buffer.id)
-            Composer(session: session, buffer: buffer, replyTo: $replyTo, text: $draft, focused: $composerFocused)
+            Composer(session: session, buffer: buffer, replyTo: $replyTo, text: $draft, focusToken: $composerFocus)
         }
         .environment(\.nameColumn, nameColumn)
         .background(Palette.paper)
-        .onAppear { composerFocused = true }
+        .onAppear {
+            composerFocus += 1
+            #if DEBUG
+            // Through the environment: a bare argument value would be taken
+            // as a file to open, and the main window wouldn't appear.
+            if let demoDraft = ProcessInfo.processInfo.environment["KERYX_DEMO_DRAFT"] { draft = demoDraft }
+            #endif
+        }
         .onChange(of: buffer.id) { old, new in
             drafts[old] = draft
             draft = drafts[new] ?? ""
             replyTo = nil
-            composerFocused = true
+            composerFocus += 1
         }
-        .onChange(of: replyTo) { _, line in if line != nil { composerFocused = true } }
+        .onChange(of: replyTo) { _, line in if line != nil { composerFocus += 1 } }
         .onChange(of: model.showFind) { _, show in if show { findFocused = true } }
         .popover(item: $reacting) { line in
             ReactionPicker { emoji in

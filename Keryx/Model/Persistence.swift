@@ -161,6 +161,9 @@ struct NetworkState: Codable, Sendable {
     var publishedProfileKeys: Set<String> = []
     /// Per soju key, the targets flagged at the last sync (three-way merge base).
     var synced: [String: Set<String>] = [:]
+    /// Spelling and word-completion language per conversation (lowercased
+    /// name → "es", "en_GB", "off"). Optional so older saved state still loads.
+    var languages: [String: String]?
 
     private static func url(_ id: UUID) -> URL {
         StoragePaths.directory("State").appending(path: "\(id.uuidString).json")

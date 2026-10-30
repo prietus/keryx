@@ -247,6 +247,21 @@ extension Session {
 
     func saveState() { state.save(config.id) }
 
+    // MARK: - Spelling language (/lang)
+
+    /// The conversation's spelling language: a code, "off", or `nil` to let
+    /// macOS detect it.
+    func spellingLanguage(for name: String) -> String? {
+        state.languages?[name.lowercased()]
+    }
+
+    func setSpellingLanguage(_ language: String?, for name: String) {
+        var languages = state.languages ?? [:]
+        languages[name.lowercased()] = language
+        state.languages = languages.isEmpty ? nil : languages
+        saveState()
+    }
+
     // MARK: - Mute, pin, quiet presence
 
     func isMuted(_ name: String) -> Bool { state.muted.contains(name.lowercased()) }

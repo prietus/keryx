@@ -72,4 +72,11 @@ Sin `title` significa que no suena nada en ese reproductor.
 ⌘K ir a / comando · ⌘F buscar aquí · ⌘⇧F buscar en todo · ⌘⌥↑↓ conversación
 anterior/siguiente · ⌘⌥⇧↓ siguiente sin leer · ⌘⇧W cerrar conversación ·
 ⌘⌥0 reparto · ⌘+/⌘− tamaño · ⌘⇧P modo privado · ⌘⌥L protocolo ·
-Tab completa (rota) · ↑↓ historial · ⇧↩ nueva línea · Esc cancela respuesta.
+Tab acepta la sugerencia en gris y rota entre candidatos · → al final la acepta ·
+⌥S corrige la palabra mal escrita más cercana · ↑↓ historial · ⇧↩ nueva línea ·
+Esc cancela respuesta.
+
+El composer sugiere nicks (primero quien ha hablado hace poco), `/comandos`,
+`#canales` y palabras del diccionario de macOS a partir de tres letras. El
+corrector del sistema subraya las erratas; `/lang es`, `/lang en`, `/lang auto`
+u `/lang off` elige el idioma por conversación.

@@ -9,22 +9,17 @@ struct Composer: View {
     let buffer: Buffer
     @Binding var replyTo: ChatLine?
     @Binding var text: String
-    @FocusState.Binding var focused: Bool
+    /// Bumped by the conversation to put the caret here.
+    @Binding var focusToken: Int
 
     @State private var history: [String] = []
     @State private var historyIndex: Int?
-    @State private var completion: Completion?
+    /// While Tab cycles: the completion and which candidate is in the text.
+    @State private var cycling: (result: CompletionEngine.Result, index: Int)?
     @State private var uploading: String?
     @State private var uploadError: String?
     @State private var importing = false
-
-    private struct Completion {
-        var stem: String
-        var candidates: [String]
-        var index: Int
-        var base: String
-        var atStart: Bool
-    }
+    @State private var fieldHeight: CGFloat = 18
 
     private var size: CGFloat { model.preferences.bodySize }
 
@@ -63,33 +58,25 @@ struct Composer: View {
             }
             MarginRow(time: nil, speaker: model.shown(session.currentNick), speakerColor: Palette.graphite) {
                 HStack(alignment: .firstTextBaseline, spacing: 0) {
-                    TextField(placeholder, text: $text, axis: .vertical)
-                        .textFieldStyle(.plain)
-                        .font(Typeset.body(size))
-                        .foregroundStyle(Palette.graphite)
-                        .lineLimit(1...10)
-                        .focused($focused)
-                        .onKeyPress(.return, phases: .down) { press in
-                            if press.modifiers.contains(.shift) || press.modifiers.contains(.option) {
-                                text += "\n"
-                                return .handled
-                            }
-                            submit()
-                            return .handled
-                        }
-                        .onKeyPress(.tab) {
-                            complete()
-                            return .handled
-                        }
-                        .onKeyPress(.upArrow) { recall(-1) ? .handled : .ignored }
-                        .onKeyPress(.downArrow) { recall(1) ? .handled : .ignored }
-                        .onKeyPress(.escape) {
-                            if replyTo != nil { replyTo = nil; return .handled }
-                            return .ignored
-                        }
+                    ComposerTextView(
+                        text: $text, placeholder: placeholder, font: nsFont, color: NSColor(Palette.graphite),
+                        ghost: cycling == nil ? suggestion?.ghost : nil,
+                        language: session.spellingLanguage(for: buffer.name),
+                        focusToken: focusToken, height: $fieldHeight,
+                        onSubmit: submit,
+                        onTab: complete,
+                        onAcceptGhost: acceptGhost,
+                        onHistory: recall,
+                        onEscape: {
+                            if replyTo != nil { replyTo = nil; return true }
+                            return false
+                        },
+                        onFiles: { $0.forEach(upload) })
+                        .frame(height: fieldHeight)
+                        .alignmentGuide(.firstTextBaseline) { _ in nsFont.ascender }
                         .onChange(of: text) { _, new in
-                            if completion.map({ new != $0.base + $0.candidates[$0.index] + ($0.atStart ? ": " : " ") }) ?? false {
-                                completion = nil
+                            if let current = cycling, new != current.result.text(accepting: current.index) {
+                                cycling = nil
                             }
                             session.notifyTyping(in: buffer, hasText: !new.isEmpty && !new.hasPrefix("/"),
                                                  enabled: model.preferences.sendTyping)
@@ -119,7 +106,7 @@ struct Composer: View {
             return true
         }
         .onChange(of: buffer.id) { _, _ in
-            completion = nil
+            cycling = nil
             historyIndex = nil
         }
     }
@@ -180,42 +167,58 @@ struct Composer: View {
         return true
     }
 
-    /// Tab completes the last word: commands, channels, then nicks — recent
-    /// speakers first — and cycles on repeat.
-    private func complete() {
-        if var current = completion {
-            current.index = (current.index + 1) % current.candidates.count
-            completion = current
-            text = current.base + current.candidates[current.index] + (current.atStart ? ": " : " ")
-            return
+    private var nsFont: NSFont {
+        let base = NSFont.systemFont(ofSize: size)
+        guard model.preferences.serifType, let serif = base.fontDescriptor.withDesign(.serif) else { return base }
+        return NSFont(descriptor: serif, size: size) ?? base
+    }
+
+    /// What the last word could become: commands, channels, nicks (recent
+    /// speakers first), then dictionary words in the conversation's language.
+    private var completionContext: CompletionContext {
+        let recent = buffer.lines.suffix(300).reversed().compactMap(\.sender)
+        var seen = Set<String>()
+        let nicks = (recent + buffer.sortedMembers.map(\.nick) + (buffer.kind == .query ? [buffer.name] : []))
+            .filter { !session.equal($0, session.currentNick) && seen.insert($0.lowercased()).inserted }
+        let language = session.spellingLanguage(for: buffer.name)
+        return CompletionContext(
+            commands: SlashCommand.all.map { "/" + $0.name },
+            channels: session.buffers.filter { $0.kind == .channel }.map(\.name),
+            nicks: nicks,
+            channelTypes: session.isupport.channelTypes,
+            words: { stem in
+                guard language != "off" else { return [] }
+                return NSSpellChecker.shared.completions(
+                    forPartialWordRange: NSRange(location: 0, length: (stem as NSString).length),
+                    in: stem, language: language, inSpellDocumentWithTag: 0) ?? []
+            })
+    }
+
+    /// The suggestion for what's typed, shown as a ghost after the caret.
+    private var suggestion: CompletionEngine.Result? {
+        guard !text.isEmpty, text.last != " ", text.last != "\n" else { return nil }
+        return CompletionEngine.complete(text, completionContext)
+    }
+
+    /// Tab: accept the suggestion, then cycle through the other candidates.
+    private func complete() -> Bool {
+        if var current = cycling {
+            current.index = (current.index + 1) % current.result.candidates.count
+            cycling = current
+            text = current.result.text(accepting: current.index)
+            return true
         }
-        let base = String(text[..<(text.lastIndex(of: " ").map { text.index(after: $0) } ?? text.startIndex)])
-        let stem = String(text[base.endIndex...])
-        guard !stem.isEmpty else { return }
-        var candidates: [String]
-        let atStart = base.isEmpty
-        if stem.hasPrefix("/"), atStart {
-            candidates = SlashCommand.all.map { "/" + $0.name }.filter { $0.hasPrefix(stem.lowercased()) }
-            if let only = candidates.first, candidates.count == 1 {
-                text = only + " "
-                return
-            }
-        } else if let first = stem.first, session.isupport.channelTypes.contains(first) {
-            candidates = session.buffers.filter { $0.kind == .channel }.map(\.name)
-                .filter { $0.lowercased().hasPrefix(stem.lowercased()) }
-        } else {
-            let recent = buffer.lines.suffix(300).reversed().compactMap(\.sender)
-            var seen = Set<String>()
-            let ordered = (recent + buffer.sortedMembers.map(\.nick) + (buffer.kind == .query ? [buffer.name] : []))
-                .filter { !session.equal($0, session.currentNick) && seen.insert($0.lowercased()).inserted }
-            candidates = ordered.filter { $0.lowercased().hasPrefix(stem.lowercased()) }
-        }
-        guard !candidates.isEmpty else { return }
-        let isCommand = stem.hasPrefix("/")
-        let state = Completion(stem: stem, candidates: candidates, index: 0, base: base,
-                               atStart: atStart && !isCommand && !(stem.first.map { session.isupport.channelTypes.contains($0) } ?? false))
-        completion = state
-        text = base + candidates[0] + (state.atStart ? ": " : " ")
+        guard let result = suggestion else { return false }
+        cycling = (result, 0)
+        text = result.text(accepting: 0)
+        return true
+    }
+
+    /// → at the end of the line: take the ghost, without cycling.
+    private func acceptGhost() -> Bool {
+        guard cycling == nil, let result = suggestion, result.ghost != nil else { return false }
+        text = result.text(accepting: 0)
+        return true
     }
 
     private func upload(_ url: URL) {
@@ -231,7 +234,7 @@ struct Composer: View {
             do {
                 let link = try await Uploader.upload(fileAt: url, to: destination)
                 text += (text.isEmpty || text.hasSuffix(" ") ? "" : " ") + link
-                focused = true
+                focusToken += 1
             } catch {
                 uploadError = error.localizedDescription
             }

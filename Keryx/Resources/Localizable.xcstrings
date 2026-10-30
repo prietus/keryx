@@ -4422,6 +4422,96 @@
           }
         }
       }
+    },
+    "/lang [code | auto | off]" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/lang [código | auto | off]"
+          }
+        }
+      }
+    },
+    "Spelling and word suggestions for this conversation, in a language or detected." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corrector y sugerencias de palabras en esta conversación, en un idioma o detectado."
+          }
+        }
+      }
+    },
+    "off" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "desactivado"
+          }
+        }
+      }
+    },
+    "detected automatically" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "detectado automáticamente"
+          }
+        }
+      }
+    },
+    "Spelling here: %@. Available: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corrector aquí: %1$@. Disponibles: %2$@"
+          }
+        }
+      }
+    },
+    "No spelling or word suggestions here." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin corrector ni sugerencias de palabras aquí."
+          }
+        }
+      }
+    },
+    "Spelling here follows the language macOS detects." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El corrector aquí sigue el idioma que detecta macOS."
+          }
+        }
+      }
+    },
+    "No dictionary for “%@”. Available: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay diccionario para «%1$@». Disponibles: %2$@"
+          }
+        }
+      }
+    },
+    "Spelling here: %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corrector aquí: %@."
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

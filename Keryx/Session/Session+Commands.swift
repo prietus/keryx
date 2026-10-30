@@ -1,4 +1,5 @@
 import Foundation
+import AppKit
 import KeryxProtocol
 
 /// What the UI should do after a command ran.
@@ -57,6 +58,7 @@ struct SlashCommand: Identifiable, Sendable {
         .init(name: "buddy", usage: String(localized: "/buddy add|del|list nick"), summary: String(localized: "Contacts: tells you when they come online (MONITOR).")),
         .init(name: "highlight", usage: String(localized: "/highlight add|del word…"), summary: String(localized: "Words that mention you besides your nick.")),
         .init(name: "profile", usage: String(localized: "/profile [set key value | clear key]"), summary: String(localized: "Your profile: display name, pronouns, status… (draft/metadata-2).")),
+        .init(name: "lang", usage: String(localized: "/lang [code | auto | off]"), summary: String(localized: "Spelling and word suggestions for this conversation, in a language or detected.")),
         .init(name: "np", usage: String(localized: "/np"), summary: String(localized: "Shares what you’re listening to or watching (from the menu bar’s Now Playing).")),
         .init(name: "react", usage: String(localized: "/react emoji"), summary: String(localized: "Reacts to the latest message.")),
         .init(name: "delete", usage: String(localized: "/delete"), summary: String(localized: "Deletes your latest message (draft/message-redaction).")),
@@ -294,6 +296,34 @@ extension Session {
             setProfile(profile)
             note(supportsProfile ? String(localized: "Profile updated.")
                  : String(localized: "Profile saved; this server doesn’t share profiles."), in: buffer)
+
+        case "lang":
+            let available = NSSpellChecker.shared.availableLanguages
+            guard let wanted = args.first?.lowercased() else {
+                let current = spellingLanguage(for: buffer.name)
+                let shown = current == "off" ? String(localized: "off") : (current ?? String(localized: "detected automatically"))
+                note(String(localized: "Spelling here: \(shown). Available: \(available.joined(separator: ", "))"), in: buffer)
+                return .none
+            }
+            switch wanted {
+            case "off", "none":
+                setSpellingLanguage("off", for: buffer.name)
+                note(String(localized: "No spelling or word suggestions here."), in: buffer)
+            case "auto":
+                setSpellingLanguage(nil, for: buffer.name)
+                note(String(localized: "Spelling here follows the language macOS detects."), in: buffer)
+            default:
+                // "es" matches "es" or "es_ES"; an exact code wins.
+                let match = available.first { $0.lowercased() == wanted }
+                    ?? available.first { $0.lowercased().hasPrefix(wanted + "_") || $0.lowercased().hasPrefix(wanted) }
+                guard let match else {
+                    note(String(localized: "No dictionary for “\(wanted)”. Available: \(available.joined(separator: ", "))"),
+                         in: buffer, kind: .error)
+                    return .none
+                }
+                setSpellingLanguage(match, for: buffer.name)
+                note(String(localized: "Spelling here: \(match)."), in: buffer)
+            }
 
         case "np", "nowplaying":
             guard buffer.kind != .status else { usage("np", in: buffer); return .none }
