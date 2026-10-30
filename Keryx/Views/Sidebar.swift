@@ -143,6 +143,9 @@ private struct BufferRow: View {
                 }
             }
             Button("Mark as read") { session.markRead(buffer) }
+            if buffer.kind != .status {
+                WritingLanguageMenu(session: session, name: buffer.name)
+            }
             if buffer.kind == .query {
                 Button(session.isBuddy(buffer.name) ? String(localized: "Remove from contacts") : String(localized: "Add to contacts")) {
                     if session.isBuddy(buffer.name) { session.removeBuddy(buffer.name) } else { session.addBuddy(buffer.name) }
@@ -151,6 +154,35 @@ private struct BufferRow: View {
             Divider()
             Button(buffer.kind == .channel ? String(localized: "Leave channel") : String(localized: "Close conversation")) {
                 model.close(buffer, in: session)
+            }
+        }
+    }
+}
+
+/// The conversation's spelling and word-suggestion language (same as `/lang`):
+/// detected by macOS, off, or one of the installed dictionaries.
+private struct WritingLanguageMenu: View {
+    let session: Session
+    let name: String
+
+    private func choice(_ value: String?) -> Binding<Bool> {
+        Binding(get: { session.spellingLanguage(for: name) == value },
+                set: { if $0 { session.setSpellingLanguage(value, for: name) } })
+    }
+
+    private var dictionaries: [(code: String, title: String)] {
+        NSSpellChecker.shared.availableLanguages
+            .map { ($0, Locale.current.localizedString(forIdentifier: $0)?.capitalized(with: .current) ?? $0) }
+            .sorted { $0.title.localizedStandardCompare($1.title) == .orderedAscending }
+    }
+
+    var body: some View {
+        Menu("Writing language") {
+            Toggle("Detect automatically", isOn: choice(nil))
+            Toggle("Off", isOn: choice("off"))
+            Divider()
+            ForEach(dictionaries, id: \.code) { dictionary in
+                Toggle(dictionary.title, isOn: choice(dictionary.code))
             }
         }
     }
