@@ -9,7 +9,10 @@ struct KeryxApp: App {
         Window("Keryx", id: "main") {
             RootView()
                 .environment(model)
-                .onAppear { delegate.model = model }
+                .onAppear {
+                    delegate.model = model
+                    model.updateBadge()
+                }
                 .frame(minWidth: 760, minHeight: 480)
         }
         .defaultSize(width: 1180, height: 760)

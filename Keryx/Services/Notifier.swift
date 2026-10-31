@@ -46,7 +46,9 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
     }
 
     func setBadge(_ count: Int) {
-        NSApp.dockTile.badgeLabel = count > 0 ? "\(count)" : nil
+        // AppModel starts before NSApplication exists (it's the App's @State);
+        // RootView sets the badge again once the window is up.
+        NSApp?.dockTile.badgeLabel = count > 0 ? "\(count)" : nil
     }
 
     nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter,
