@@ -13,6 +13,8 @@ name: release
 #     AC_APPLE_ID             your Apple ID email
 #     AC_PASSWORD             an app-specific password (appleid.apple.com)
 #     AC_TEAM_ID              your 10-char Team ID
+#   Homebrew (optional; without it the cask step is skipped):
+#     HOMEBREW_TAP_TOKEN      token with Contents read/write on prietus/homebrew-tap
 
 on:
   push:
@@ -31,6 +33,7 @@ jobs:
     runs-on: macos-26
     env:
       TAG: ${{ github.event.inputs.tag || github.ref_name }}
+      HAS_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -132,6 +135,30 @@ jobs:
           gh release create "$TAG" --title "Keryx $TAG" --generate-notes \
             || echo "release $TAG already exists"
           gh release upload "$TAG" "$ASSET" --clobber
+
+      # Point prietus/homebrew-tap's Casks/keryx.rb at this release, so
+      # `brew upgrade --cask keryx` picks it up. Needs HOMEBREW_TAP_TOKEN: a
+      # fine-grained token with Contents read/write on prietus/homebrew-tap.
+      - name: Update Homebrew cask
+        if: env.HAS_TAP_TOKEN == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+        run: |
+          set -euo pipefail
+          VERSION="${TAG#v}"
+          SHA=$(shasum -a 256 "$ASSET" | awk '{print $1}')
+          API=repos/prietus/homebrew-tap/contents/Casks/keryx.rb
+          BLOB=$(gh api "$API" --jq .sha)
+          gh api "$API" --jq .content | base64 --decode > keryx.rb
+          sed -i '' -E \
+            -e "s/^  version \".*\"/  version \"$VERSION\"/" \
+            -e "s/^  sha256 \".*\"/  sha256 \"$SHA\"/" keryx.rb
+          grep -q "version \"$VERSION\"" keryx.rb && grep -q "$SHA" keryx.rb
+          gh api -X PUT "$API" \
+            -f message="keryx $VERSION" \
+            -f content="$(base64 -i keryx.rb | tr -d '\n')" \
+            -f sha="$BLOB" >/dev/null
+          echo "cask updated to $VERSION ($SHA)"
 
       - name: Clean up keychain
         if: always()
