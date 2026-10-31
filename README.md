@@ -10,6 +10,22 @@ in front of everything else.
 
 ![Keryx showing #ergo: the aligned transcript with coloured nicks, a threaded reply, /np lines and a link card (nicks masked with privacy mode)](docs/screenshot.png)
 
+## Install
+
+Keryx needs macOS 15 or later. With [Homebrew](https://brew.sh):
+
+```sh
+brew install --cask prietus/tap/keryx
+```
+
+Upgrade with `brew upgrade --cask keryx`. To remove it, `brew uninstall --cask keryx`;
+add `--zap` to also delete your networks, scrollback and settings (passwords stay
+in the Keychain).
+
+Or download the zip from [Releases](https://github.com/prietus/keryx/releases)
+and drag `Keryx.app` to Applications. Builds are signed with a Developer ID and
+notarized by Apple.
+
 ## Reading
 
 - **Compact, aligned transcript**: one line per message, every line timed, text
