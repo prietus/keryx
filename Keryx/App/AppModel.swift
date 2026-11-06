@@ -33,6 +33,7 @@ final class AppModel {
     var editingProfile: Session?
 
     private var saveTask: Task<Void, Never>?
+    @ObservationIgnored private var autoAway: AutoAway?
 
     /// The app is hosting the unit tests: it must not touch your networks.
     static var isRunningTests: Bool {
@@ -94,6 +95,10 @@ final class AppModel {
                                                           object: nil, queue: .main) { [weak self] _ in
             MainActor.assumeIsolated { self?.reconnectDropped() }
         }
+        autoAway = AutoAway(preferences: preferences) { [weak self] in
+            self.map { Array($0.sessions.values) } ?? []
+        }
+        autoAway?.start()
         startAutosave()
     }
 

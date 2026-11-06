@@ -35,6 +35,12 @@ final class Preferences {
     var notifyDirect: Bool { didSet { defaults.set(notifyDirect, forKey: "notifyDirect") } }
     var sendTyping: Bool { didSet { defaults.set(sendTyping, forKey: "sendTyping") } }
     var keepHistory: Bool { didSet { defaults.set(keepHistory, forKey: "keepHistory") } }
+    /// Marks you away while the screen is locked, or after a while idle.
+    var autoAway: Bool { didSet { defaults.set(autoAway, forKey: "autoAway") } }
+    /// Minutes without touching the Mac before auto-away; 0 is only when locked.
+    var autoAwayMinutes: Int { didSet { defaults.set(autoAwayMinutes, forKey: "autoAwayMinutes") } }
+    /// The reason auto-away gives; empty uses a plain "Away".
+    var awayMessage: String { didSet { defaults.set(awayMessage, forKey: "awayMessage") } }
     /// Masks every nick with a stable pseudonym (screenshots, streaming).
     var privacyMode = false
 
@@ -54,6 +60,7 @@ final class Preferences {
             "bodySize": 13.0, "showPresence": true, "presenceOnlyForSpeakers": true,
             "inlineImages": true, "imageSize": 160, "colorNicks": true, "animateGIFs": true, "linkFootnotes": true, "notifyMentions": true,
             "notifyDirect": true, "sendTyping": true, "keepHistory": true,
+            "autoAway": true, "autoAwayMinutes": 15,
             "uploaderField": "file", "uploaderResponse": "text", "preferServerFileHost": true,
         ])
         bodySize = defaults.double(forKey: "bodySize")
@@ -73,6 +80,9 @@ final class Preferences {
         notifyDirect = defaults.bool(forKey: "notifyDirect")
         sendTyping = defaults.bool(forKey: "sendTyping")
         keepHistory = defaults.bool(forKey: "keepHistory")
+        autoAway = defaults.bool(forKey: "autoAway")
+        autoAwayMinutes = defaults.integer(forKey: "autoAwayMinutes")
+        awayMessage = defaults.string(forKey: "awayMessage") ?? ""
         uploaderURL = defaults.string(forKey: "uploaderURL") ?? ""
         uploaderField = defaults.string(forKey: "uploaderField") ?? "file"
         uploaderToken = defaults.string(forKey: "uploaderToken") ?? ""

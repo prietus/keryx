@@ -52,6 +52,18 @@ struct SettingsView: View {
                         .onChange(of: words) { _, new in prefs.highlightWords = new.split(separator: " ").map(String.init) }
                 }
 
+                FormSection(title: "Away") {
+                    Statement(text: "Mark me away when I step away", isOn: $prefs.autoAway,
+                              note: "On every network, and back when you return. An /away of your own is left alone.")
+                    if prefs.autoAway {
+                        WordChoice(label: "When", selection: $prefs.autoAwayMinutes, options: [
+                            (0, "Screen locked"), (5, "5 min idle"), (15, "15 min idle"), (30, "30 min idle"),
+                        ])
+                        RuledField(label: "Message", text: $prefs.awayMessage, prompt: "Away",
+                                   note: "What others see. With a locked screen it applies at once.")
+                    }
+                }
+
                 FormSection(title: "Writing") {
                     Statement(text: "Let others know while you type", isOn: $prefs.sendTyping,
                               note: "Sends +typing; others see your name as the script’s next cue.")

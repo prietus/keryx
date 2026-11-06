@@ -68,6 +68,8 @@ notarized by Apple.
 - SASL PLAIN, EXTERNAL (CertFP, PKCS#12) and SCRAM-SHA-256, preferred
   automatically; secrets in the Keychain.
 - Global history search (⌘⇧F), diacritic-insensitive, over SQLite FTS5.
+- Auto-away: away on every network while the screen is locked or after a
+  while idle, and back when you return; an `/away` of your own is left alone.
 - Command palette (⌘K), notifications for mentions and private messages,
   MONITOR-backed contacts, ignore and dim, privacy mode for screenshots.
 - English and Spanish.

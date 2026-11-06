@@ -379,3 +379,38 @@ struct TestHostTests {
         #expect(model.sessions.isEmpty)
     }
 }
+
+// MARK: - Auto-away
+
+extension SessionTests {
+
+    @Test("Auto-away marks you away and back, only where it did")
+    func autoAway() async throws {
+        await register()
+        let away = AutoAway(preferences: Preferences()) { [session] in [session] }
+        away.apply(away: true)
+        #expect(await sent { $0.hasPrefix("AWAY ") })
+        await transport.receive(":srv 306 me :You have been marked as being away")
+        #expect(await eventually { session.isAway })
+        away.apply(away: true)  // still away: nothing more to say
+        #expect(await transport.sent.filter { $0.hasPrefix("AWAY") }.count == 1)
+        away.apply(away: false)
+        #expect(await sent("AWAY"))
+        #expect(away.marked.isEmpty)
+    }
+
+    @Test("Auto-away leaves an /away of your own alone")
+    func autoAwayRespectsYours() async throws {
+        await register()
+        let buffer = session.statusBuffer
+        _ = session.runInput("/away lunch", in: buffer, replyTo: nil)
+        #expect(await sent("AWAY lunch"))
+        await transport.receive(":srv 306 me :You have been marked as being away")
+        #expect(await eventually { session.isAway })
+        let away = AutoAway(preferences: Preferences()) { [session] in [session] }
+        away.apply(away: true)
+        away.apply(away: false)
+        try await Task.sleep(for: .milliseconds(50))
+        #expect(await transport.sent.filter { $0.hasPrefix("AWAY") } == ["AWAY lunch"])
+    }
+}

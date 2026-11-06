@@ -4845,6 +4845,96 @@
           }
         }
       }
+    },
+    "Mark me away when I step away" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Marcarme ausente cuando me levanto"
+          }
+        }
+      }
+    },
+    "On every network, and back when you return. An /away of your own is left alone." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En todas las redes, y de vuelta cuando regresas. Un /away tuyo no se toca."
+          }
+        }
+      }
+    },
+    "When" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuándo"
+          }
+        }
+      }
+    },
+    "Screen locked" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pantalla bloqueada"
+          }
+        }
+      }
+    },
+    "5 min idle" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5 min inactivo"
+          }
+        }
+      }
+    },
+    "15 min idle" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "15 min inactivo"
+          }
+        }
+      }
+    },
+    "30 min idle" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 min inactivo"
+          }
+        }
+      }
+    },
+    "Message" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mensaje"
+          }
+        }
+      }
+    },
+    "What others see. With a locked screen it applies at once." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lo que ven los demás. Al bloquear la pantalla se aplica al momento."
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

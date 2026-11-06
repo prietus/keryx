@@ -176,8 +176,10 @@ extension Session {
             requestWhois(nick)
 
         case "away":
+            awayByUser = !rest.isEmpty
             send(IRCMessage(command: "AWAY", parameters: rest.isEmpty ? [] : [rest]))
         case "back":
+            awayByUser = false
             send(IRCMessage(command: "AWAY"))
 
         case "invite":

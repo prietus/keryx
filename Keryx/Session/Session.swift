@@ -41,6 +41,8 @@ final class Session: Identifiable {
     internal(set) var isupport = ISupport()
     internal(set) var enabledCaps: Set<String> = []
     internal(set) var isAway = false
+    /// You set it yourself (/away with a reason), so auto-away leaves it alone.
+    internal(set) var awayByUser = false
 
     /// All conversations, status window first.
     internal(set) var buffers: [Buffer]
@@ -472,6 +474,9 @@ final class Session: Identifiable {
         case .welcome:
             status = .connected
             reconnectAttempt = 0
+            // A new connection starts present, whatever the last one was.
+            isAway = false
+            awayByUser = false
             stsUpgradePort = nil
             if let nick = message.first { currentNick = nick }
             addStatus(message.trailing ?? String(localized: "Connected."))
