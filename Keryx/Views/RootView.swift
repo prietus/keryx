@@ -32,6 +32,8 @@ struct RootView: View {
                         .foregroundStyle(Palette.bluePencil)
                         .help("Nicks are shown masked (⌘⇧P)")
                 }
+                Button { model.showMentions = true } label: { Image(systemName: "at") }
+                    .help("Mentions of you (⌘⇧M)")
                 Button { model.showGlobalSearch = true } label: { Image(systemName: "text.magnifyingglass") }
                     .help("Search all history (⌘⇧F)")
                 if let session = model.selectedSession, let buffer = model.selectedBuffer, buffer.kind == .channel {
@@ -58,6 +60,7 @@ struct RootView: View {
             }
         }
         .sheet(isPresented: $model.showGlobalSearch) { GlobalSearch() }
+        .sheet(isPresented: $model.showMentions) { MentionsView() }
         .sheet(item: $model.editingNetwork) { network in NetworkEditor(network: network) }
         .sheet(item: $model.editingProfile) { session in ProfileSheet(session: session) }
         .sheet(isPresented: $model.showProtocolLog) {
@@ -287,6 +290,70 @@ struct GlobalSearch: View {
             rest = end < after.endIndex ? after[after.index(after: end)...] : ""
         }
         return result + Text(String(rest))
+    }
+}
+
+/// ⌘⇧M: every line that named you, on every network, newest first.
+struct MentionsView: View {
+    @Environment(AppModel.self) private var model
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        let mentions = model.mentions
+        let networks = Set(mentions.map(\.session.id)).count
+        VStack(alignment: .leading, spacing: 0) {
+            Text("Mentions")
+                .font(Typeset.title())
+                .padding(18)
+            Rectangle().fill(Palette.rule).frame(height: 0.5)
+            if mentions.isEmpty {
+                Text("Nobody has mentioned you in the history Keryx has loaded.")
+                    .font(Typeset.direction())
+                    .foregroundStyle(Palette.graphite)
+                    .padding(18)
+                Spacer()
+            } else {
+                List(mentions) { mention in
+                    Button {
+                        model.open(mention)
+                        dismiss()
+                    } label: {
+                        VStack(alignment: .leading, spacing: 3) {
+                            HStack(alignment: .firstTextBaseline) {
+                                Text(model.shown(mention.line.sender ?? "")).font(Typeset.speaker())
+                                Text(place(of: mention, showNetwork: networks > 1))
+                                    .font(Typeset.note()).foregroundStyle(Palette.graphite)
+                                Spacer()
+                                Text(mention.line.timestamp.formatted(date: .abbreviated, time: .shortened))
+                                    .font(Typeset.margin()).foregroundStyle(Palette.graphite)
+                            }
+                            Text(MessageFormatter.format(model.masked(mention.line.text, in: mention.buffer, of: mention.session),
+                                                         size: model.preferences.bodySize).text)
+                                .lineLimit(3)
+                        }
+                        .padding(.vertical, 4)
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                }
+                .listStyle(.plain)
+                .scrollContentBackground(.hidden)
+            }
+            HStack {
+                Text(mentions.isEmpty ? "" : String(localized: "\(mentions.count) mentions"))
+                    .font(Typeset.note()).foregroundStyle(Palette.graphite)
+                Spacer()
+                Button("Close") { dismiss() }.keyboardShortcut(.cancelAction)
+            }
+            .padding(12)
+        }
+        .frame(width: 640, height: 520)
+        .background(Palette.paper)
+    }
+
+    private func place(of mention: AppModel.Mention, showNetwork: Bool) -> String {
+        let name = mention.buffer.kind == .query ? model.shown(mention.buffer.name) : mention.buffer.name
+        return showNetwork ? "\(name) · \(mention.session.displayName)" : name
     }
 }
 

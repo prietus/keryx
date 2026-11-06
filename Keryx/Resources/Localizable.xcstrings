@@ -4775,6 +4775,76 @@
           }
         }
       }
+    },
+    "Mentions" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menciones"
+          }
+        }
+      }
+    },
+    "Mentions of you (⌘⇧M)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menciones tuyas (⌘⇧M)"
+          }
+        }
+      }
+    },
+    "Nobody has mentioned you in the history Keryx has loaded." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nadie te ha mencionado en el historial que Keryx tiene cargado."
+          }
+        }
+      }
+    },
+    "%lld mentions" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld mention"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld mentions"
+                }
+              }
+            }
+          }
+        },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld mención"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld menciones"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

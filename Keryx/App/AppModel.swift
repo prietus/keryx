@@ -25,6 +25,7 @@ final class AppModel {
     // Overlays
     var showPalette = false
     var showGlobalSearch = false
+    var showMentions = false
     var showFind = false
     var editingNetwork: NetworkConfig?
     var showMembers = true
@@ -59,6 +60,7 @@ final class AppModel {
                 selectedSessionID = demo.id
                 selectedBufferID = channel.id
             }
+            showMentions = ProcessInfo.processInfo.environment["KERYX_DEMO_MENTIONS"] != nil
             return
         }
         #endif
@@ -491,6 +493,29 @@ final class AppModel {
     }
 
     /// Jumps from a search hit to its conversation.
+    /// A line that named you, with where it was said.
+    struct Mention: Identifiable {
+        let line: ChatLine
+        let buffer: Buffer
+        let session: Session
+        var id: UUID { line.id }
+    }
+
+    /// Every line in the loaded scrollback that mentions you, newest first.
+    var mentions: [Mention] {
+        sessions.values.flatMap { session in
+            session.buffers.flatMap { buffer in
+                buffer.lines.filter(\.mentionsMe).map { Mention(line: $0, buffer: buffer, session: session) }
+            }
+        }
+        .sorted { $0.line.timestamp > $1.line.timestamp }
+    }
+
+    func open(_ mention: Mention) {
+        select(mention.buffer, in: mention.session)
+        mention.session.jumpRequest = Session.JumpRequest(bufferID: mention.buffer.id, lineID: mention.line.id)
+    }
+
     func open(_ hit: SearchIndex.Hit) {
         guard let session = sessions[hit.network],
               let buffer = session.buffer(named: hit.buffer,

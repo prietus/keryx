@@ -40,6 +40,8 @@ struct KeryxCommands: Commands {
                 .keyboardShortcut("f")
             Button("Search All History") { model.showGlobalSearch = true }
                 .keyboardShortcut("f", modifiers: [.command, .shift])
+            Button("Mentions") { model.showMentions = true }
+                .keyboardShortcut("m", modifiers: [.command, .shift])
         }
         CommandMenu("Conversation") {
             Button("Go To…") { model.showPalette.toggle() }

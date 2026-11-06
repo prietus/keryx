@@ -37,6 +37,8 @@ notarized by Apple.
 - **Threaded replies** (`+reply`): an answer sits under the line it answers when
   that line is close by, like [irkt](https://github.com/prietus/irkt); further
   away it stays where it arrived, with a one-line quote that jumps to the original.
+- **Mentions** (⌘⇧M): every line that named you, on every network, newest
+  first; click one to jump to it in its conversation.
 - **Unread marker** (⁂) where you left off, synced across devices with
   `draft/read-marker`.
 - **Link previews**: cards with site, title, summary and picture; images as
@@ -163,6 +165,7 @@ Then anything that isn't a script name goes to it: `/exec uptime`,
 | --- | --- |
 | ⌘K | Go to a conversation, or run a command |
 | ⌘F / ⌘⇧F | Find in conversation / search all history |
+| ⌘⇧M | Mentions of you |
 | ⌘⌥↑ ⌘⌥↓ | Previous / next conversation |
 | ⌘⌥⇧↓ | Next unread |
 | ⌘⇧W | Close conversation |
