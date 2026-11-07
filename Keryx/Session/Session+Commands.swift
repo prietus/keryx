@@ -28,6 +28,9 @@ struct SlashCommand: Identifiable, Sendable {
     static let all: [SlashCommand] = [
         .init(name: "join", usage: String(localized: "/join #channel [key]"), summary: String(localized: "Joins a channel; with no arguments, accepts the latest invitation.")),
         .init(name: "part", usage: String(localized: "/part [#channel] [reason]"), summary: String(localized: "Leaves a channel.")),
+        .init(name: "hop", usage: String(localized: "/hop [#channel]"), summary: String(localized: "Leaves and rejoins a channel.")),
+        .init(name: "detach", usage: String(localized: "/detach [#channel]"), summary: String(localized: "Hides a channel while soju stays in it and keeps its history.")),
+        .init(name: "attach", usage: String(localized: "/attach #channel"), summary: String(localized: "Brings back a channel detached on soju.")),
         .init(name: "close", usage: String(localized: "/close"), summary: String(localized: "Closes this conversation (and leaves it if it’s a channel).")),
         .init(name: "query", usage: String(localized: "/query nick [text]"), summary: String(localized: "Opens a private conversation.")),
         .init(name: "msg", usage: String(localized: "/msg target text"), summary: String(localized: "Sends a message without opening the conversation.")),
@@ -69,6 +72,7 @@ struct SlashCommand: Identifiable, Sendable {
         .init(name: "clear", usage: String(localized: "/clear"), summary: String(localized: "Clears this conversation’s view.")),
         .init(name: "caps", usage: String(localized: "/caps"), summary: String(localized: "Active IRCv3 capabilities.")),
         .init(name: "raw", usage: String(localized: "/raw line"), summary: String(localized: "Sends a line as is.")),
+        .init(name: "reconnect", usage: String(localized: "/reconnect"), summary: String(localized: "Connects again if the connection dropped.")),
         .init(name: "quit", usage: String(localized: "/quit [reason]"), summary: String(localized: "Disconnects from this network.")),
         .init(name: "help", usage: String(localized: "/help"), summary: String(localized: "Lists the commands.")),
     ]
@@ -81,6 +85,17 @@ extension Session {
         if text.hasPrefix("/"), !text.hasPrefix("//") { return runCommand(text, in: buffer) }
         sendMessage(text.hasPrefix("//") ? String(text.dropFirst()) : text, to: buffer, replyTo: replyTo)
         return .none
+    }
+
+    /// The network's "on connect" lines, each as if typed in the status
+    /// window (the leading / optional), with `$nick` for the nick you got.
+    func runConnectCommands() {
+        for line in config.connectCommands {
+            let text = line.trimmingCharacters(in: .whitespaces)
+            guard !text.isEmpty else { continue }
+            let command = (text.hasPrefix("/") ? text : "/" + text).replacingOccurrences(of: "$nick", with: currentNick)
+            _ = runInput(command, in: statusBuffer, replyTo: nil)
+        }
     }
 
     private func usage(_ name: String, in buffer: Buffer) {
@@ -119,6 +134,42 @@ extension Session {
                 return .closed(b)
             }
             send(.part(target, reason: reason.isEmpty ? nil : reason))
+
+        case "hop", "rejoin", "cycle":
+            let target = args.first.flatMap { isupport.isChannel($0) ? $0 : nil } ?? channel
+            guard let target else { usage("hop", in: buffer); return .none }
+            send(.part(target, reason: nil))
+            join(target)
+
+        case "detach":
+            guard config.isBouncer || config.boundNetworkID != nil else {
+                note(String(localized: "Detaching needs a soju bouncer."), in: buffer, kind: .error)
+                return .none
+            }
+            let target = args.first.flatMap { isupport.isChannel($0) ? $0 : nil } ?? channel
+            guard let target else { usage("detach", in: buffer); return .none }
+            // soju stays in the channel and logs it; we just stop being shown it.
+            send(.privmsg("BouncerServ", "channel update \(target) -detached true"))
+            if let b = self.buffer(named: target, kind: .channel, createIfMissing: false) {
+                removeBuffer(b)
+                return .closed(b)
+            }
+
+        case "attach":
+            guard let name = args.first else { usage("attach", in: buffer); return .none }
+            let full = isupport.isChannel(name) ? name : "#" + name
+            // Joining a detached channel is how soju attaches it again.
+            join(full)
+            return self.buffer(named: full, kind: .channel, createIfMissing: true).map { .select($0) } ?? .none
+
+        case "reconnect", "connect":
+            guard !status.isActive else {
+                note(String(localized: "Already connected."), in: buffer)
+                return .none
+            }
+            reconnectTask?.cancel()
+            status = .offline
+            connect()
 
         case "close":
             guard buffer.kind != .status else { return .none }

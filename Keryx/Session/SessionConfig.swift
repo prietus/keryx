@@ -20,6 +20,7 @@ struct SessionConfig: Sendable, Identifiable {
     var serverPassword: String?
     var isBouncer: Bool
     var autoJoinChannels: [String]
+    var connectCommands: [String] = []
     var certificateData: Data?
     var certificatePassphrase: String?
     /// Set when this session is bound to one soju network (its bouncer id).
@@ -66,6 +67,7 @@ struct SessionConfig: Sendable, Identifiable {
         serverPassword = config.serverPassword
         isBouncer = config.isBouncer
         autoJoinChannels = config.autoJoinChannels
+        connectCommands = config.connectCommands ?? []
         certificateData = config.certificateData
         certificatePassphrase = config.certificatePassphrase
     }

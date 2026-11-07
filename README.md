@@ -65,6 +65,9 @@ notarized by Apple.
 ## Everything else
 
 - Multiple networks; a soju account opens one session per bouncer network.
+  Each network can run commands on connect (`/mode $nick +x`, …) before joining.
+- `/detach` and `/attach` a channel on soju: hidden here, still logged there.
+  `/hop` rejoins a channel; `/reconnect` brings back a dropped connection.
 - SASL PLAIN, EXTERNAL (CertFP, PKCS#12) and SCRAM-SHA-256, preferred
   automatically; secrets in the Keychain.
 - Global history search (⌘⇧F), diacritic-insensitive, over SQLite FTS5.

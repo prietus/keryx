@@ -106,6 +106,9 @@ struct NetworkConfig: Codable, Identifiable, Sendable, Equatable {
     var isBouncer = false
     var autoConnect = true
     var autoJoinChannels: [String] = []
+    /// Commands run right after connecting, before joining (`/msg NickServ …`,
+    /// `/mode $nick +x`). Optional so configs saved before it still load.
+    var connectCommands: [String]?
     /// PKCS#12 identity for CertFP, stored next to the config.
     var certificateData: Data?
 

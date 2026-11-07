@@ -484,6 +484,9 @@ final class Session: Identifiable {
             // The soju control connection has no channels of its own: those
             // belong to the per-network sessions, and soju rejects JOIN here.
             let isControl = isBouncerControl && config.boundNetworkID == nil
+            // Bound soju sessions share the account's config: the commands
+            // are for the connection you configured, not each network under it.
+            if config.boundNetworkID == nil { runConnectCommands() }
             if !isControl { autoJoin() }
             subscribeMetadata()
             publishProfile()

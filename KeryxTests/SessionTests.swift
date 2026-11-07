@@ -414,3 +414,103 @@ extension SessionTests {
         #expect(await transport.sent.filter { $0.hasPrefix("AWAY") } == ["AWAY lunch"])
     }
 }
+
+// MARK: - Connection and channel commands
+
+@MainActor
+@Suite("Commands", .serialized)
+struct CommandTests {
+    let transport = FakeTransport()
+
+    func session(_ configure: (inout SessionConfig) -> Void = { _ in }) -> Session {
+        var config = SessionConfig(host: "irc.test", useTLS: true, nickname: "me")
+        configure(&config)
+        return Session(config: config, transport: transport)
+    }
+
+    func eventually(_ condition: () async -> Bool) async -> Bool {
+        let deadline = ContinuousClock.now + .seconds(2)
+        while ContinuousClock.now < deadline {
+            if await condition() { return true }
+            try? await Task.sleep(for: .milliseconds(5))
+        }
+        return await condition()
+    }
+
+    func register(_ session: Session) async {
+        session.connect()
+        _ = await eventually { await transport.sent.contains("CAP LS 302") }
+        await transport.receive(":srv CAP * LS :batch", ":srv CAP * ACK :batch",
+                                ":srv 001 me_ :Welcome", ":srv 005 me_ CHANTYPES=# :are supported")
+        _ = await eventually { session.status == .connected }
+    }
+
+    @Test("On-connect commands run after welcome, before joining, with $nick")
+    func connectCommands() async {
+        let session = session {
+            $0.connectCommands = ["/mode $nick +x", "msg NickServ hello"]
+            $0.autoJoinChannels = ["#c"]
+        }
+        await register(session)
+        #expect(await eventually {
+            let sent = await transport.sent
+            guard let mode = sent.firstIndex(of: "MODE me_ +x"),
+                  let msg = sent.firstIndex(of: "PRIVMSG NickServ hello"),
+                  let join = sent.firstIndex(where: { $0.hasPrefix("JOIN #c") }) else { return false }
+            return mode < msg && msg < join
+        })
+    }
+
+    @Test("/hop parts and rejoins, keeping the conversation")
+    func hop() async throws {
+        let session = session()
+        await register(session)
+        await transport.receive(":me_!u@h JOIN #c")
+        _ = await eventually { session.buffers.contains { $0.name == "#c" } }
+        let buffer = try #require(session.buffers.first { $0.name == "#c" })
+        _ = session.runInput("/hop", in: buffer, replyTo: nil)
+        #expect(await eventually {
+            let sent = await transport.sent
+            guard let part = sent.firstIndex(of: "PART #c") else { return false }
+            return sent[part...].contains { $0.hasPrefix("JOIN #c") }
+        })
+        #expect(session.buffers.contains { $0.id == buffer.id })
+    }
+
+    @Test("/detach asks soju to detach and closes the conversation")
+    func detach() async throws {
+        let session = session { $0.isBouncer = true }
+        await register(session)
+        await transport.receive(":me_!u@h JOIN #c")
+        _ = await eventually { session.buffers.contains { $0.name == "#c" } }
+        let buffer = try #require(session.buffers.first { $0.name == "#c" })
+        let outcome = session.runInput("/detach", in: buffer, replyTo: nil)
+        #expect(await eventually { await transport.sent.contains("PRIVMSG BouncerServ :channel update #c -detached true") })
+        if case .closed(let closed) = outcome { #expect(closed.id == buffer.id) } else { Issue.record("not closed") }
+        #expect(!session.buffers.contains { $0.id == buffer.id })
+    }
+
+    @Test("/detach without soju only explains")
+    func detachWithoutBouncer() async throws {
+        let session = session()
+        await register(session)
+        await transport.receive(":me_!u@h JOIN #c")
+        _ = await eventually { session.buffers.contains { $0.name == "#c" } }
+        let buffer = try #require(session.buffers.first { $0.name == "#c" })
+        _ = session.runInput("/detach", in: buffer, replyTo: nil)
+        try await Task.sleep(for: .milliseconds(50))
+        #expect(!(await transport.sent.contains { $0.contains("BouncerServ") }))
+        #expect(session.buffers.contains { $0.id == buffer.id })
+    }
+
+    @Test("/reconnect does nothing while connected")
+    func reconnectWhileConnected() async {
+        let session = session()
+        await register(session)
+        let before = await transport.endpoints.count
+        _ = session.runInput("/reconnect", in: session.statusBuffer, replyTo: nil)
+        #expect(session.status == .connected)
+        #expect(await transport.endpoints.count == before)
+    }
+}
+

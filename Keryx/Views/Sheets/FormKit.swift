@@ -7,6 +7,8 @@ struct RuledField: View {
     @Binding var text: String
     var prompt: LocalizedStringKey = ""
     var secure = false
+    /// Grows to several lines (one entry per line).
+    var multiline = false
     var note: LocalizedStringKey?
 
     @FocusState private var focused: Bool
@@ -19,6 +21,9 @@ struct RuledField: View {
             Group {
                 if secure {
                     SecureField(prompt, text: $text)
+                } else if multiline {
+                    TextField(prompt, text: $text, axis: .vertical)
+                        .lineLimit(2...8)
                 } else {
                     TextField(prompt, text: $text)
                 }

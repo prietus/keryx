@@ -7,6 +7,7 @@ struct NetworkEditor: View {
     @State private var network: NetworkConfig
     @State private var port: String
     @State private var channels: String
+    @State private var commands: String
     @State private var saslPassword: String
     @State private var serverPassword: String
     @State private var certPassphrase: String
@@ -19,6 +20,7 @@ struct NetworkEditor: View {
         _network = State(initialValue: network)
         _port = State(initialValue: String(network.port))
         _channels = State(initialValue: network.autoJoinChannels.joined(separator: " "))
+        _commands = State(initialValue: (network.connectCommands ?? []).joined(separator: "\n"))
         _saslPassword = State(initialValue: network.saslPassword ?? "")
         _serverPassword = State(initialValue: network.serverPassword ?? "")
         _certPassphrase = State(initialValue: network.certificatePassphrase ?? "")
@@ -112,6 +114,9 @@ struct NetworkEditor: View {
                     FormSection(title: "On connect") {
                         RuledField(label: "Channels", text: $channels, prompt: "#rust #swift",
                                    note: network.isBouncer ? "With a bouncer this is rarely needed: it remembers your channels." as LocalizedStringKey : nil)
+                        RuledField(label: "Commands", text: $commands, prompt: "/mode $nick +x",
+                                   multiline: true,
+                                   note: "One per line, run before joining. $nick is your nick. For NickServ, SASL above keeps the password in the Keychain.")
                         Statement(text: "Connect when Keryx opens", isOn: $network.autoConnect)
                     }
                 }
@@ -196,6 +201,8 @@ struct NetworkEditor: View {
         network.nickname = network.nickname.trimmingCharacters(in: .whitespaces)
         network.port = Int(port) ?? 6697
         network.autoJoinChannels = channels.split(whereSeparator: { $0 == " " || $0 == "," }).map(String.init)
+        let lines = commands.split(separator: "\n").map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }
+        network.connectCommands = lines.isEmpty ? nil : lines
         network.saslPassword = saslPassword
         network.serverPassword = serverPassword
         network.certificatePassphrase = certPassphrase
