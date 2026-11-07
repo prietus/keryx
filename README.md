@@ -8,6 +8,9 @@ transcript — time, speaker, text — with each nick in its own colour, joins a
 parts folded into a single quiet line, and the conversation you're reading kept
 in front of everything else.
 
+**Website and documentation: [keryx.priet.us](https://keryx.priet.us)** —
+install, getting started, configuration, every feature and command.
+
 ![Keryx showing #ergo: the aligned transcript with coloured nicks, a threaded reply, /np lines and a link card (nicks masked with privacy mode)](docs/screenshot.png)
 
 ## Install
