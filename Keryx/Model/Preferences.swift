@@ -1,4 +1,4 @@
-import Foundation
+import AppKit
 import Observation
 
 /// App-wide preferences, backed by UserDefaults.
@@ -12,6 +12,13 @@ final class Preferences {
         didSet {
             defaults.set(serifType, forKey: "serifType")
             Typeset.design = serifType ? .serif : .default
+        }
+    }
+    var theme: Theme {
+        didSet {
+            defaults.set(theme.rawValue, forKey: "theme")
+            Palette.theme = theme
+            applyAppearance()
         }
     }
     /// Words besides your nick that mark a line as meant for you.
@@ -52,6 +59,12 @@ final class Preferences {
     var uploaderResponse: String { didSet { defaults.set(uploaderResponse, forKey: "uploaderResponse") } }
     var preferServerFileHost: Bool { didSet { defaults.set(preferServerFileHost, forKey: "preferServerFileHost") } }
 
+    /// Windows, sheets and system controls take the theme's light or dark.
+    /// Preferences start before NSApplication, so RootView calls this again.
+    func applyAppearance() {
+        NSApp?.appearance = theme.appearance.flatMap(NSAppearance.init(named:))
+    }
+
     /// Stable per-install client name for soju's per-client history (`user@client`).
     let clientName: String
 
@@ -67,6 +80,15 @@ final class Preferences {
         let serif = defaults.bool(forKey: "serifType")
         serifType = serif
         Typeset.design = serif ? .serif : .default
+        var theme = defaults.string(forKey: "theme").flatMap(Theme.init(rawValue:)) ?? .automatic
+        #if DEBUG
+        // Screenshots of each theme without touching your saved choice.
+        if let demo = ProcessInfo.processInfo.environment["KERYX_DEMO_THEME"].flatMap(Theme.init(rawValue:)) {
+            theme = demo
+        }
+        #endif
+        self.theme = theme
+        Palette.theme = theme
         highlightWords = defaults.stringArray(forKey: "highlightWords") ?? []
         showPresence = defaults.bool(forKey: "showPresence")
         presenceOnlyForSpeakers = defaults.bool(forKey: "presenceOnlyForSpeakers")

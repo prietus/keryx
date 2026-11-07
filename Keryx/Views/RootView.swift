@@ -24,6 +24,9 @@ struct RootView: View {
                 Welcome()
             }
         }
+        // Two light (or two dark) themes share an appearance, so nothing
+        // tells the colours to redraw: set the window again instead.
+        .id(model.preferences.theme)
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
                 if model.preferences.privacyMode {

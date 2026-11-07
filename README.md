@@ -78,6 +78,8 @@ notarized by Apple.
   while idle, and back when you return; an `/away` of your own is left alone.
 - Command palette (⌘K), notifications for mentions and private messages,
   MONITOR-backed contacts, ignore and dim, privacy mode for screenshots.
+- Themes: Paper and Sepia (light), Night and Carbon (dark, true black), or
+  Automatic to follow macOS.
 - English and Spanish.
 
 ## IRCv3

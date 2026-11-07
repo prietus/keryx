@@ -9,6 +9,8 @@ struct SettingsView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 30) {
                 FormSection(title: "Reading") {
+                    WordChoice(label: "Theme", selection: $prefs.theme,
+                               options: Theme.allCases.map { ($0, $0.name) })
                     WordChoice(label: "Typeface", selection: $prefs.serifType, options: [
                         (false, "System (SF)"), (true, "Serif (New York)"),
                     ])
@@ -94,6 +96,7 @@ struct SettingsView: View {
         }
         .frame(width: 600, height: 640)
         .background(Palette.paper)
+        .id(model.preferences.theme)
         .onAppear { words = model.preferences.highlightWords.joined(separator: " ") }
     }
 }

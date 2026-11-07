@@ -11,6 +11,7 @@ struct KeryxApp: App {
                 .environment(model)
                 .onAppear {
                     delegate.model = model
+                    model.preferences.applyAppearance()
                     model.updateBadge()
                 }
                 .frame(minWidth: 760, minHeight: 480)

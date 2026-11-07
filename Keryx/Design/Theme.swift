@@ -7,21 +7,25 @@ import AppKit
 /// pencil marks what concerns you; the red pencil marks what went wrong.
 enum Palette {
     /// Page background.
-    static let paper = dynamic(light: 0xF3F4F1, dark: 0x15171C)
+    static let paper = themed(\.paper)
     /// Sidebar / inspector background, a shade off the page.
-    static let board = dynamic(light: 0xE8EAE5, dark: 0x1B1E24)
+    static let board = themed(\.board)
     /// Final, confirmed text.
-    static let ink = dynamic(light: 0x1C1D22, dark: 0xE6E4DE)
+    static let ink = themed(\.ink)
     /// Drafts, unconfirmed lines, stage directions, metadata.
-    static let graphite = dynamic(light: 0x6C6F77, dark: 0x8E919A)
+    static let graphite = themed(\.graphite)
     /// Hairlines and rules.
-    static let rule = dynamic(light: 0xD3D5CF, dark: 0x2B2E36)
+    static let rule = themed(\.rule)
     /// Mentions, links, your attention.
-    static let bluePencil = dynamic(light: 0x2B50C8, dark: 0x7D9BFF)
+    static let bluePencil = themed(\.bluePencil)
     /// Errors and deletions.
-    static let redPencil = dynamic(light: 0xB8332C, dark: 0xFF7D70)
+    static let redPencil = themed(\.redPencil)
     /// The faint wash behind a line that mentions you.
-    static let highlightWash = dynamic(light: 0x2B50C8, dark: 0x7D9BFF, alpha: 0.07)
+    static let highlightWash = themed(\.bluePencil, alpha: 0.07)
+
+    /// The theme chosen in Settings. Read whenever a colour is drawn; the
+    /// app's appearance follows it, and views are re-identified on change.
+    nonisolated(unsafe) static var theme: Theme = .automatic
 
     /// Twelve muted hues for nicks, spread around the wheel but skipping the
     /// blue band the blue pencil (mentions, links) owns. Neighbouring hues
@@ -46,14 +50,68 @@ enum Palette {
         return nickHues[Int(hash % UInt32(nickHues.count))]
     }
 
-    private static func dynamic(light: UInt32, dark: UInt32, alpha: CGFloat = 1) -> Color {
+    private static func themed(_ ink: KeyPath<Theme.Inks, UInt32>, alpha: CGFloat = 1) -> Color {
         Color(nsColor: NSColor(name: nil) { appearance in
-            let hex = appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua ? dark : light
+            let dark = appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+            let hex = theme.inks(dark: dark)[keyPath: ink]
             return NSColor(srgbRed: CGFloat((hex >> 16) & 0xFF) / 255,
                            green: CGFloat((hex >> 8) & 0xFF) / 255,
                            blue: CGFloat(hex & 0xFF) / 255,
                            alpha: alpha)
         })
+    }
+}
+
+/// The page Keryx is set on. Automatic follows macOS between Paper and
+/// Night; the others hold whatever the system does.
+enum Theme: String, CaseIterable, Identifiable, Sendable {
+    case automatic, paper, sepia, night, carbon
+
+    var id: String { rawValue }
+
+    struct Inks {
+        var paper, board, ink, graphite, rule, bluePencil, redPencil: UInt32
+    }
+
+    /// nil follows the system.
+    var appearance: NSAppearance.Name? {
+        switch self {
+        case .automatic: nil
+        case .paper, .sepia: .aqua
+        case .night, .carbon: .darkAqua
+        }
+    }
+
+    /// Paper and Night sit well with the system's translucent sidebar; the
+    /// others paint it in their own board colour so the page reads as one.
+    var paintsSidebar: Bool { self == .sepia || self == .carbon }
+
+    func inks(dark: Bool) -> Inks {
+        switch self {
+        case .automatic: dark ? Self.night.inks(dark: true) : Self.paper.inks(dark: false)
+        // A cool paper, ink nearly black.
+        case .paper: Inks(paper: 0xF3F4F1, board: 0xE8EAE5, ink: 0x1C1D22, graphite: 0x6C6F77,
+                          rule: 0xD3D5CF, bluePencil: 0x2B50C8, redPencil: 0xB8332C)
+        // Old book paper, brown ink: easier on the eyes for long reading.
+        case .sepia: Inks(paper: 0xF4ECDB, board: 0xEADFC8, ink: 0x3A2F25, graphite: 0x86765F,
+                          rule: 0xDACCB0, bluePencil: 0x2C5A9C, redPencil: 0xA63D2A)
+        // The desk at night: blue-grey, ink like chalk.
+        case .night: Inks(paper: 0x15171C, board: 0x1B1E24, ink: 0xE6E4DE, graphite: 0x8E919A,
+                          rule: 0x2B2E36, bluePencil: 0x7D9BFF, redPencil: 0xFF7D70)
+        // True black for OLED and dark rooms, a touch more contrast.
+        case .carbon: Inks(paper: 0x000000, board: 0x0B0B0D, ink: 0xF2F2F0, graphite: 0x9C9CA4,
+                           rule: 0x26262C, bluePencil: 0x8FAEFF, redPencil: 0xFF8A7A)
+        }
+    }
+
+    var name: LocalizedStringKey {
+        switch self {
+        case .automatic: "Automatic"
+        case .paper: "Paper"
+        case .sepia: "Sepia"
+        case .night: "Night"
+        case .carbon: "Carbon"
+        }
     }
 }
 

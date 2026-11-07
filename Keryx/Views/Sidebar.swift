@@ -38,6 +38,8 @@ struct Sidebar: View {
             }
         }
         .listStyle(.sidebar)
+        .scrollContentBackground(model.preferences.theme.paintsSidebar ? .hidden : .automatic)
+        .background(model.preferences.theme.paintsSidebar ? Palette.board : .clear)
         .environment(\.sidebarRowSize, .small)
         .safeAreaInset(edge: .bottom) {
             Button {
