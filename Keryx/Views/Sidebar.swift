@@ -55,12 +55,34 @@ struct Sidebar: View {
     }
 }
 
+/// The icon a network advertises (`draft/ICON`), small beside its name.
+private struct NetworkIcon: View {
+    let url: URL
+    @State private var image: NSImage?
+
+    var body: some View {
+        Group {
+            if let image {
+                Image(nsImage: image).resizable().interpolation(.high).scaledToFit()
+                    .clipShape(RoundedRectangle(cornerRadius: 3))
+            } else {
+                Color.clear
+            }
+        }
+        .frame(width: 16, height: 16)
+        .task(id: url) { image = await ImageCache.shared.image(for: url) }
+    }
+}
+
 private struct NetworkRow: View {
     @Environment(AppModel.self) private var model
     let session: Session
 
     var body: some View {
         HStack(spacing: 6) {
+            if let icon = session.isupport.icon {
+                NetworkIcon(url: icon)
+            }
             VStack(alignment: .leading, spacing: 1) {
                 Text(session.displayName)
                     .font(Chrome.rowStrong)

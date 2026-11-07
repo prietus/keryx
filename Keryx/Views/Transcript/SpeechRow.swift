@@ -32,6 +32,12 @@ struct SpeechRow: View {
             + Text(verbatim: ": ").foregroundStyle(Palette.graphite)
     }
 
+    /// "privately: " in front of a whisper, so nobody mistakes it for the room.
+    private var whisperLead: Text {
+        guard line.whisper == true else { return Text(verbatim: "") }
+        return Text("privately: ").font(Typeset.noteItalic(size)).foregroundStyle(Palette.graphite)
+    }
+
     var body: some View {
         let formatted = MessageFormatter.format(model.masked(line.text, in: buffer, of: session), size: size, highlight: find)
         MarginRow(time: line.timestamp,
@@ -47,7 +53,7 @@ struct SpeechRow: View {
                         .font(Typeset.direction(size))
                         .foregroundStyle(Palette.graphite)
                 } else {
-                    (threadLead + Text(formatted.text))
+                    (threadLead + whisperLead + Text(formatted.text))
                         .font(Typeset.body(size))
                         .foregroundStyle(line.isPending ? Palette.graphite : Palette.ink)
                         .animation(.easeOut(duration: 0.7), value: line.isPending)
@@ -328,6 +334,7 @@ private struct Reactions: View {
 
 /// The few things you can do with a line, on hover.
 private struct LineActions: View {
+    @Environment(AppModel.self) private var model
     let line: ChatLine
     let session: Session
     let buffer: Buffer
@@ -336,7 +343,12 @@ private struct LineActions: View {
 
     var body: some View {
         HStack(spacing: 2) {
-            if line.msgid != nil {
+            if line.whisper == true, let sender = line.sender {
+                // Answering in the channel would tell everyone.
+                action("arrowshape.turn.up.left", String(localized: "Reply privately")) {
+                    model.select(session.openQuery(sender), in: session)
+                }
+            } else if line.msgid != nil {
                 action("arrowshape.turn.up.left", String(localized: "Reply")) { replyTo = line }
                 if session.networkAllowsReactions {
                     action("face.smiling", String(localized: "React")) { onReact(line) }
@@ -372,7 +384,9 @@ struct LineMenu: View {
     let onReact: (ChatLine) -> Void
 
     var body: some View {
-        if line.msgid != nil {
+        if line.whisper == true, let sender = line.sender {
+            Button("Reply privately") { model.select(session.openQuery(sender), in: session) }
+        } else if line.msgid != nil {
             Button("Reply") { replyTo = line }
             if session.networkAllowsReactions {
                 Button("React…") { onReact(line) }

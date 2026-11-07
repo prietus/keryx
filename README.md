@@ -91,7 +91,9 @@ notarized by Apple.
 `draft/event-playback`, `draft/multiline`, `draft/read-marker`,
 `draft/message-redaction`, `+typing`, `+draft/react`, `+reply`,
 `draft/metadata-2`, `MONITOR` with `extended-monitor`, `WHOX`, bot mode,
-`CLIENTTAGDENY`, `draft/FILEHOST`.
+`CLIENTTAGDENY`, `draft/FILEHOST`, `+draft/channel-context` (a bot's private
+answer about a channel shows there, marked as private), `draft/ICON` (the
+network's icon in the sidebar), `UTF8ONLY`.
 
 soju: `soju.im/bouncer-networks`, `soju.im/no-implicit-names`,
 `soju.im/FILEHOST`, and ignores, mutes and pins synced through

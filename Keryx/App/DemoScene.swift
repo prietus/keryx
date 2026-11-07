@@ -39,6 +39,9 @@ extension AppModel {
         lines.append(mention)
         lines.append(ChatLine(timestamp: at(7), sender: "carlos", text: "sí, y draft/read-marker, chathistory y reacciones", kind: .message, isSelf: true, msgid: "d8", replyTo: "d7", reactions: ["🎉": ["teraflops", "carlos"]]))
         lines.append(ChatLine(timestamp: at(7.3), sender: "carlos", text: "las líneas salen a lápiz y pasan a tinta cuando el servidor las confirma", kind: .message, isSelf: true, isPending: true))
+        var whisper = ChatLine(timestamp: at(7.4), sender: "helperbot", text: "tu turno de revisión en #swift es el jueves", kind: .notice, msgid: "w1", mentionsMe: true)
+        whisper.whisper = true
+        lines.append(whisper)
         let media = ProcessInfo.processInfo.environment["KERYX_DEMO_MEDIA"] ?? ""
         if media == "1" || media == "gif" {
             lines.append(ChatLine(timestamp: at(7.5), sender: "bob", text: "un gif: https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif", kind: .message, msgid: "m1"))

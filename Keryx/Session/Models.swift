@@ -82,6 +82,10 @@ struct ChatLine: Identifiable, Sendable, Codable, Equatable {
     var label: String?
     /// Whether this line mentions us (nick or highlight word).
     var mentionsMe: Bool
+    /// Sent to us privately but about this channel (`+draft/channel-context`),
+    /// so it's shown here, marked as for your eyes only. Optional so saved
+    /// history from before it still loads.
+    var whisper: Bool?
 
     init(id: UUID = UUID(), timestamp: Date, sender: String?, text: String,
          kind: Kind, isSelf: Bool = false, account: String? = nil,

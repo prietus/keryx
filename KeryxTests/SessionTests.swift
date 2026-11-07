@@ -380,6 +380,31 @@ struct TestHostTests {
     }
 }
 
+// MARK: - channel-context
+
+extension SessionTests {
+    @Test("A private answer about a channel shows in that channel, as a whisper for you")
+    func channelContext() async throws {
+        await register()
+        let channel = try #require(await channel())
+        await transport.receive("@+draft/channel-context=#c :bot!b@h PRIVMSG me :only you see this")
+        #expect(await eventually { channel.lines.contains { $0.text == "only you see this" } })
+        let line = try #require(channel.lines.first { $0.text == "only you see this" })
+        #expect(line.whisper == true)
+        #expect(line.mentionsMe)
+        #expect(!session.buffers.contains { $0.kind == .query && $0.name == "bot" })
+    }
+
+    @Test("A channel-context for a channel we're not in stays in the query")
+    func channelContextElsewhere() async throws {
+        await register()
+        await transport.receive("@+draft/channel-context=#elsewhere :bot!b@h PRIVMSG me :hi")
+        #expect(await eventually { session.buffers.contains { $0.kind == .query && $0.name == "bot" } })
+        let query = try #require(session.buffers.first { $0.name == "bot" })
+        #expect(query.lines.last?.whisper == nil)
+    }
+}
+
 // MARK: - Auto-away
 
 extension SessionTests {

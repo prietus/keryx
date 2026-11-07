@@ -99,4 +99,12 @@ struct ISupportTests {
         // Ergo: neither.
         #expect(isupport("CHANMODES=Ibe,k,fl,CEMRUimnstu").quiet == nil)
     }
+
+    @Test("draft/ICON: an https URL, or nothing")
+    func networkIcon() {
+        #expect(isupport("draft/ICON=https://ergo.chat/icon.png").icon?.absoluteString == "https://ergo.chat/icon.png")
+        #expect(isupport("draft/ICON=http://insecure.example/i.png").icon == nil)
+        #expect(isupport("NETWORK=x").icon == nil)
+    }
 }
+

@@ -118,6 +118,14 @@ public struct ISupport: Sendable {
         case extban(String)
     }
 
+    /// `draft/ICON`: the network's icon, for the client to show beside its
+    /// name. Only https, so drawing the sidebar never leaks over plaintext.
+    public var icon: URL? {
+        guard let raw = tokens["draft/ICON"] ?? tokens["ICON"],
+              let url = URL(string: Self.unescapeValue(raw)), url.scheme?.lowercased() == "https" else { return nil }
+        return url
+    }
+
     /// The set of membership prefix symbols (e.g. `@`, `+`).
     public var prefixSymbols: Set<Character> { Set(prefixes.map(\.symbol)) }
 

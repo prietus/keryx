@@ -51,15 +51,24 @@ extension Session {
         let isSelf = equal(sender, currentNick)
         let ignored = !isSelf && isIgnored(nick: sender, user: source?.user, host: source?.host,
                                            account: tags["account"])
-        let place = self.target(for: target, from: sender, isSelf: isSelf)
+        var place = self.target(for: target, from: sender, isSelf: isSelf)
+        // A bot or service answering you privately about a channel: show it
+        // in that channel, as a whisper, rather than in a query of its own.
+        var whisper = false
+        if place.kind == .query, !isSelf, let context = tags["+draft/channel-context"],
+           isupport.isChannel(context), self.buffer(named: context, kind: .channel, createIfMissing: false) != nil {
+            place = (context, .channel)
+            whisper = true
+        }
         guard let buffer = buffer(named: place.name, kind: place.kind,
                                   createIfMissing: !(ignored && place.kind == .query)) else { return }
-        let mentions = !isSelf && !ignored && isHighlight(body)
-        let line = ChatLine(timestamp: tags["time"].flatMap(Self.timeFormatter.date(from:)) ?? Date(),
+        let mentions = !isSelf && !ignored && (whisper || isHighlight(body))
+        var line = ChatLine(timestamp: tags["time"].flatMap(Self.timeFormatter.date(from:)) ?? Date(),
                             sender: sender, text: body, kind: kind, isSelf: isSelf,
                             account: tags["account"], msgid: tags["msgid"], replyTo: replyRef(tags),
                             isHistorical: historical, sourceUser: source?.user, sourceHost: source?.host,
                             label: tags["label"], mentionsMe: mentions)
+        if whisper { line.whisper = true }
         if isAround {
             aroundContext?.lines.append(line)
             return
