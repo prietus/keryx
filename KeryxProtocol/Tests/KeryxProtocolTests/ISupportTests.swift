@@ -85,4 +85,18 @@ struct ISupportTests {
         let s = isupport("draft/FILEHOST=https://x.example/up?a\\x3Db")
         #expect(s.fileHost(allowInsecure: false)?.query == "a=b")
     }
+
+    @Test("Quiet: +q list mode, mute extbans, or none")
+    func quietStyles() {
+        // Libera (Solanum): q is a list mode, not a prefix.
+        #expect(isupport("CHANMODES=eIbq,k,flj,CFLMPQRSTcgimnprstuz PREFIX=(ov)@+").quiet == .mode)
+        // UnrealIRCd: q is the owner prefix; quiets are ~q: extbans.
+        #expect(isupport("CHANMODES=beI,fkL,lH,cdimnprstzCDGKMNOPQRSTVZ PREFIX=(qaohv)~&@%+ EXTBAN=~,qjncrRa").quiet
+                == .extban("~q:"))
+        // InspIRCd: no prefix, m: mutes.
+        #expect(isupport("CHANMODES=IXbegw,k,FHJLfjl,ACKMNOPQRSTUcimnprstz EXTBAN=,ACNOQRSTUcjmnprsuwz").quiet
+                == .extban("m:"))
+        // Ergo: neither.
+        #expect(isupport("CHANMODES=Ibe,k,fl,CEMRUimnstu").quiet == nil)
+    }
 }

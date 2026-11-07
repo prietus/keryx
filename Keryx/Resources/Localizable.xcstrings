@@ -48,16 +48,6 @@
     "/back" : {
 
     },
-    "/ban mask" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "/ban máscara"
-          }
-        }
-      }
-    },
     "/buddy add|del|list nick" : {
 
     },
@@ -313,16 +303,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "/topic [texto]"
-          }
-        }
-      }
-    },
-    "/unban mask" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "/unban máscara"
           }
         }
       }
@@ -825,16 +805,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ausente"
-          }
-        }
-      }
-    },
-    "Bans a mask from the channel." : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Veta una máscara en el canal."
           }
         }
       }
@@ -5052,6 +5022,316 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Uno por línea, antes de entrar en los canales. $nick es tu nick. Para NickServ, SASL (arriba) guarda la contraseña en el Llavero."
+          }
+        }
+      }
+    },
+    "/ban nick|mask" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/ban nick|máscara"
+          }
+        }
+      }
+    },
+    "Bans someone by their host, or a mask." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veta a alguien por su host, o una máscara."
+          }
+        }
+      }
+    },
+    "/unban nick|mask" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/unban nick|máscara"
+          }
+        }
+      }
+    },
+    "/kickban nick [reason]" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/kickban nick [motivo]"
+          }
+        }
+      }
+    },
+    "Bans someone by their host and kicks them." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veta a alguien por su host y lo expulsa."
+          }
+        }
+      }
+    },
+    "/quiet nick|mask" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/quiet nick|máscara"
+          }
+        }
+      }
+    },
+    "Silences someone without kicking them." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Silencia a alguien sin expulsarlo."
+          }
+        }
+      }
+    },
+    "/unquiet nick|mask" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/unquiet nick|máscara"
+          }
+        }
+      }
+    },
+    "Lets someone speak again." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deja hablar de nuevo a alguien."
+          }
+        }
+      }
+    },
+    "/banlist [#channel]" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/banlist [#canal]"
+          }
+        }
+      }
+    },
+    "Lists the channel’s bans." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lista los vetos del canal."
+          }
+        }
+      }
+    },
+    "/quietlist [#channel]" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/quietlist [#canal]"
+          }
+        }
+      }
+    },
+    "Lists the channel’s quiets." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lista los silenciados del canal."
+          }
+        }
+      }
+    },
+    "/halfop nick…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/halfop nick…"
+          }
+        }
+      }
+    },
+    "Gives half-operator." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Da semioperador."
+          }
+        }
+      }
+    },
+    "/dehalfop nick…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/dehalfop nick…"
+          }
+        }
+      }
+    },
+    "Takes half-operator away." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quita semioperador."
+          }
+        }
+      }
+    },
+    "This network has no way to quiet someone; try +m and voice." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta red no permite silenciar a nadie; prueba con +m y voz."
+          }
+        }
+      }
+    },
+    "This network has no half-operators." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta red no tiene semioperadores."
+          }
+        }
+      }
+    },
+    "%@, set by %@ on %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, puesto por %2$@ el %3$@"
+          }
+        }
+      }
+    },
+    "%@, set by %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, puesto por %2$@"
+          }
+        }
+      }
+    },
+    "No bans in %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay vetos en %@."
+          }
+        }
+      }
+    },
+    "No quiets in %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay silenciados en %@."
+          }
+        }
+      }
+    },
+    "The +%@ list of %@ is empty." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La lista +%1$@ de %2$@ está vacía."
+          }
+        }
+      }
+    },
+    "Quiet" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Silenciar"
+          }
+        }
+      }
+    },
+    "Ban" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vetar"
+          }
+        }
+      }
+    },
+    "Kick and Ban" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expulsar y vetar"
+          }
+        }
+      }
+    },
+    "%lld entries in the +%@ list of %@." : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld entry in the +%2$@ list of %3$@."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld entries in the +%2$@ list of %3$@."
+                }
+              }
+            }
+          }
+        },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld entrada en la lista +%2$@ de %3$@."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld entradas en la lista +%2$@ de %3$@."
+                }
+              }
+            }
           }
         }
       }

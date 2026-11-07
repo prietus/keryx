@@ -49,6 +49,14 @@ public enum IRCNumeric: Int, Sendable {
     case namReply = 353         // RPL_NAMREPLY
     case whoSpcRpl = 354        // RPL_WHOSPCRPL (WHOX)
     case endOfNames = 366       // RPL_ENDOFNAMES
+    case inviteList = 346       // RPL_INVITELIST (+I)
+    case endOfInviteList = 347  // RPL_ENDOFINVITELIST
+    case exceptList = 348       // RPL_EXCEPTLIST (+e)
+    case endOfExceptList = 349  // RPL_ENDOFEXCEPTLIST
+    case banList = 367          // RPL_BANLIST (+b)
+    case endOfBanList = 368     // RPL_ENDOFBANLIST
+    case quietList = 728        // RPL_QUIETLIST (+q, Solanum and kin)
+    case endOfQuietList = 729   // RPL_ENDOFQUIETLIST
     case motd = 372             // RPL_MOTD
     case motdStart = 375        // RPL_MOTDSTART
     case endOfMotd = 376        // RPL_ENDOFMOTD

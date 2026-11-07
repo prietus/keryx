@@ -116,8 +116,20 @@ private struct MemberRow: View {
                 Button(has.contains("+") ? String(localized: "Take voice") : String(localized: "Give voice")) {
                     model.submit(has.contains("+") ? "/devoice \(member.nick)" : "/voice \(member.nick)", in: buffer, of: session, replyTo: nil)
                 }
+                if session.isupport.quiet != nil {
+                    Button("Quiet") {
+                        model.submit("/quiet \(member.nick)", in: buffer, of: session, replyTo: nil)
+                    }
+                }
+                Divider()
                 Button("Kick", role: .destructive) {
                     model.submit("/kick \(member.nick)", in: buffer, of: session, replyTo: nil)
+                }
+                Button("Ban", role: .destructive) {
+                    model.submit("/ban \(member.nick)", in: buffer, of: session, replyTo: nil)
+                }
+                Button("Kick and Ban", role: .destructive) {
+                    model.submit("/kickban \(member.nick)", in: buffer, of: session, replyTo: nil)
                 }
             }
         }

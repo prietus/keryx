@@ -437,11 +437,11 @@ struct CommandTests {
         return await condition()
     }
 
-    func register(_ session: Session) async {
+    func register(_ session: Session, isupport: String = "CHANTYPES=#") async {
         session.connect()
         _ = await eventually { await transport.sent.contains("CAP LS 302") }
         await transport.receive(":srv CAP * LS :batch", ":srv CAP * ACK :batch",
-                                ":srv 001 me_ :Welcome", ":srv 005 me_ CHANTYPES=# :are supported")
+                                ":srv 001 me_ :Welcome", ":srv 005 me_ \(isupport) :are supported")
         _ = await eventually { session.status == .connected }
     }
 
@@ -511,6 +511,85 @@ struct CommandTests {
         _ = session.runInput("/reconnect", in: session.statusBuffer, replyTo: nil)
         #expect(session.status == .connected)
         #expect(await transport.endpoints.count == before)
+    }
+
+    // MARK: Operators
+
+    /// Joined to #c with bob (host bob.host) in the room.
+    func opChannel(isupport: String = "CHANTYPES=# PREFIX=(ov)@+") async throws -> (Session, Buffer) {
+        let session = session()
+        await register(session, isupport: isupport)
+        await transport.receive(":me_!u@h JOIN #c", ":srv 353 me_ = #c :@me_!u@h bob!b@bob.host",
+                                ":srv 366 me_ #c :End of /NAMES list.")
+        _ = await eventually { session.buffers.first { $0.name == "#c" }?.members.count == 2 }
+        return (session, try #require(session.buffers.first { $0.name == "#c" }))
+    }
+
+    @Test("Bans go by host when it's known, so a new nick doesn't get round them")
+    func banByHost() async throws {
+        let (session, buffer) = try await opChannel()
+        _ = session.runInput("/ban bob", in: buffer, replyTo: nil)
+        _ = session.runInput("/ban stranger", in: buffer, replyTo: nil)
+        _ = session.runInput("/unban *!*@spam.example", in: buffer, replyTo: nil)
+        #expect(await eventually {
+            let sent = await transport.sent
+            return sent.contains("MODE #c +b *!*@bob.host") && sent.contains("MODE #c +b stranger!*@*")
+                && sent.contains("MODE #c -b *!*@spam.example")
+        })
+    }
+
+    @Test("/kickban bans first, then kicks with the reason")
+    func kickban() async throws {
+        let (session, buffer) = try await opChannel()
+        _ = session.runInput("/kb bob go away", in: buffer, replyTo: nil)
+        #expect(await eventually {
+            let sent = await transport.sent
+            guard let ban = sent.firstIndex(of: "MODE #c +b *!*@bob.host"),
+                  let kick = sent.firstIndex(of: "KICK #c bob :go away") else { return false }
+            return ban < kick
+        })
+    }
+
+    @Test("/quiet uses +q where it's a list mode, an extban elsewhere, and explains when neither")
+    func quiet() async throws {
+        let (libera, channel) = try await opChannel(isupport: "CHANTYPES=# PREFIX=(ov)@+ CHANMODES=eIbq,k,flj,mnst")
+        _ = libera.runInput("/quiet bob", in: channel, replyTo: nil)
+        #expect(await eventually { await transport.sent.contains("MODE #c +q *!*@bob.host") })
+
+        let unreal = Session(config: SessionConfig(host: "irc.test", nickname: "me"), transport: transport)
+        await register(unreal, isupport: "CHANTYPES=# PREFIX=(qaohv)~&@%+ CHANMODES=beI,k,l,mnst EXTBAN=~,qjncrRa")
+        let other = try #require(unreal.buffer(named: "#u", kind: .channel, createIfMissing: true))
+        _ = unreal.runInput("/unquiet *!*@x", in: other, replyTo: nil)
+        #expect(await eventually { await transport.sent.contains("MODE #u -b ~q:*!*@x") })
+        _ = unreal.runInput("/halfop bob", in: other, replyTo: nil)
+        #expect(await eventually { await transport.sent.contains("MODE #u +h bob") })
+    }
+
+    @Test("Without quiets or half-ops the command explains instead of sending")
+    func unsupported() async throws {
+        let (session, buffer) = try await opChannel(isupport: "CHANTYPES=# PREFIX=(ov)@+ CHANMODES=Ibe,k,fl,mnst")
+        let before = await transport.sent.count
+        _ = session.runInput("/quiet bob", in: buffer, replyTo: nil)
+        _ = session.runInput("/halfop bob", in: buffer, replyTo: nil)
+        try await Task.sleep(for: .milliseconds(50))
+        #expect(await transport.sent.count == before)
+        #expect(buffer.lines.filter { $0.kind == .error }.count == 2)
+    }
+
+    @Test("Ban lists read as lines in the channel, and say so when empty")
+    func banList() async throws {
+        let (session, buffer) = try await opChannel()
+        _ = session.runInput("/banlist", in: buffer, replyTo: nil)
+        #expect(await eventually { await transport.sent.contains("MODE #c +b") })
+        await transport.receive(":srv 367 me_ #c *!*@spam.example ana!a@h 1700000000",
+                                ":srv 368 me_ #c :End of Channel Ban List",
+                                ":srv 728 me_ #c q *!*@loud.example ana 1700000000",
+                                ":srv 729 me_ #c q :End of Channel Quiet List",
+                                ":srv 348 me_ #c :x", ":srv 349 me_ #c :End of Channel Exception List")
+        #expect(await eventually { buffer.lines.contains { $0.text.hasPrefix("*!*@spam.example") && $0.text.contains("ana") } })
+        #expect(await eventually { buffer.lines.contains { $0.text.hasPrefix("*!*@loud.example") } })
+        #expect(await eventually { buffer.lines.contains { $0.text.contains("+e") } })
+        #expect(session.listEntries.isEmpty)
     }
 }
 

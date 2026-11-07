@@ -44,8 +44,15 @@ struct SlashCommand: Identifiable, Sendable {
         .init(name: "back", usage: String(localized: "/back"), summary: String(localized: "Marks you as back.")),
         .init(name: "invite", usage: String(localized: "/invite nick [#channel]"), summary: String(localized: "Invites someone to the channel.")),
         .init(name: "kick", usage: String(localized: "/kick nick [reason]"), summary: String(localized: "Kicks someone from the channel.")),
-        .init(name: "ban", usage: String(localized: "/ban mask"), summary: String(localized: "Bans a mask from the channel.")),
-        .init(name: "unban", usage: String(localized: "/unban mask"), summary: String(localized: "Lifts a ban.")),
+        .init(name: "ban", usage: String(localized: "/ban nick|mask"), summary: String(localized: "Bans someone by their host, or a mask.")),
+        .init(name: "unban", usage: String(localized: "/unban nick|mask"), summary: String(localized: "Lifts a ban.")),
+        .init(name: "kickban", usage: String(localized: "/kickban nick [reason]"), summary: String(localized: "Bans someone by their host and kicks them.")),
+        .init(name: "quiet", usage: String(localized: "/quiet nick|mask"), summary: String(localized: "Silences someone without kicking them.")),
+        .init(name: "unquiet", usage: String(localized: "/unquiet nick|mask"), summary: String(localized: "Lets someone speak again.")),
+        .init(name: "banlist", usage: String(localized: "/banlist [#channel]"), summary: String(localized: "Lists the channel’s bans.")),
+        .init(name: "quietlist", usage: String(localized: "/quietlist [#channel]"), summary: String(localized: "Lists the channel’s quiets.")),
+        .init(name: "halfop", usage: String(localized: "/halfop nick…"), summary: String(localized: "Gives half-operator.")),
+        .init(name: "dehalfop", usage: String(localized: "/dehalfop nick…"), summary: String(localized: "Takes half-operator away.")),
         .init(name: "op", usage: String(localized: "/op nick…"), summary: String(localized: "Gives operator.")),
         .init(name: "deop", usage: String(localized: "/deop nick…"), summary: String(localized: "Takes operator away.")),
         .init(name: "voice", usage: String(localized: "/voice nick…"), summary: String(localized: "Gives voice.")),
@@ -96,6 +103,18 @@ extension Session {
             let command = (text.hasPrefix("/") ? text : "/" + text).replacingOccurrences(of: "$nick", with: currentNick)
             _ = runInput(command, in: statusBuffer, replyTo: nil)
         }
+    }
+
+    /// A mask that keeps someone out even after a nick change: `*!*@host`
+    /// when we know their host, `nick!*@*` when we don't. Masks pass as given.
+    func banMask(for target: String) -> String {
+        if target.contains("!") || target.contains("@") || target.contains("*") || target.contains(":") {
+            return target
+        }
+        let host = buffers.lazy
+            .compactMap { $0.members.first { self.equal($0.nick, target) }?.host }
+            .first { !$0.isEmpty }
+        return host.map { "*!*@\($0)" } ?? "\(target)!*@*"
     }
 
     private func usage(_ name: String, in buffer: Buffer) {
@@ -245,13 +264,45 @@ extension Session {
             send(IRCMessage(command: "KICK", parameters: [channel, nick] + (reason.isEmpty ? [] : [reason])))
 
         case "ban", "unban":
-            guard let channel, let mask = args.first else { usage(cmd, in: buffer); return .none }
-            let full = mask.contains("!") || mask.contains("@") ? mask : "\(mask)!*@*"
-            send(IRCMessage(command: "MODE", parameters: [channel, cmd == "ban" ? "+b" : "-b", full]))
+            guard let channel, let target = args.first else { usage(cmd, in: buffer); return .none }
+            send(IRCMessage(command: "MODE", parameters: [channel, cmd == "ban" ? "+b" : "-b", banMask(for: target)]))
 
-        case "op", "deop", "voice", "devoice":
+        case "kickban", "kb":
+            guard let channel, let nick = args.first else { usage("kickban", in: buffer); return .none }
+            let reason = args.dropFirst().joined(separator: " ")
+            // Ban first, so they can't rejoin in between.
+            send(IRCMessage(command: "MODE", parameters: [channel, "+b", banMask(for: nick)]))
+            send(IRCMessage(command: "KICK", parameters: [channel, nick] + (reason.isEmpty ? [] : [reason])))
+
+        case "quiet", "unquiet":
+            guard let channel, let target = args.first else { usage(cmd, in: buffer); return .none }
+            let sign = cmd == "quiet" ? "+" : "-"
+            switch isupport.quiet {
+            case .mode:
+                send(IRCMessage(command: "MODE", parameters: [channel, sign + "q", banMask(for: target)]))
+            case .extban(let prefix):
+                send(IRCMessage(command: "MODE", parameters: [channel, sign + "b", prefix + banMask(for: target)]))
+            case nil:
+                note(String(localized: "This network has no way to quiet someone; try +m and voice."), in: buffer, kind: .error)
+            }
+
+        case "banlist", "bans", "quietlist", "quiets":
+            let target = args.first.flatMap { isupport.isChannel($0) ? $0 : nil } ?? channel
+            guard let target else { usage(cmd.hasPrefix("ban") ? "banlist" : "quietlist", in: buffer); return .none }
+            if cmd.hasPrefix("ban") || isupport.quiet != .mode {
+                // Extban quiets live in the ban list.
+                send(IRCMessage(command: "MODE", parameters: [target, "+b"]))
+            } else {
+                send(IRCMessage(command: "MODE", parameters: [target, "+q"]))
+            }
+
+        case "op", "deop", "voice", "devoice", "halfop", "dehalfop":
             guard let channel, !args.isEmpty else { usage(cmd, in: buffer); return .none }
-            let letter = cmd.hasSuffix("op") ? "o" : "v"
+            let letter = cmd.hasSuffix("halfop") ? "h" : cmd.hasSuffix("op") ? "o" : "v"
+            guard isupport.prefixes.contains(where: { $0.mode == Character(letter) }) else {
+                note(String(localized: "This network has no half-operators."), in: buffer, kind: .error)
+                return .none
+            }
             let sign = cmd.hasPrefix("de") ? "-" : "+"
             let perLine = Int(isupport.tokens["MODES"] ?? "") ?? 3
             for start in stride(from: 0, to: args.count, by: max(1, perLine)) {

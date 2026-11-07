@@ -41,6 +41,9 @@ final class Session: Identifiable {
     internal(set) var isupport = ISupport()
     internal(set) var enabledCaps: Set<String> = []
     internal(set) var isAway = false
+    /// Entries seen so far in a ban/quiet/except/invite list being listed,
+    /// by "channel mode", to say "none" when the list ends empty.
+    var listEntries: [String: Int] = [:]
     /// You set it yourself (/away with a reason), so auto-away leaves it alone.
     internal(set) var awayByUser = false
 
@@ -554,6 +557,38 @@ final class Session: Identifiable {
         case .endOfMotd, .noMotd:
             if numeric == .noMotd, let line = message.trailing { addStatus(line, kind: .motd) }
             startMonitoring()
+        case .banList, .exceptList, .inviteList, .quietList:
+            // 367/348/346: me #c mask [setter time]; 728: me #c q mask [setter time].
+            var params = Array(message.parameters.dropFirst())
+            guard params.count >= 2 else { break }
+            let channel = params.removeFirst()
+            let mode = numeric == .quietList ? (params.first ?? "q") : numeric.listMode
+            if numeric == .quietList { params.removeFirst() }
+            guard let mask = params.first else { break }
+            let place = buffer(named: channel, kind: .channel, createIfMissing: false) ?? statusBuffer
+            listEntries["\(channel) \(mode)", default: 0] += 1
+            var text = mask
+            if params.count >= 2 {
+                let setter = IRCSource(parsing: Substring(params[1])).nick
+                if params.count >= 3, let seconds = TimeInterval(params[2]) {
+                    let date = Date(timeIntervalSince1970: seconds).formatted(date: .abbreviated, time: .shortened)
+                    text = String(localized: "\(mask), set by \(setter) on \(date)")
+                } else {
+                    text = String(localized: "\(mask), set by \(setter)")
+                }
+            }
+            note(text, in: place)
+        case .endOfBanList, .endOfExceptList, .endOfInviteList, .endOfQuietList:
+            guard let channel = message.parameter(1) else { break }
+            let mode = numeric == .endOfQuietList ? (message.parameter(2) ?? "q") : numeric.listMode
+            let place = buffer(named: channel, kind: .channel, createIfMissing: false) ?? statusBuffer
+            let count = listEntries.removeValue(forKey: "\(channel) \(mode)") ?? 0
+            switch (mode, count) {
+            case ("b", 0): note(String(localized: "No bans in \(channel)."), in: place)
+            case ("q", 0): note(String(localized: "No quiets in \(channel)."), in: place)
+            case (_, 0): note(String(localized: "The +\(mode) list of \(channel) is empty."), in: place)
+            default: note(String(localized: "\(count) entries in the +\(mode) list of \(channel)."), in: place)
+            }
         case .monOnline, .monOffline:
             let online = numeric == .monOnline
             for entry in (message.trailing ?? "").split(separator: ",") {
@@ -731,5 +766,17 @@ final class ProtocolLog {
         }
         if upper.contains(" NICKSERV ") || upper.hasPrefix("NICKSERV ") { return "NICKSERV ••••" }
         return line
+    }
+}
+
+private extension IRCNumeric {
+    /// The channel mode a list reply belongs to.
+    var listMode: String {
+        switch self {
+        case .exceptList, .endOfExceptList: "e"
+        case .inviteList, .endOfInviteList: "I"
+        case .quietList, .endOfQuietList: "q"
+        default: "b"
+        }
     }
 }

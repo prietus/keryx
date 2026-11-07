@@ -68,6 +68,9 @@ notarized by Apple.
   Each network can run commands on connect (`/mode $nick +x`, …) before joining.
 - `/detach` and `/attach` a channel on soju: hidden here, still logged there.
   `/hop` rejoins a channel; `/reconnect` brings back a dropped connection.
+- Channel operators: `/ban`, `/kickban` and `/quiet` by host (so a new nick
+  doesn't get round them), `+q` or the network's mute extban, ban and quiet
+  lists in the channel, half-ops; also from the member list.
 - SASL PLAIN, EXTERNAL (CertFP, PKCS#12) and SCRAM-SHA-256, preferred
   automatically; secrets in the Keychain.
 - Global history search (⌘⇧F), diacritic-insensitive, over SQLite FTS5.

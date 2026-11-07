@@ -90,6 +90,34 @@ public struct ISupport: Sendable {
         return zip(modes, symbols).map { ($0, $1) }
     }
 
+    /// `CHANMODES=A,B,C,D`: type A are list modes (`b`, `e`, `I`, `q`…).
+    public var listModes: Set<Character> {
+        guard let raw = tokens["CHANMODES"], let a = raw.split(separator: ",", omittingEmptySubsequences: false).first
+        else { return ["b", "e", "I"] }
+        return Set(a)
+    }
+
+    /// How this network silences someone without kicking them, if it can:
+    /// a `+q` list mode (Libera, OFTC), or a mute extban (`~q:` on Unreal,
+    /// `m:` on InspIRCd), from `CHANMODES` and `EXTBAN`.
+    public var quiet: Quiet? {
+        if listModes.contains("q"), !prefixes.contains(where: { $0.mode == "q" }) { return .mode }
+        guard let raw = tokens["EXTBAN"] else { return nil }
+        let parts = raw.split(separator: ",", maxSplits: 1, omittingEmptySubsequences: false)
+        let prefix = parts.count > 1 ? String(parts[0]) : ""
+        let types = parts.count > 1 ? parts[1] : parts.first ?? ""
+        if types.contains("q") { return .extban("\(prefix)q:") }
+        if types.contains("m") { return .extban("\(prefix)m:") }
+        return nil
+    }
+
+    public enum Quiet: Equatable, Sendable {
+        /// `MODE #c +q mask`
+        case mode
+        /// `MODE #c +b <prefix>mask`, e.g. `~q:` or `m:`.
+        case extban(String)
+    }
+
     /// The set of membership prefix symbols (e.g. `@`, `+`).
     public var prefixSymbols: Set<Character> { Set(prefixes.map(\.symbol)) }
 
