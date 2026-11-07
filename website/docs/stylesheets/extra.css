@@ -1,0 +1,76 @@
+/* Keryx's inks: the blue pencil for links and accents, cool paper and the
+   night desk for the page, matching the app's Paper and Night themes. */
+:root,
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color: #2b50c8;
+  --md-primary-fg-color--light: #5a78d8;
+  --md-primary-fg-color--dark: #1f3c9a;
+  --md-accent-fg-color: #2b50c8;
+  --md-default-bg-color: #f3f4f1;
+  --md-default-fg-color: #1c1d22;
+  --md-typeset-a-color: #2b50c8;
+}
+
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #7d9bff;
+  --md-primary-fg-color--light: #a3b8ff;
+  --md-primary-fg-color--dark: #5a78d8;
+  --md-accent-fg-color: #7d9bff;
+  --md-default-bg-color: #15171c;
+  --md-default-fg-color--light: #8e919a;
+  --md-typeset-a-color: #7d9bff;
+  --md-hue: 225;
+}
+
+/* The header in page colours rather than a loud bar. */
+.md-header,
+.md-tabs {
+  background-color: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+  box-shadow: 0 0.5px 0 rgba(128, 128, 128, 0.25);
+}
+.md-header__button.md-logo img {
+  height: 1.6rem;
+}
+
+/* Home: the title page. */
+.hero {
+  text-align: center;
+  margin: 1.5rem 0 2rem;
+}
+.hero img.icon {
+  width: 112px;
+  height: 112px;
+}
+.hero h1 {
+  margin: 0.6rem 0 0.2rem;
+  font-weight: 600;
+}
+.hero .tagline {
+  font-size: 1.15rem;
+  opacity: 0.8;
+  margin: 0 auto 1.4rem;
+  max-width: 34rem;
+}
+.hero .md-button {
+  margin: 0.2rem 0.3rem;
+}
+
+.md-typeset img.shot {
+  border-radius: 10px;
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.18);
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem 1.6rem;
+}
+.grid-2 > div > p:first-child {
+  margin-top: 0;
+}
+
+/* Command and shortcut tables: the first column stays on one line. */
+.md-typeset table:not([class]) td:first-child {
+  white-space: nowrap;
+}
