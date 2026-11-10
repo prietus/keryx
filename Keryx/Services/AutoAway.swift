@@ -60,6 +60,14 @@ final class AutoAway {
 
     func update() { apply(away: shouldBeAway) }
 
+    /// The reason to connect with (`draft/pre-away`) when you're away already.
+    var reasonIfAway: String? { shouldBeAway ? reason : nil }
+
+    private var reason: String {
+        let custom = preferences.awayMessage.trimmingCharacters(in: .whitespaces)
+        return custom.isEmpty ? String(localized: "Away") : custom
+    }
+
     /// Brings every connected session in line: away while you are, present
     /// again (where Keryx set it) once you're back. New connections catch up
     /// on the next pass.
@@ -69,11 +77,14 @@ final class AutoAway {
                 marked.remove(session.id)
                 continue
             }
+            // It connected already away on our say-so: ours to undo later.
+            if session.connectedAway {
+                session.connectedAway = false
+                marked.insert(session.id)
+            }
             if away {
                 guard !session.isAway, !session.awayByUser, !marked.contains(session.id) else { continue }
-                let reason = preferences.awayMessage.trimmingCharacters(in: .whitespaces)
-                session.send(IRCMessage(command: "AWAY",
-                                        parameters: [reason.isEmpty ? String(localized: "Away") : reason]))
+                session.send(IRCMessage(command: "AWAY", parameters: [reason]))
                 marked.insert(session.id)
             } else if marked.remove(session.id) != nil, !session.awayByUser {
                 session.send(IRCMessage(command: "AWAY"))

@@ -98,7 +98,8 @@ notarized by Apple.
 `draft/metadata-2`, `MONITOR` with `extended-monitor`, `WHOX`, bot mode,
 `CLIENTTAGDENY`, `draft/FILEHOST`, `+draft/channel-context` (a bot's private
 answer about a channel shows there, marked as private), `draft/ICON` (the
-network's icon in the sidebar), `UTF8ONLY`.
+network's icon in the sidebar), `UTF8ONLY`, `draft/channel-rename`,
+`draft/pre-away` (connecting while you're away registers you away).
 
 soju: `soju.im/bouncer-networks`, `soju.im/no-implicit-names`,
 `soju.im/FILEHOST`, and ignores, mutes and pins synced through

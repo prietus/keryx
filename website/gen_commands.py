@@ -26,7 +26,7 @@ GROUPS = [
     ("Conversations in the sidebar", ["mute", "unmute", "pin", "unpin"]),
     ("Messages", ["react", "delete", "np", "exec"]),
     ("Channel operators", ["kick", "ban", "unban", "kickban", "quiet", "unquiet", "banlist",
-                           "quietlist", "op", "deop", "halfop", "dehalfop", "voice", "devoice", "mode"]),
+                           "quietlist", "op", "deop", "halfop", "dehalfop", "voice", "devoice", "mode", "rename"]),
     ("soju", ["detach", "attach"]),
     ("Connection", ["reconnect", "quit", "caps", "raw", "help"]),
 ]

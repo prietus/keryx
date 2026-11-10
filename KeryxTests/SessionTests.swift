@@ -405,6 +405,55 @@ extension SessionTests {
     }
 }
 
+// MARK: - channel-rename, pre-away
+
+extension SessionTests {
+    @Test("A renamed channel keeps its conversation and what you'd set for it")
+    func channelRename() async throws {
+        await register()
+        let buffer = try #require(await channel("#old"))
+        session.setPresenceQuiet(true, for: "#old")
+        defer { session.setPresenceQuiet(false, for: "#new") }
+        await transport.receive(":ana!a@h PRIVMSG #old :before", ":ana!a@h RENAME #old #new :tidying up",
+                                ":ana!a@h PRIVMSG #new :after")
+        #expect(await eventually { buffer.lines.contains { $0.text == "after" } })
+        #expect(buffer.name == "#new")
+        #expect(buffer.lines.contains { $0.text == "before" })
+        #expect(buffer.lines.contains { $0.text.contains("#old") && $0.text.contains("tidying up") })
+        #expect(session.buffers.filter { $0.kind == .channel }.count == 1)
+        #expect(session.isPresenceQuiet("#new") && !session.isPresenceQuiet("#old"))
+    }
+
+    @Test("With pre-away, a connection made while you're away registers away")
+    func preAway() async throws {
+        session.awayOnConnect = { "Away" }
+        session.connect()
+        #expect(await sent("CAP LS 302"))
+        await transport.receive(":srv CAP * LS :draft/pre-away batch", ":srv CAP * ACK :draft/pre-away batch")
+        #expect(await eventually {
+            let sent = await transport.sent
+            guard let away = sent.firstIndex(of: "AWAY Away"), let end = sent.firstIndex(of: "CAP END") else { return false }
+            return away < end
+        })
+        await transport.receive(":srv 306 me :You have been marked as being away", ":srv 001 me :Welcome")
+        #expect(await eventually { session.status == .connected })
+        #expect(session.isAway)
+        // Auto-away adopts it without repeating it, and undoes it on return.
+        let away = AutoAway(preferences: Preferences()) { [session] in [session] }
+        away.apply(away: false)
+        #expect(await sent("AWAY"))
+        #expect(await transport.sent.filter { $0.hasPrefix("AWAY") }.count == 2)
+    }
+
+    @Test("Without pre-away, or when you're present, nothing is sent before registering")
+    func noPreAway() async throws {
+        session.awayOnConnect = { "Away" }
+        await register()
+        #expect(!(await transport.sent.contains { $0.hasPrefix("AWAY") }))
+        #expect(!session.isAway)
+    }
+}
+
 // MARK: - Auto-away
 
 extension SessionTests {

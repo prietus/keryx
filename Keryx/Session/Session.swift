@@ -46,6 +46,10 @@ final class Session: Identifiable {
     var listEntries: [String: Int] = [:]
     /// You set it yourself (/away with a reason), so auto-away leaves it alone.
     internal(set) var awayByUser = false
+    /// The away reason to connect with, if you're away right now (auto-away).
+    var awayOnConnect: (() -> String?)?
+    /// We registered already away (`draft/pre-away`); auto-away takes it from there.
+    var connectedAway = false
 
     /// All conversations, status window first.
     internal(set) var buffers: [Buffer]
@@ -178,6 +182,7 @@ final class Session: Identifiable {
         reconnectTask?.cancel()
         guard !status.isActive else { return }
         status = .connecting
+        connectedAway = false
         didCaptureCaps = false
         didWarnClientTagDeny = false
         serverSignalsHistoryEnd = false
@@ -362,7 +367,16 @@ final class Session: Identifiable {
 
     func handle(_ message: IRCMessage) {
         if !negotiator.isFinished {
-            for response in negotiator.handle(message) { send(response) }
+            for response in negotiator.handle(message) {
+                // pre-away: the last word before registration ends, so nobody
+                // sees us arrive present and leave a moment later.
+                if response.command == "CAP", response.parameters.first == "END",
+                   negotiator.enabled.contains(CapabilityName.preAway), let reason = awayOnConnect?() {
+                    send(IRCMessage(command: "AWAY", parameters: [reason]))
+                    connectedAway = true
+                }
+                send(response)
+            }
             if message.command == "CAP", message.parameter(1)?.uppercased() == "LS" { applySTS() }
             if negotiator.isFinished { captureNegotiationResult() }
         }
@@ -392,6 +406,7 @@ final class Session: Identifiable {
         case "SETNAME": handleSetname(message)
         case "CAP": handleCapChange(message)
         case "TOPIC": handleTopic(message)
+        case "RENAME": handleRename(message)
         case "MODE": handleMode(message)
         case "BATCH": handleBatch(message)
         case "BOUNCER": handleBouncer(message)
@@ -477,8 +492,9 @@ final class Session: Identifiable {
         case .welcome:
             status = .connected
             reconnectAttempt = 0
-            // A new connection starts present, whatever the last one was.
-            isAway = false
+            // A new connection starts present, whatever the last one was,
+            // unless we just registered away (pre-away).
+            isAway = connectedAway
             awayByUser = false
             stsUpgradePort = nil
             if let nick = message.first { currentNick = nick }
@@ -657,6 +673,32 @@ final class Session: Identifiable {
         if buffer.kind == .query, !isBuddy(buffer.name) { unmonitor(buffer.name) }
         bufferIndex[isupport.caseMapping.fold(buffer.name)] = nil
         buffers.removeAll { $0.id == buffer.id }
+    }
+
+    /// `draft/channel-rename`: the same conversation under a new name, with
+    /// its scrollback and what you'd set for it (mute, pin, language…).
+    func handleRename(_ message: IRCMessage) {
+        guard let old = message.parameter(0), let new = message.parameter(1),
+              let channel = buffer(named: old, kind: .channel, createIfMissing: false) else { return }
+        let oldKey = fold(old), newKey = fold(new)
+        if oldKey != newKey {
+            // A leftover conversation under the new name gives way.
+            if let stale = bufferIndex[newKey], stale.id != channel.id { removeBuffer(stale) }
+            bufferIndex[oldKey] = nil
+            bufferIndex[newKey] = channel
+        }
+        channel.rename(new)
+        let from = old.lowercased(), to = new.lowercased()
+        if from != to {
+            if state.muted.remove(from) != nil { state.muted.insert(to) }
+            if state.pinned.remove(from) != nil { state.pinned.insert(to) }
+            if state.quietPresence.remove(from) != nil { state.quietPresence.insert(to) }
+            if let language = state.languages?.removeValue(forKey: from) { state.languages?[to] = language }
+            saveState()
+        }
+        let reason = message.parameters.count > 2 ? (message.trailing ?? "") : ""
+        note(reason.isEmpty ? String(localized: "\(old) is now \(new).")
+             : String(localized: "\(old) is now \(new): \(reason)"), in: channel)
     }
 
     func renameQuery(from old: String, to new: String) {

@@ -196,6 +196,7 @@ final class AppModel {
             NSApp.isActive && self?.selectedBufferID == buffer.id
         }
         session.onNotifiableEvent = { [weak self] event in self?.deliver(event) }
+        session.awayOnConnect = { [weak self] in self?.autoAway?.reasonIfAway }
         session.onIndexLine = { [weak self] line, buffer, session in self?.index(line, in: buffer, of: session) }
         session.onBouncerNetworksChanged = { [weak self, weak session] in
             guard let self, let session else { return }

@@ -82,6 +82,7 @@ Anything Keryx doesn't know is sent to the server as is, so `/motd`, `/list`,
 | `/voice nick…` | Gives voice. |
 | `/devoice nick…` | Takes voice away. |
 | `/mode [target] modes` | Changes modes. |
+| `/rename #new [reason]` | Renames this channel, where the network allows it. |
 
 ## soju
 

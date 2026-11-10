@@ -72,6 +72,10 @@ public enum CapabilityName {
     public static let draftExtendedMonitor = "draft/extended-monitor"
     public static let sojuMuted = "soju.im/muted"
     public static let sojuPinned = "soju.im/pinned"
+    /// A channel can change its name without everyone parting and rejoining.
+    public static let channelRename = "draft/channel-rename"
+    /// `AWAY` during registration, so a client can connect already away.
+    public static let preAway = "draft/pre-away"
     /// SASL initial response: the first `AUTHENTICATE` carries the payload,
     /// skipping the `AUTHENTICATE +` round trip.
     public static let saslIR = "draft/sasl-ir"
@@ -87,6 +91,6 @@ public enum CapabilityName {
         multiPrefix, userhostInNames, capNotify, setname, inviteNotify,
         standardReplies, chathistory, eventPlayback, messageRedaction, readMarker,
         multiline, bouncerNetworks, bouncerNetworksNotify, noImplicitNames, sojuNoImplicitNames,
-        metadata, extendedMonitor, draftExtendedMonitor, saslIR,
+        metadata, extendedMonitor, draftExtendedMonitor, saslIR, channelRename, preAway,
     ]
 }

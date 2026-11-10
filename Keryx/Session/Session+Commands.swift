@@ -31,6 +31,7 @@ struct SlashCommand: Identifiable, Sendable {
         .init(name: "hop", usage: String(localized: "/hop [#channel]"), summary: String(localized: "Leaves and rejoins a channel.")),
         .init(name: "detach", usage: String(localized: "/detach [#channel]"), summary: String(localized: "Hides a channel while soju stays in it and keeps its history.")),
         .init(name: "attach", usage: String(localized: "/attach #channel"), summary: String(localized: "Brings back a channel detached on soju.")),
+        .init(name: "rename", usage: String(localized: "/rename #new [reason]"), summary: String(localized: "Renames this channel, where the network allows it.")),
         .init(name: "close", usage: String(localized: "/close"), summary: String(localized: "Closes this conversation (and leaves it if it’s a channel).")),
         .init(name: "query", usage: String(localized: "/query nick [text]"), summary: String(localized: "Opens a private conversation.")),
         .init(name: "msg", usage: String(localized: "/msg target text"), summary: String(localized: "Sends a message without opening the conversation.")),
@@ -159,6 +160,16 @@ extension Session {
             guard let target else { usage("hop", in: buffer); return .none }
             send(.part(target, reason: nil))
             join(target)
+
+        case "rename":
+            guard let channel, let name = args.first else { usage("rename", in: buffer); return .none }
+            guard enabledCaps.contains(CapabilityName.channelRename) else {
+                note(String(localized: "This network can’t rename channels."), in: buffer, kind: .error)
+                return .none
+            }
+            let reason = args.dropFirst().joined(separator: " ")
+            send(IRCMessage(command: "RENAME", parameters: [channel, isupport.isChannel(name) ? name : "#" + name]
+                            + (reason.isEmpty ? [] : [reason])))
 
         case "detach":
             guard config.isBouncer || config.boundNetworkID != nil else {

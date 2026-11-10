@@ -22,6 +22,8 @@ Keryx negotiates these capabilities and uses them when the server offers them.
 | `draft/multiline` | Multi-line messages arrive as one. |
 | `draft/read-marker` | Where you left off, shared across your clients. |
 | `draft/message-redaction` | Deleting messages. |
+| `draft/channel-rename` | A renamed channel keeps its conversation, history and settings. `/rename`. |
+| `draft/pre-away` | Connecting while you're away (locked screen, idle) registers you away from the start. |
 | `draft/metadata-2` | Profiles: display name, pronouns, avatar, homepage, colour, status. |
 | `+typing` | Typing indicators. |
 | `+draft/react` | Reactions. |

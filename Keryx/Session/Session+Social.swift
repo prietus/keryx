@@ -245,7 +245,11 @@ extension Session {
         }
     }
 
-    func saveState() { state.save(config.id) }
+    func saveState() {
+        // The test host is the real app: never write test sessions next to yours.
+        guard !AppModel.isRunningTests else { return }
+        state.save(config.id)
+    }
 
     // MARK: - Spelling language (/lang)
 

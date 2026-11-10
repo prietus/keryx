@@ -5415,6 +5415,56 @@
           }
         }
       }
+    },
+    "/rename #new [reason]" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/rename #nuevo [motivo]"
+          }
+        }
+      }
+    },
+    "Renames this channel, where the network allows it." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Renombra este canal, donde la red lo permita."
+          }
+        }
+      }
+    },
+    "This network can’t rename channels." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta red no permite renombrar canales."
+          }
+        }
+      }
+    },
+    "%@ is now %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ ahora es %2$@."
+          }
+        }
+      }
+    },
+    "%@ is now %@: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ ahora es %2$@: %3$@"
+          }
+        }
+      }
     }
   },
   "version" : "1.1"
