@@ -23,7 +23,7 @@ who recently spoke.
 ## Replies
 
 When someone answers a message (`+reply`), Keryx sets the answer under the line
-it answers if that line is close by — within five messages and ten minutes.
+it answers if that line is close by — within five messages, however long ago.
 Further away, the answer stays where it arrived, with a one-line quote; click
 it to jump to the original.
 

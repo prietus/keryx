@@ -52,11 +52,10 @@ enum TranscriptLayout {
         /// Lines from the same speaker within this interval share a name.
         var groupingInterval: TimeInterval = 5 * 60
         /// A reply is set under its original only when the original is this
-        /// close — at most this many messages back and this recent. Further
-        /// away, moving it up would hide it, so it stays where it arrived,
-        /// with a one-line quote of the original.
+        /// close — at most this many messages back, however long ago that
+        /// was. Further away, moving it up would hide it, so it stays where
+        /// it arrived, with a one-line quote of the original.
         var nestWithinMessages = 5
-        var nestWithinInterval: TimeInterval = 10 * 60
     }
 
     static func rows(for lines: [ChatLine], options: Options) -> [TranscriptRow] {
@@ -78,8 +77,7 @@ enum TranscriptLayout {
         var nested: Set<UUID> = []
         for (i, line) in messages.enumerated() {
             guard let parent = line.replyTo, let p = position[parent], p < i,
-                  i - p <= options.nestWithinMessages,
-                  line.timestamp.timeIntervalSince(messages[p].timestamp) <= options.nestWithinInterval
+                  i - p <= options.nestWithinMessages
             else { continue }
             let top = root[parent] ?? parent
             thread[top, default: []].append(line)

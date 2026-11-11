@@ -133,11 +133,11 @@ struct ReplyThreadTests {
         #expect(last.text == "late answer")
     }
 
-    @Test("A reply long after its original stays where it arrived")
+    @Test("A reply long after its original still nests when nothing much came between")
     func lateReply() {
-        let lines = [say("crimson", "original", at: 0, id: "a"), say("teraflops", "much later", at: 3600, id: "r", to: "a")]
+        let lines = [say("crimson", "original", at: 0, id: "a"), say("teraflops", "much later", at: 3600 * 3, id: "r", to: "a")]
         let rows = TranscriptLayout.rows(for: lines, options: .init())
-        #expect(!rows.contains { if case .reply = $0 { true } else { false } })
+        #expect(rows.contains { if case .reply = $0 { true } else { false } })
     }
 
     @Test("A reply to something not loaded stays in place")
