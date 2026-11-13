@@ -14,6 +14,10 @@ struct TranscriptView: View {
     @State private var atBottom = true
     @State private var anchorBeforeLoad: String?
     @State private var flashedLine: UUID?
+    /// The top of the scrollback is on screen (so more of it is wanted).
+    @State private var edgeVisible = false
+    /// Pages fetched in a row without the reader scrolling, to stop somewhere.
+    @State private var unpromptedPages = 0
 
     private var rows: [TranscriptRow] {
         var options = TranscriptLayout.Options()
@@ -36,8 +40,13 @@ struct TranscriptView: View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 0) {
                 if buffer.kind != .status, session.hasChathistory, find == nil {
-                    HistoryEdge(buffer: buffer)
-                        .onAppear(perform: loadOlder)
+                    HistoryEdge(buffer: buffer, nothingToShow: rows.isEmpty && !buffer.lines.isEmpty)
+                        .onAppear {
+                            edgeVisible = true
+                            unpromptedPages = 0
+                            loadOlder()
+                        }
+                        .onDisappear { edgeVisible = false }
                 }
                 ForEach(rows) { row in
                     TranscriptRowView(row: row, session: session, buffer: buffer, find: find,
@@ -74,6 +83,14 @@ struct TranscriptView: View {
                 anchorBeforeLoad = nil
             }
         }
+        .onChange(of: buffer.isLoadingHistory) { _, loading in
+            // A page landed and the top is still on screen — it didn't fill
+            // the window (short, or all joins and parts you've hidden): fetch
+            // the one before, within reason.
+            guard !loading, edgeVisible, unpromptedPages < Self.maxUnpromptedPages else { return }
+            unpromptedPages += 1
+            loadOlder()
+        }
         .onChange(of: session.jumpRequest) { _, request in
             guard let request, request.bufferID == buffer.id else { return }
             session.consumeJump()
@@ -86,6 +103,8 @@ struct TranscriptView: View {
             }
         }
     }
+
+    private static let maxUnpromptedPages = 8
 
     private func loadOlder() {
         session.loadHistoryIfEmpty(buffer)
@@ -109,19 +128,28 @@ struct TranscriptView: View {
 private struct HistoryEdge: View {
     @Environment(AppModel.self) private var model
     let buffer: Buffer
+    /// There are lines, but all of them are joins and parts you've hidden.
+    var nothingToShow = false
 
     var body: some View {
-        HStack {
-            Spacer()
+        VStack(spacing: 6) {
+            if nothingToShow {
+                // Otherwise the window is just blank, and looks broken.
+                Text(buffer.historyExhausted || !buffer.isLoadingHistory
+                     ? "Only joins and parts here lately, and they’re hidden."
+                     : "Only joins and parts here lately, and they’re hidden. Looking further back…")
+                    .font(Typeset.noteItalic(model.preferences.bodySize))
+                    .foregroundStyle(Palette.graphite)
+            }
             if buffer.historyExhausted {
                 Text("Beginning of the conversation")
                     .font(Typeset.noteItalic(model.preferences.bodySize))
                     .foregroundStyle(Palette.graphite)
-            } else {
+            } else if !nothingToShow || buffer.isLoadingHistory {
                 ProgressView().controlSize(.small)
             }
-            Spacer()
         }
+        .frame(maxWidth: .infinity)
         .padding(.vertical, 8)
     }
 }

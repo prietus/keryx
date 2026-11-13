@@ -1,5 +1,20 @@
 import Foundation
 import KeryxProtocol
+import os
+
+/// Debug builds trace history loading to the system log (channel names and
+/// counts, never what was said): `log show --predicate 'subsystem == "im.keryx.mac"'`.
+enum HistoryTrace {
+    #if DEBUG
+    private static let logger = Logger(subsystem: "im.keryx.mac", category: "history")
+    #endif
+    static func log(_ text: @autoclosure () -> String) {
+        #if DEBUG
+        let line = text()
+        logger.notice("\(line, privacy: .public)")
+        #endif
+    }
+}
 
 extension Session {
     var hasChathistory: Bool { enabledCaps.contains(CapabilityName.chathistory) }
@@ -13,7 +28,11 @@ extension Session {
     /// The latest page on first view; on reconnect, everything after our
     /// newest line (`AFTER`), paged forward while pages come back full.
     func requestHistory(for buffer: Buffer) {
-        guard hasChathistory, status == .connected, buffer.kind != .status, !buffer.isLoadingHistory else { return }
+        guard hasChathistory, status == .connected, buffer.kind != .status, !buffer.isLoadingHistory else {
+            HistoryTrace.log("[\(displayName)] request \(buffer.name) SKIPPED: chathistory=\(hasChathistory) status=\(status) loading=\(buffer.isLoadingHistory)")
+            return
+        }
+        HistoryTrace.log("[\(displayName)] request \(buffer.name): lines=\(buffer.lines.count) loaded=\(buffer.loadedHistory) replace=\(buffer.replaceWithNextPage) newest=\(String(describing: buffer.newestMessageTimestamp))")
         guard buffer.loadedHistory, !buffer.replaceWithNextPage, let newest = buffer.newestMessageTimestamp else {
             buffer.loadedHistory = true
             beginHistoryLoad(buffer)
@@ -38,6 +57,7 @@ extension Session {
         Task { [weak self, weak buffer] in
             try? await Task.sleep(for: Self.historyReplyTimeout)
             guard let self, let buffer, buffer.historyLoadToken == token, buffer.isLoadingHistory else { return }
+            HistoryTrace.log("[\(self.displayName)] \(buffer.name): no reply, giving up")
             buffer.isLoadingHistory = false
             self.catchUpTargets = self.catchUpTargets.filter { !self.equal($0, buffer.name) }
         }
@@ -46,6 +66,12 @@ extension Session {
     /// A conversation with nothing in it, opened: fetch the latest page. The
     /// request made on joining may have been lost or refused.
     func loadHistoryIfEmpty(_ buffer: Buffer) {
+        if buffer.lines.isEmpty {
+            HistoryTrace.log("[\(displayName)] opened empty \(buffer.name): joined=\(buffer.isJoined) status=\(status)")
+        } else {
+            let hidden = buffer.lines.filter { isIgnored($0) }.count
+            HistoryTrace.log("[\(displayName)] opened \(buffer.name): lines=\(buffer.lines.count) hiddenByIgnore=\(hidden)")
+        }
         guard buffer.lines.isEmpty, buffer.kind == .query || buffer.isJoined else { return }
         requestHistory(for: buffer)
     }
@@ -62,6 +88,7 @@ extension Session {
     }
 
     func finishHistoryPage(_ info: BatchInfo, in buffer: Buffer) {
+        HistoryTrace.log("[\(displayName)] page end \(buffer.name): messages=\(info.messageCount) catchUp=\(info.isCatchUp) end=\(info.isEndOfHistory) lines now=\(buffer.lines.count)")
         buffer.isLoadingHistory = false
         if info.isCatchUp {
             catchUpTargets = catchUpTargets.filter { !equal($0, buffer.name) }
@@ -89,6 +116,7 @@ extension Session {
             // shown stays until that page arrives, so a lost reply can't leave
             // the conversation blank.
             catchUpPages[key] = nil
+            HistoryTrace.log("[\(displayName)] \(buffer.name): gap too big, will replace with latest")
             buffer.replaceWithNextPage = true
         } else {
             catchUpPages[key] = pages
@@ -195,12 +223,27 @@ extension Session {
 
     func historySnapshot() -> HistoryStore.Snapshot {
         let kept = buffers.filter { $0.kind != .status && !$0.lines.isEmpty }.map {
-            HistoryStore.BufferSnapshot(name: $0.name, kind: $0.kind, topic: $0.topic, readMarker: $0.readMarker,
-                                        historyExhausted: $0.historyExhausted
-                                            && $0.lines.count <= HistoryStore.maxLinesPerBuffer,
-                                        lines: Array($0.lines.suffix(HistoryStore.maxLinesPerBuffer)))
+            let lines = Self.linesToKeep($0.lines)
+            return HistoryStore.BufferSnapshot(name: $0.name, kind: $0.kind, topic: $0.topic, readMarker: $0.readMarker,
+                                               historyExhausted: $0.historyExhausted && lines.count == $0.lines.count,
+                                               lines: lines)
         }
         return HistoryStore.Snapshot(buffers: kept)
+    }
+
+    /// The tail of a conversation worth saving: the last `maxLinesPerBuffer`
+    /// lines that aren't joins and parts, with the joins and parts among
+    /// them. Counting those too would let one netsplit in a big channel push
+    /// everything anyone said out of the saved scrollback.
+    static func linesToKeep(_ lines: [ChatLine]) -> [ChatLine] {
+        var said = 0
+        var start = lines.endIndex
+        while start > lines.startIndex, said < HistoryStore.maxLinesPerBuffer,
+              lines.endIndex - start < HistoryStore.maxLinesPerBuffer * 4 {
+            start -= 1
+            if lines[start].direction?.isPresence != true { said += 1 }
+        }
+        return Array(lines[start...])
     }
 
     func restoreHistory(_ snapshot: HistoryStore.Snapshot) {

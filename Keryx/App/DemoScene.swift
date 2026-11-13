@@ -49,6 +49,24 @@ extension AppModel {
         if media == "1" || media == "video" {
             lines.append(ChatLine(timestamp: at(7.6), sender: "ana", text: "y un vídeo https://download.samplelib.com/mp4/sample-5s.mp4", kind: .message, msgid: "m2"))
         }
+        // A long scrollback, then a burst arriving just after the window opens
+        // (what a busy channel does on reconnect).
+        if let flood = ProcessInfo.processInfo.environment["KERYX_DEMO_FLOOD"].flatMap(Int.init) {
+            let nicks = ["ana", "bob", "zed", "teraflops", "helperbot"]
+            let old = (0..<flood).map { i in
+                ChatLine(timestamp: start.addingTimeInterval(-Double(flood - i) * 40), sender: nicks[i % nicks.count],
+                         text: "línea \(i) de relleno para un canal con mucho tráfico" + (i % 7 == 0 ? " y un poco más de texto para que ocupe dos renglones en la ventana, como pasa en los canales de verdad" : ""),
+                         kind: .message, msgid: "f\(i)")
+            }
+            lines = old + lines
+            Task { @MainActor in
+                try? await Task.sleep(for: .seconds(2))
+                for i in 0..<6 {
+                    channel.append(ChatLine(timestamp: Date().addingTimeInterval(Double(i)), sender: nicks[i % nicks.count],
+                                            text: "ráfaga \(i)", kind: .message, msgid: "b\(i)", isHistorical: true), markUnread: false)
+                }
+            }
+        }
         channel.lines = lines
         channel.readMarker = at(5.5)
         channel.recomputeUnread()

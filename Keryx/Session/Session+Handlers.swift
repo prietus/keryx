@@ -150,6 +150,7 @@ extension Session {
             guard !historical else { return }
             buffer.isJoined = true
             buffer.membersLoaded = false
+            HistoryTrace.log("[\(displayName)] joined \(channel)")
             requestHistory(for: buffer)
             return
         }
@@ -426,6 +427,7 @@ extension Session {
             if isHistory, let target = info.target,
                let buffer = buffer(named: target, kind: isupport.isChannel(target) ? .channel : .query,
                                    createIfMissing: false) {
+                HistoryTrace.log("[\(displayName)] page start \(target): catchUp=\(info.isCatchUp) replace=\(buffer.replaceWithNextPage) lines=\(buffer.lines.count)")
                 // The reply has started: no longer a request to give up on.
                 buffer.historyLoadToken += 1
                 if buffer.replaceWithNextPage, !info.isCatchUp, !info.isAroundContext {
@@ -599,6 +601,7 @@ extension Session {
         let origin = label.flatMap { pendingLabels[$0] }
         if message.command == "FAIL", let label { failPendingEverywhere(label) }
         if message.command == "FAIL", command == "CHATHISTORY" {
+            HistoryTrace.log("[\(displayName)] FAIL CHATHISTORY \(message.parameters.dropFirst().joined(separator: " "))")
             if aroundContext?.isLoading == true { finishAroundContext(failed: true) }
             for buffer in buffers { buffer.isLoadingHistory = false }
             catchUpTargets.removeAll()

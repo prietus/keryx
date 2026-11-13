@@ -415,7 +415,7 @@ extension SessionTests {
     @Test("An empty conversation asks for the latest page when opened")
     func emptyConversationLoads() async throws {
         Session.historyReplyTimeout = .milliseconds(40)
-        defer { Session.historyReplyTimeout = .seconds(30) }
+        defer { Session.historyReplyTimeout = .seconds(90) }
         await registerWithHistory()
         let buffer = try #require(await channel())
         #expect(await sent("CHATHISTORY LATEST #c * 100"))
@@ -450,6 +450,34 @@ extension SessionTests {
         #expect(await eventually { buffer.lines.contains { $0.text == "new line" } })
         #expect(!buffer.lines.contains { $0.text == "old line" })
         #expect(!buffer.replaceWithNextPage)
+    }
+}
+
+// MARK: - Saved scrollback
+
+@MainActor
+@Suite("Saved scrollback")
+struct SavedScrollbackTests {
+    func line(_ i: Int, presence: Bool) -> ChatLine {
+        ChatLine(timestamp: Date(timeIntervalSince1970: Double(i)), sender: presence ? nil : "ana", text: presence ? "" : "m\(i)",
+                 kind: presence ? .event : .message, direction: presence ? .quit(nick: "n\(i)", reason: nil) : nil)
+    }
+
+    @Test("A flood of joins and parts doesn't push what was said out of the saved lines")
+    func presenceDoesNotCrowdOut() {
+        let said = (0..<50).map { line($0, presence: false) }
+        let flood = (50..<1550).map { line($0, presence: true) }
+        let kept = Session.linesToKeep(said + flood)
+        #expect(kept.filter { $0.kind == .message }.count == 50)
+        #expect(kept.count == 1550)
+    }
+
+    @Test("The saved lines are still bounded")
+    func bounded() {
+        let many = (0..<3000).map { line($0, presence: false) }
+        #expect(Session.linesToKeep(many).count == HistoryStore.maxLinesPerBuffer)
+        let endless = (0..<10_000).map { line($0, presence: true) }
+        #expect(Session.linesToKeep(endless).count == HistoryStore.maxLinesPerBuffer * 4)
     }
 }
 
