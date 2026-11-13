@@ -405,6 +405,54 @@ extension SessionTests {
     }
 }
 
+// MARK: - History that can't leave a conversation blank
+
+extension SessionTests {
+    func registerWithHistory() async {
+        await register(caps: "batch message-tags server-time echo-message labeled-response draft/chathistory")
+    }
+
+    @Test("An empty conversation asks for the latest page when opened")
+    func emptyConversationLoads() async throws {
+        Session.historyReplyTimeout = .milliseconds(40)
+        defer { Session.historyReplyTimeout = .seconds(30) }
+        await registerWithHistory()
+        let buffer = try #require(await channel())
+        #expect(await sent("CHATHISTORY LATEST #c * 100"))
+        // The server never answers: the request is given up on…
+        #expect(await eventually { !buffer.isLoadingHistory })
+        // …and opening the still-empty conversation asks again.
+        session.loadHistoryIfEmpty(buffer)
+        #expect(await eventually { await transport.sent.filter { $0 == "CHATHISTORY LATEST #c * 100" }.count == 2 })
+        await transport.receive(":srv BATCH +h chathistory #c",
+                                "@batch=h;msgid=1;time=2026-11-13T10:00:00.000Z :ana!a@h PRIVMSG #c :hello",
+                                ":srv BATCH -h")
+        #expect(await eventually { buffer.lines.contains { $0.text == "hello" } })
+        #expect(!buffer.isLoadingHistory)
+    }
+
+    @Test("A gap too big to bridge keeps what's shown until the latest page arrives")
+    func bigGapKeepsLines() async throws {
+        await registerWithHistory()
+        let buffer = try #require(await channel())
+        await transport.receive(":srv BATCH +h chathistory #c",
+                                "@batch=h;msgid=old;time=2026-11-01T10:00:00.000Z :ana!a@h PRIVMSG #c :old line",
+                                ":srv BATCH -h")
+        #expect(await eventually { buffer.lines.contains { $0.text == "old line" } && !buffer.isLoadingHistory })
+        // As if ten full catch-up pages had already come back.
+        buffer.replaceWithNextPage = true
+        session.requestHistory(for: buffer)
+        #expect(await eventually { await transport.sent.filter { $0 == "CHATHISTORY LATEST #c * 100" }.count == 2 })
+        #expect(buffer.lines.contains { $0.text == "old line" })
+        await transport.receive(":srv BATCH +n chathistory #c",
+                                "@batch=n;msgid=new;time=2026-11-13T10:00:00.000Z :ana!a@h PRIVMSG #c :new line",
+                                ":srv BATCH -n")
+        #expect(await eventually { buffer.lines.contains { $0.text == "new line" } })
+        #expect(!buffer.lines.contains { $0.text == "old line" })
+        #expect(!buffer.replaceWithNextPage)
+    }
+}
+
 // MARK: - channel-rename, pre-away
 
 extension SessionTests {

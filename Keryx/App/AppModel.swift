@@ -87,6 +87,7 @@ final class AppModel {
                 guard let self, let session = self.selectedSession, let buffer = self.selectedBuffer else { return }
                 if buffer.unreadCount > 0 { buffer.entryMarker = buffer.readMarker }
                 session.markRead(buffer)
+                session.loadHistoryIfEmpty(buffer)
                 self.notifier.clear(buffer: buffer.id)
                 self.updateBadge()
             }
@@ -245,6 +246,7 @@ final class AppModel {
         session.markRead(buffer)
         session.loadMembersIfNeeded(buffer)
         if buffer.kind != .status, !buffer.loadedHistory, buffer.kind == .query { session.requestHistory(for: buffer) }
+        session.loadHistoryIfEmpty(buffer)
         notifier.clear(buffer: buffer.id)
         updateBadge()
     }

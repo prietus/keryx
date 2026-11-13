@@ -141,6 +141,7 @@ final class Session: Identifiable {
 
     static let historyPageSize = 100
     static let maxCatchUpPages = 10
+    nonisolated(unsafe) static var historyReplyTimeout: Duration = .seconds(30)
     static let maxSeekPages = 5
     static let aroundContextSize = 30
     static let whoxToken = "742"
@@ -215,7 +216,10 @@ final class Session: Identifiable {
         }
         eventTask?.cancel()
         status = .offline
-        for buffer in buffers { buffer.isJoined = false }
+        for buffer in buffers {
+            buffer.isJoined = false
+            buffer.isLoadingHistory = false
+        }
     }
 
     /// TLS and port after applying a stored or just-received STS policy.

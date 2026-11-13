@@ -13,26 +13,48 @@ extension Session {
     /// The latest page on first view; on reconnect, everything after our
     /// newest line (`AFTER`), paged forward while pages come back full.
     func requestHistory(for buffer: Buffer) {
-        guard hasChathistory, !buffer.isLoadingHistory else { return }
-        guard buffer.loadedHistory, let newest = buffer.newestMessageTimestamp else {
+        guard hasChathistory, status == .connected, buffer.kind != .status, !buffer.isLoadingHistory else { return }
+        guard buffer.loadedHistory, !buffer.replaceWithNextPage, let newest = buffer.newestMessageTimestamp else {
             buffer.loadedHistory = true
-            buffer.isLoadingHistory = true
+            beginHistoryLoad(buffer)
             send(IRCMessage(command: "CHATHISTORY",
                             parameters: ["LATEST", buffer.name, "*", "\(Self.historyPageSize)"]))
             return
         }
-        buffer.isLoadingHistory = true
+        beginHistoryLoad(buffer)
         catchUpTargets.insert(buffer.name)
         send(IRCMessage(command: "CHATHISTORY",
                         parameters: ["AFTER", buffer.name, "timestamp=\(Self.timeFormatter.string(from: newest))",
                                      "\(Self.historyPageSize)"]))
     }
 
+    /// Marks a request as under way, and gives up on it if the server hasn't
+    /// started answering in a while — otherwise one lost reply would leave
+    /// the conversation unable to load history until the next reconnect.
+    func beginHistoryLoad(_ buffer: Buffer) {
+        buffer.isLoadingHistory = true
+        buffer.historyLoadToken += 1
+        let token = buffer.historyLoadToken
+        Task { [weak self, weak buffer] in
+            try? await Task.sleep(for: Self.historyReplyTimeout)
+            guard let self, let buffer, buffer.historyLoadToken == token, buffer.isLoadingHistory else { return }
+            buffer.isLoadingHistory = false
+            self.catchUpTargets = self.catchUpTargets.filter { !self.equal($0, buffer.name) }
+        }
+    }
+
+    /// A conversation with nothing in it, opened: fetch the latest page. The
+    /// request made on joining may have been lost or refused.
+    func loadHistoryIfEmpty(_ buffer: Buffer) {
+        guard buffer.lines.isEmpty, buffer.kind == .query || buffer.isJoined else { return }
+        requestHistory(for: buffer)
+    }
+
     /// An older page, when the reader scrolls to the top.
     func loadMoreHistory(for buffer: Buffer) {
         guard hasChathistory, buffer.kind != .status, !buffer.isLoadingHistory, !buffer.historyExhausted,
               let oldest = buffer.lines.first(where: { !$0.isPending }) else { return }
-        buffer.isLoadingHistory = true
+        beginHistoryLoad(buffer)
         let selector = oldest.msgid.flatMap { acceptsMsgidReferences ? "msgid=\($0)" : nil }
             ?? "timestamp=\(Self.timeFormatter.string(from: oldest.timestamp))"
         send(IRCMessage(command: "CHATHISTORY",
@@ -63,9 +85,11 @@ extension Session {
         }
         let pages = (catchUpPages[key] ?? 1) + 1
         if pages > Self.maxCatchUpPages {
-            // Too big a gap to bridge: start over from the latest page.
+            // Too big a gap to bridge: start over from the latest page. What's
+            // shown stays until that page arrives, so a lost reply can't leave
+            // the conversation blank.
             catchUpPages[key] = nil
-            buffer.resetHistory()
+            buffer.replaceWithNextPage = true
         } else {
             catchUpPages[key] = pages
         }

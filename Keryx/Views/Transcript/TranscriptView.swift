@@ -88,6 +88,7 @@ struct TranscriptView: View {
     }
 
     private func loadOlder() {
+        session.loadHistoryIfEmpty(buffer)
         guard !buffer.isLoadingHistory, !buffer.historyExhausted, !buffer.lines.isEmpty else { return }
         anchorBeforeLoad = rows.first { if case .day = $0 { return false } else { return true } }?.id
         session.loadMoreHistory(for: buffer)

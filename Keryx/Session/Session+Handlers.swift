@@ -423,6 +423,18 @@ extension Session {
                 info.isAroundContext = true
                 aroundAwaitingBatch = false
             }
+            if isHistory, let target = info.target,
+               let buffer = buffer(named: target, kind: isupport.isChannel(target) ? .channel : .query,
+                                   createIfMissing: false) {
+                // The reply has started: no longer a request to give up on.
+                buffer.historyLoadToken += 1
+                if buffer.replaceWithNextPage, !info.isCatchUp, !info.isAroundContext {
+                    buffer.replaceWithNextPage = false
+                    buffer.resetHistory()
+                    buffer.loadedHistory = true
+                    buffer.isLoadingHistory = true
+                }
+            }
             if isHistory, !info.isAroundContext, message.tags["draft/chathistory-end"] != nil {
                 info.isEndOfHistory = true
                 serverSignalsHistoryEnd = true

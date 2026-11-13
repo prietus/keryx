@@ -177,6 +177,12 @@ final class Buffer: Identifiable {
     /// `draft/read-marker`: lines at or before this are read on every device.
     var readMarker: Date?
     var isLoadingHistory = false
+    /// Bumped whenever a history request starts or its reply begins, so a
+    /// request the server never answers can be given up on.
+    var historyLoadToken = 0
+    /// The gap since we were last here was too big to bridge: the next page
+    /// (the latest) replaces what's shown, once it actually arrives.
+    var replaceWithNextPage = false
     var historyExhausted = false
     /// `+typing`: nick → last "active".
     var typing: [String: Date] = [:]
