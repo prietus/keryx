@@ -77,14 +77,17 @@ extension Session {
     }
 
     /// An older page, when the reader scrolls to the top.
-    func loadMoreHistory(for buffer: Buffer) {
+    /// `deep` asks for as big a page as the server gives, for when the last
+    /// one brought nothing to show and we're digging for something that does.
+    func loadMoreHistory(for buffer: Buffer, deep: Bool = false) {
         guard hasChathistory, buffer.kind != .status, !buffer.isLoadingHistory, !buffer.historyExhausted,
               let oldest = buffer.lines.first(where: { !$0.isPending }) else { return }
         beginHistoryLoad(buffer)
         let selector = oldest.msgid.flatMap { acceptsMsgidReferences ? "msgid=\($0)" : nil }
             ?? "timestamp=\(Self.timeFormatter.string(from: oldest.timestamp))"
-        send(IRCMessage(command: "CHATHISTORY",
-                        parameters: ["BEFORE", buffer.name, selector, "\(Self.historyPageSize)"]))
+        let most = Int(isupport.tokens["CHATHISTORY"] ?? "").map { $0 > 0 ? $0 : Self.deepPageSize } ?? Self.historyPageSize
+        let limit = deep ? max(Self.historyPageSize, min(most, Self.deepPageSize)) : Self.historyPageSize
+        send(IRCMessage(command: "CHATHISTORY", parameters: ["BEFORE", buffer.name, selector, "\(limit)"]))
     }
 
     func finishHistoryPage(_ info: BatchInfo, in buffer: Buffer) {

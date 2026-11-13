@@ -89,7 +89,7 @@ struct TranscriptView: View {
             // the one before, within reason.
             guard !loading, edgeVisible, unpromptedPages < Self.maxUnpromptedPages else { return }
             unpromptedPages += 1
-            loadOlder()
+            loadOlder(deep: true)
         }
         .onChange(of: session.jumpRequest) { _, request in
             guard let request, request.bufferID == buffer.id else { return }
@@ -106,11 +106,11 @@ struct TranscriptView: View {
 
     private static let maxUnpromptedPages = 8
 
-    private func loadOlder() {
+    private func loadOlder(deep: Bool = false) {
         session.loadHistoryIfEmpty(buffer)
         guard !buffer.isLoadingHistory, !buffer.historyExhausted, !buffer.lines.isEmpty else { return }
         anchorBeforeLoad = rows.first { if case .day = $0 { return false } else { return true } }?.id
-        session.loadMoreHistory(for: buffer)
+        session.loadMoreHistory(for: buffer, deep: deep)
     }
 
     private func jump(to lineID: UUID, in rows: [TranscriptRow]) {

@@ -182,9 +182,15 @@ final class AppModel {
     @discardableResult
     private func session(for network: NetworkConfig) -> Session {
         if let existing = sessions[network.id] { return existing }
-        let session = makeSession(SessionConfig(network, clientName: preferences.clientName))
+        let session = makeSession(sessionConfig(for: network))
         sessions[network.id] = session
         return session
+    }
+
+    private func sessionConfig(for network: NetworkConfig) -> SessionConfig {
+        var config = SessionConfig(network, clientName: preferences.clientName)
+        config.eventPlayback = preferences.showPresence
+        return config
     }
 
     private func makeSession(_ config: SessionConfig) -> Session {
@@ -403,7 +409,7 @@ final class AppModel {
         }
         NetworkStore.save(networks)
         let session = session(for: network)
-        session.refreshConfig(SessionConfig(network, clientName: preferences.clientName))
+        session.refreshConfig(sessionConfig(for: network))
         if !session.status.isActive {
             session.connect()
         }
@@ -443,7 +449,7 @@ final class AppModel {
             for bound in boundSessions[session.id] ?? [] { bound.disconnect() }
         } else {
             if let network = config(for: session), session.config.parentID == nil {
-                session.refreshConfig(SessionConfig(network, clientName: preferences.clientName))
+                session.refreshConfig(sessionConfig(for: network))
             }
             session.connect()
         }

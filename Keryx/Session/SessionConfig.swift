@@ -21,6 +21,10 @@ struct SessionConfig: Sendable, Identifiable {
     var isBouncer: Bool
     var autoJoinChannels: [String]
     var connectCommands: [String] = []
+    /// Ask for joins, parts and the like in history (`draft/event-playback`).
+    /// Off when you hide them anyway: a busy channel's history is then what
+    /// people said, not page after page of comings and goings.
+    var eventPlayback = true
     var certificateData: Data?
     var certificatePassphrase: String?
     /// Set when this session is bound to one soju network (its bouncer id).
@@ -95,6 +99,7 @@ struct SessionConfig: Sendable, Identifiable {
         serverPassword = base.serverPassword
         isBouncer = true
         autoJoinChannels = []
+        eventPlayback = base.eventPlayback
         certificateData = base.certificateData
         certificatePassphrase = base.certificatePassphrase
         boundNetworkID = network.id
@@ -118,9 +123,12 @@ struct SessionConfig: Sendable, Identifiable {
     /// soju honours a `/network` binding only while the client does NOT take
     /// `soju.im/bouncer-networks`, so a bound session drops those caps.
     var desiredCaps: Set<String> {
-        guard isExplicitlyBound else { return CapabilityName.desired }
-        return CapabilityName.desired.subtracting([CapabilityName.bouncerNetworks,
-                                                   CapabilityName.bouncerNetworksNotify])
+        var caps = CapabilityName.desired
+        if !eventPlayback { caps.remove(CapabilityName.eventPlayback) }
+        if isExplicitlyBound {
+            caps.subtract([CapabilityName.bouncerNetworks, CapabilityName.bouncerNetworksNotify])
+        }
+        return caps
     }
 
     var saslMechanism: SASLMechanism? {

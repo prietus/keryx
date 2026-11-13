@@ -9,7 +9,7 @@ Open them with **⌘,**.
 | **Theme** | Automatic, Paper, Sepia, Night or Carbon. See [Themes](../features/themes.md). |
 | **Typeface** | System (SF) or Serif (New York). |
 | **Body text** | 12 to 20 pt. Also **⌘+** and **⌘−**. |
-| **Show joins and parts** | Folded into one line either way. Hide them in one channel with `/joins` or the toolbar button. |
+| **Show joins and parts** | Folded into one line either way. Hide them in one channel with `/joins` or the toolbar button. With this off, Keryx also asks servers for history without them (from the next connection), so a busy channel's backlog is what people said. |
 | **Nick changes only for people who spoke** | Lurkers' renames stay out of the way. |
 | **Nicks in colour** | Each person keeps the same colour. Mentions of you stay in blue. |
 | **Link previews** | A card under the line with the page's title, summary and picture. **Without the summary** makes them one line shorter. |

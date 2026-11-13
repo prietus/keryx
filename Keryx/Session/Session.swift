@@ -141,6 +141,7 @@ final class Session: Identifiable {
 
     static let historyPageSize = 100
     static let maxCatchUpPages = 10
+    static let deepPageSize = 500
     nonisolated(unsafe) static var historyReplyTimeout: Duration = .seconds(90)
     static let maxSeekPages = 5
     static let aroundContextSize = 30

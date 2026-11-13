@@ -453,6 +453,33 @@ extension SessionTests {
     }
 }
 
+// MARK: - History without the comings and goings
+
+extension SessionTests {
+    @Test("With joins and parts hidden, history is asked for without them")
+    func noEventPlaybackWhenHidden() {
+        var config = SessionConfig(host: "irc.test", nickname: "me")
+        #expect(config.desiredCaps.contains("draft/event-playback"))
+        config.eventPlayback = false
+        #expect(!config.desiredCaps.contains("draft/event-playback"))
+        #expect(config.desiredCaps.contains("draft/chathistory"))
+    }
+
+    @Test("Digging for something to show asks for bigger pages, within the server's limit")
+    func deepPages() async throws {
+        await register(caps: "batch message-tags server-time draft/chathistory",
+                       isupport: "CHANTYPES=# PREFIX=(ov)@+ CHATHISTORY=300")
+        let buffer = try #require(await channel())
+        await transport.receive(":srv BATCH +h chathistory #c",
+                                "@batch=h;msgid=1;time=2026-11-13T10:00:00.000Z :ana!a@h PRIVMSG #c :hello",
+                                ":srv BATCH -h")
+        #expect(await eventually { buffer.lines.count == 1 && !buffer.isLoadingHistory })
+        buffer.historyExhausted = false
+        session.loadMoreHistory(for: buffer, deep: true)
+        #expect(await sent { $0.hasPrefix("CHATHISTORY BEFORE #c ") && $0.hasSuffix(" 300") })
+    }
+}
+
 // MARK: - Saved scrollback
 
 @MainActor
