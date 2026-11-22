@@ -192,9 +192,34 @@ struct SessionTests {
                                 "@batch=t :srv CHATHISTORY TARGETS ana 2026-10-28T10:00:00.000Z",
                                 "@batch=t :srv CHATHISTORY TARGETS #c 2026-10-28T10:00:00.000Z",
                                 ":srv BATCH -t")
+        #expect(await sent("CHATHISTORY LATEST ana * 100"))
+        await transport.receive(":srv BATCH +h chathistory ana",
+                                "@batch=h;time=2026-10-28T10:00:00.000Z :ana!a@h PRIVMSG me :hola",
+                                ":srv BATCH -h")
         #expect(await eventually { session.buffers.contains { $0.name == "ana" && $0.kind == .query } })
         #expect(!session.buffers.contains { $0.name == "#c" })
-        #expect(await sent("CHATHISTORY LATEST ana * 100"))
+    }
+
+    @Test("A service's notices don't open a conversation, live or from history")
+    func noticesOpenNoQuery() async throws {
+        await register(caps: "batch message-tags server-time draft/chathistory")
+        await transport.receive(":srv BATCH +t draft/chathistory-targets",
+                                "@batch=t :srv CHATHISTORY TARGETS saslserv 2026-10-28T10:00:00.000Z",
+                                ":srv BATCH -t")
+        #expect(await sent("CHATHISTORY LATEST saslserv * 100"))
+        await transport.receive(":srv BATCH +h chathistory saslserv",
+                                "@batch=h;time=2026-10-28T10:00:00.000Z :SaslServ!SaslServ@services. NOTICE me :Last login from: old",
+                                ":srv BATCH -h",
+                                ":SaslServ!SaslServ@services. NOTICE me :Last login from: new")
+        #expect(await eventually { session.statusBuffer.lines.contains { $0.text == "Last login from: new" } })
+        #expect(!session.statusBuffer.lines.contains { $0.text == "Last login from: old" })
+        #expect(!session.buffers.contains { $0.kind == .query })
+        // Once you're talking to it, its notices are part of that conversation.
+        await transport.receive(":NickServ!NickServ@services. PRIVMSG me :hi",
+                                ":NickServ!NickServ@services. NOTICE me :You are now identified")
+        #expect(await eventually {
+            session.buffers.first { $0.name == "NickServ" }?.lines.contains { $0.text == "You are now identified" } ?? false
+        })
     }
 
     @Test("A query follows its peer through a nick change")

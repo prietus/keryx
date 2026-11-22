@@ -146,9 +146,15 @@ extension Session {
         guard message.first?.uppercased() == "TARGETS", let target = message.parameter(1),
               !isupport.isChannel(target), target != "*", !target.contains("."),
               !isIgnored(nick: target, user: nil, host: nil, account: nil) else { return }
-        let existed = buffer(named: target, kind: .query, createIfMissing: false) != nil
-        guard let query = buffer(named: target, kind: .query, createIfMissing: true) else { return }
-        if !existed || !query.loadedHistory { requestHistory(for: query) }
+        if let query = buffer(named: target, kind: .query, createIfMissing: false) {
+            if !query.loadedHistory { requestHistory(for: query) }
+            return
+        }
+        // Not open yet: ask for what was said and let the messages open it.
+        // A target with nothing but notices (a service's login greeting)
+        // then opens nothing.
+        guard status == .connected else { return }
+        send(IRCMessage(command: "CHATHISTORY", parameters: ["LATEST", target, "*", "\(Self.historyPageSize)"]))
     }
 
     // MARK: - A reply's original (CHATHISTORY AROUND)

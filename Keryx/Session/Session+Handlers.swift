@@ -60,8 +60,22 @@ extension Session {
             place = (context, .channel)
             whisper = true
         }
+        let existed = self.buffer(named: place.name, kind: place.kind, createIfMissing: false) != nil
+        // A notice doesn't start a conversation: services greeting us on
+        // login (SaslServ's "Last login from…") go to the status window,
+        // unless we're already talking to them.
+        if kind == .notice, place.kind == .query, !isSelf, !existed {
+            guard !ignored, !historical, !isAround else { return }
+            statusBuffer.append(ChatLine(timestamp: tags["time"].flatMap(Self.timeFormatter.date(from:)) ?? Date(),
+                                         sender: sender, text: body, kind: .notice, msgid: tags["msgid"]),
+                                markUnread: false)
+            return
+        }
         guard let buffer = buffer(named: place.name, kind: place.kind,
                                   createIfMissing: !(ignored && place.kind == .query)) else { return }
+        // Opened by a page of history (see `handleChathistoryTargets`): that
+        // page is its first.
+        if !existed, historical, !isAround { buffer.loadedHistory = true }
         let mentions = !isSelf && !ignored && (whisper || isHighlight(body))
         var line = ChatLine(timestamp: tags["time"].flatMap(Self.timeFormatter.date(from:)) ?? Date(),
                             sender: sender, text: body, kind: kind, isSelf: isSelf,
