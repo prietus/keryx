@@ -214,6 +214,19 @@ struct SessionTests {
         #expect(await eventually { session.statusBuffer.lines.contains { $0.text == "Last login from: new" } })
         #expect(!session.statusBuffer.lines.contains { $0.text == "Last login from: old" })
         #expect(!session.buffers.contains { $0.kind == .query })
+        // Asked once: the same activity isn't asked about again.
+        let asked = { await self.transport.sent.filter { $0 == "CHATHISTORY LATEST saslserv * 100" }.count }
+        await transport.receive(":srv BATCH +t2 draft/chathistory-targets",
+                                "@batch=t2 :srv CHATHISTORY TARGETS saslserv 2026-10-28T10:00:00.000Z",
+                                "@batch=t2 :srv CHATHISTORY TARGETS bea 2026-10-28T11:00:00.000Z",
+                                "@batch=t2 :srv CHATHISTORY TARGETS cal 2026-10-28T11:00:00.000Z",
+                                ":srv BATCH -t2")
+        // And one at a time: cal waits for bea's page.
+        #expect(await sent("CHATHISTORY LATEST bea * 100"))
+        #expect(await !transport.sent.contains("CHATHISTORY LATEST cal * 100"))
+        await transport.receive(":srv BATCH +h2 chathistory bea", ":srv BATCH -h2")
+        #expect(await sent("CHATHISTORY LATEST cal * 100"))
+        #expect(await asked() == 1)
         // Once you're talking to it, its notices are part of that conversation.
         await transport.receive(":NickServ!NickServ@services. PRIVMSG me :hi",
                                 ":NickServ!NickServ@services. NOTICE me :You are now identified")

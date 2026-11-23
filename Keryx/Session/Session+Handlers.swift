@@ -471,6 +471,10 @@ extension Session {
             case "netsplit", "netjoin": finishSplit(info)
             default: break
             }
+            if info.type == "chathistory", !info.isAroundContext, let target = info.target,
+               let probing = probingTarget, equal(probing, target) {
+                finishProbe()
+            }
             if info.isAroundContext {
                 finishAroundContext(failed: false)
             } else if info.type == "chathistory", let target = info.target,
@@ -619,6 +623,7 @@ extension Session {
             if aroundContext?.isLoading == true { finishAroundContext(failed: true) }
             for buffer in buffers { buffer.isLoadingHistory = false }
             catchUpTargets.removeAll()
+            if probingTarget != nil { finishProbe() }
             if let seek = originalSeek {
                 originalSeek = nil
                 failOriginal(seek.msgid, in: seek.bufferName)

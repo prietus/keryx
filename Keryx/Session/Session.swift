@@ -94,6 +94,15 @@ final class Session: Identifiable {
     var pendingLabels: [String: String] = [:]
     var labeledBatches: [String: String] = [:]
     var catchUpTargets: Set<String> = []
+    /// Conversations `CHATHISTORY TARGETS` named that aren't open, waiting
+    /// their turn to be asked about; one request at a time.
+    var targetProbeQueue: [String] = []
+    var probingTarget: String?
+    var probeToken = 0
+    var pendingProbeStamps: [String: String] = [:]
+    /// What we've already asked about, by the activity time the server gave:
+    /// not asked again on the next reconnect unless something new arrived.
+    var probedTargets: [String: String] = [:]
     var catchUpPages: [String: Int] = [:]
     var serverSignalsHistoryEnd = false
     var aroundAwaitingBatch = false
@@ -143,6 +152,7 @@ final class Session: Identifiable {
     static let maxCatchUpPages = 10
     static let deepPageSize = 500
     nonisolated(unsafe) static var historyReplyTimeout: Duration = .seconds(90)
+    nonisolated(unsafe) static var probeReplyTimeout: Duration = .seconds(10)
     static let maxSeekPages = 5
     static let aroundContextSize = 30
     static let whoxToken = "742"
@@ -195,6 +205,10 @@ final class Session: Identifiable {
         monitored = []
         monitorStarted = false
         openBatches = [:]
+        targetProbeQueue = []
+        pendingProbeStamps = [:]
+        probingTarget = nil
+        probeToken += 1
         enabledCaps = []
         isupport = ISupport()
         negotiator = CapabilityNegotiator(desired: config.desiredCaps, mechanism: config.saslMechanism)

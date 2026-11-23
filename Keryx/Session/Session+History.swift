@@ -153,8 +153,39 @@ extension Session {
         // Not open yet: ask for what was said and let the messages open it.
         // A target with nothing but notices (a service's login greeting)
         // then opens nothing.
-        guard status == .connected else { return }
+        let key = fold(target), stamp = message.parameter(2) ?? ""
+        guard probedTargets[key] != stamp, !targetProbeQueue.contains(where: { fold($0) == key }),
+              probingTarget.map(fold) != key else { return }
+        targetProbeQueue.append(target)
+        pendingProbeStamps[key] = stamp
+        probeNextTarget()
+    }
+
+    /// One request at a time: a week of targets asked for at once is a burst
+    /// a bouncer may hang up on.
+    func probeNextTarget() {
+        guard probingTarget == nil, status == .connected, !targetProbeQueue.isEmpty else { return }
+        let target = targetProbeQueue.removeFirst()
+        let key = fold(target)
+        // Remembered from the moment we ask, so a request the server can't
+        // take isn't made again on every reconnect.
+        probedTargets[key] = pendingProbeStamps.removeValue(forKey: key) ?? ""
+        guard buffer(named: target, kind: .query, createIfMissing: false) == nil else { return probeNextTarget() }
+        probingTarget = target
+        probeToken += 1
+        let token = probeToken
         send(IRCMessage(command: "CHATHISTORY", parameters: ["LATEST", target, "*", "\(Self.historyPageSize)"]))
+        Task { [weak self] in
+            try? await Task.sleep(for: Self.probeReplyTimeout)
+            guard let self, self.probeToken == token else { return }
+            self.finishProbe()
+        }
+    }
+
+    func finishProbe() {
+        probingTarget = nil
+        probeToken += 1
+        probeNextTarget()
     }
 
     // MARK: - A reply's original (CHATHISTORY AROUND)
