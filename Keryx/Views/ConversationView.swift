@@ -11,6 +11,7 @@ struct ConversationView: View {
     @State private var drafts: [UUID: String] = [:]
     @State private var findText = ""
     @State private var composerFocus = 0
+    @State private var droppedFiles: [URL] = []
     @FocusState private var findFocused: Bool
 
     /// The speaker column fits the longest nick that has spoken recently.
@@ -34,7 +35,19 @@ struct ConversationView: View {
             TranscriptView(session: session, buffer: buffer, find: model.showFind ? findText : nil,
                            replyTo: $replyTo, onReact: { reacting = $0 })
                 .id(buffer.id)
-            Composer(session: session, buffer: buffer, replyTo: $replyTo, text: $draft, focusToken: $composerFocus)
+            Composer(session: session, buffer: buffer, replyTo: $replyTo, text: $draft, focusToken: $composerFocus,
+                     dropped: $droppedFiles)
+        }
+        // A file dropped anywhere on the conversation, transcript included,
+        // goes to the uploader; its link lands in the composer.
+        .onDrop(of: [.fileURL], isTargeted: nil) { providers in
+            for provider in providers {
+                _ = provider.loadObject(ofClass: URL.self) { url, _ in
+                    guard let url else { return }
+                    Task { @MainActor in droppedFiles.append(url) }
+                }
+            }
+            return true
         }
         .environment(\.nameColumn, nameColumn)
         .background(Palette.paper)

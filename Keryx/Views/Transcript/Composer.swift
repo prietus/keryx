@@ -11,6 +11,8 @@ struct Composer: View {
     @Binding var text: String
     /// Bumped by the conversation to put the caret here.
     @Binding var focusToken: Int
+    /// Files dropped anywhere on the conversation, handed over to upload.
+    @Binding var dropped: [URL]
 
     @State private var history: [String] = []
     @State private var historyIndex: Int?
@@ -96,14 +98,10 @@ struct Composer: View {
         .fileImporter(isPresented: $importing, allowedContentTypes: [.item]) { result in
             if case let .success(url) = result { upload(url) }
         }
-        .onDrop(of: [.fileURL], isTargeted: nil) { providers in
-            for provider in providers {
-                _ = provider.loadObject(ofClass: URL.self) { url, _ in
-                    guard let url else { return }
-                    Task { @MainActor in upload(url) }
-                }
-            }
-            return true
+        .onChange(of: dropped) { _, urls in
+            guard !urls.isEmpty else { return }
+            dropped = []
+            urls.forEach(upload)
         }
         .onChange(of: buffer.id) { _, _ in
             cycling = nil
